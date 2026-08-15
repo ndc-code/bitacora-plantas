@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Colección — Bitácora de Plantas</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="catalog-page catalog-page--coleccion">
+  <header class="catalog-header">
+    <p class="catalog-header-left">
+      Tu colección personal: las plantas que sumaste desde el catálogo
+      para cuidar en casa.
+    </p>
+    <nav class="catalog-nav" aria-label="Principal">
+      <a class="catalog-nav-link" href="index.html">Index</a>
+      <a class="catalog-nav-link is-active" href="coleccion.html">Colección <span id="coleccion-count">(0)</span></a>
+    </nav>
+    <button
+      type="button"
+      class="catalog-filters-toggle"
+      id="catalog-filters-toggle"
+      aria-expanded="true"
+      aria-controls="catalog-filters"
+    >
+      Filtros
+    </button>
+    <button
+      type="button"
+      class="catalog-menu-toggle"
+      id="catalog-menu-toggle"
+      aria-expanded="false"
+      aria-controls="catalog-sidebar"
+    >
+      Menú
+    </button>
+    <div class="catalog-meta">
+      <p>Buenos Aires, ARG <time data-reloj>23:46</time></p>
+      <button type="button" class="catalog-auth-btn" data-auth-nav>Iniciar sesión</button>
+    </div>
+  </header>
+
+  <aside class="catalog-sidebar" id="catalog-sidebar" aria-label="Menú de navegación">
+    <div class="catalog-sidebar-top">
+      <button type="button" class="catalog-sidebar-close" id="catalog-sidebar-close">Cerrar</button>
+    </div>
+    <p class="catalog-sidebar-label">(Navegación)</p>
+    <nav class="catalog-sidebar-nav" aria-label="Principal">
+      <a class="catalog-sidebar-link" href="index.html">Index</a>
+      <a class="catalog-sidebar-link is-active" href="coleccion.html">Colección <span id="sidebar-coleccion-count">(0)</span></a>
+    </nav>
+    <p class="catalog-sidebar-datetime">Buenos Aires, ARG <time data-reloj>23:46</time></p>
+    <button type="button" class="catalog-sidebar-auth-btn" data-auth-nav>Iniciar sesión</button>
+  </aside>
+
+  <div id="coleccion-contenido" hidden>
+    <section class="catalog-filters" aria-label="Filtros de la colección">
+      <form id="catalog-filters" class="catalog-filters-panel">
+        <div class="catalog-filters-options">
+          <label class="catalog-filter-option"><input type="checkbox" name="ubicacion" value="Interior" /> interior</label>
+          <label class="catalog-filter-option"><input type="checkbox" name="ubicacion" value="Exterior" /> exterior</label>
+          <label class="catalog-filter-option"><input type="checkbox" name="ubicacion" value="Ambos" /> ambos</label>
+          <label class="catalog-filter-option"><input type="checkbox" name="luz" value="Alta" /> alta</label>
+          <label class="catalog-filter-option"><input type="checkbox" name="luz" value="Media" /> media</label>
+          <label class="catalog-filter-option"><input type="checkbox" name="luz" value="Baja" /> baja</label>
+          <label class="catalog-filter-option"><input type="checkbox" name="luz" value="Directa" /> directa</label>
+          <label class="catalog-filter-option"><input type="checkbox" name="luz" value="Indirecta" /> indirecta</label>
+          <label class="catalog-filter-option"><input type="checkbox" name="luz" value="Sombra" /> sombra</label>
+          <label class="catalog-filter-option"><input type="checkbox" name="suelo" value="Arenoso" /> arenoso</label>
+          <label class="catalog-filter-option"><input type="checkbox" name="suelo" value="Arcilloso" /> arcilloso</label>
+          <label class="catalog-filter-option"><input type="checkbox" name="suelo" value="Franco" /> franco</label>
+          <label class="catalog-filter-option"><input type="checkbox" name="cuidado" value="Fácil" /> fácil</label>
+          <label class="catalog-filter-option"><input type="checkbox" name="cuidado" value="Medio" /> medio</label>
+          <label class="catalog-filter-option"><input type="checkbox" name="cuidado" value="Exigente" /> exigente</label>
+          <label class="catalog-filter-option"><input type="checkbox" name="riego" value="Cada 5 días" /> cada 5 días</label>
+          <label class="catalog-filter-option"><input type="checkbox" name="riego" value="Cada 7 días" /> cada 7 días</label>
+          <label class="catalog-filter-option"><input type="checkbox" name="riego" value="Cada 10 días" /> cada 10 días</label>
+          <label class="catalog-filter-option"><input type="checkbox" name="riego" value="Cada 14 días" /> cada 14 días</label>
+          <label class="catalog-filter-option"><input type="checkbox" name="riego" value="Cada 21 días" /> cada 21 días</label>
+          <label class="catalog-filter-option"><input type="checkbox" name="riego" value="Cada 30 días" /> cada 30 días</label>
+        </div>
+        <label class="catalog-search">
+          <span class="visually-hidden">Buscar plantas</span>
+          <input
+            type="search"
+            id="catalog-search"
+            name="q"
+            placeholder="Buscar"
+            autocomplete="off"
+            spellcheck="false"
+          />
+        </label>
+      </form>
+    </section>
+
+    <main class="catalog-list" aria-label="Mi colección">
+      <div id="coleccion-rows" class="catalog-rows"></div>
+      <p id="mensaje-vacio" class="catalog-empty" hidden>
+        Todavía no hay plantas en tu colección. Sumá algunas desde Index con (Agregar).
+      </p>
+    </main>
+  </div>
+
+  <dialog id="dialog-auth" class="modal">
+    <button type="button" class="modal-close" aria-label="Cerrar">&times;</button>
+    <p class="field-error" id="error-pagina-auth" hidden></p>
+    <h2 id="titulo-form-auth">Iniciar sesión</h2>
+
+    <form id="form-auth">
+      <div class="field">
+        <label for="email-auth">Email</label>
+        <input class="input" type="email" id="email-auth" required />
+      </div>
+      <div class="field">
+        <label for="password-auth">Contraseña</label>
+        <input class="input" type="password" id="password-auth" minlength="6" required />
+      </div>
+      <p class="field-error" id="error-auth" hidden></p>
+      <p class="field-status" id="status-auth" hidden></p>
+      <button class="btn btn-primary" type="submit" id="btn-submit-auth">Iniciar sesión</button>
+    </form>
+
+    <p style="margin-top: var(--space-6);">
+      <button class="btn-secondary btn" type="button" id="btn-toggle-auth">¿No tenés cuenta? Creá una</button>
+    </p>
+  </dialog>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script type="module" src="js/pages/coleccion.js"></script>
+</body>
+</html>

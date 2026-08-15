@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bitácora — Bitácora de Plantas</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="catalog-page catalog-page--coleccion catalog-page--bitacora">
+  <header class="catalog-header">
+    <p class="catalog-header-left">
+      Diario de cuidados de esta planta: riegos y notas a lo largo del tiempo.
+    </p>
+    <nav class="catalog-nav" aria-label="Principal">
+      <a class="catalog-nav-link" href="index.html">Index</a>
+      <a class="catalog-nav-link is-active" href="coleccion.html">Colección <span id="coleccion-count">(0)</span></a>
+    </nav>
+    <a class="bitacora-volver" href="coleccion.html">Volver</a>
+    <button
+      type="button"
+      class="catalog-menu-toggle"
+      id="catalog-menu-toggle"
+      aria-expanded="false"
+      aria-controls="catalog-sidebar"
+    >
+      Menú
+    </button>
+    <div class="catalog-meta">
+      <p>Buenos Aires, ARG <time data-reloj>23:46</time></p>
+      <button type="button" class="catalog-auth-btn" data-auth-nav>Iniciar sesión</button>
+    </div>
+  </header>
+
+  <aside class="catalog-sidebar" id="catalog-sidebar" aria-label="Menú de navegación">
+    <div class="catalog-sidebar-top">
+      <button type="button" class="catalog-sidebar-close" id="catalog-sidebar-close">Cerrar</button>
+    </div>
+    <p class="catalog-sidebar-label">(Navegación)</p>
+    <nav class="catalog-sidebar-nav" aria-label="Principal">
+      <a class="catalog-sidebar-link" href="index.html">Index</a>
+      <a class="catalog-sidebar-link is-active" href="coleccion.html">Colección <span id="sidebar-coleccion-count">(0)</span></a>
+    </nav>
+    <p class="catalog-sidebar-datetime">Buenos Aires, ARG <time data-reloj>23:46</time></p>
+    <button type="button" class="catalog-sidebar-auth-btn" data-auth-nav>Iniciar sesión</button>
+  </aside>
+
+  <p class="field-error" id="error-pagina" hidden></p>
+
+  <p id="mensaje-sesion" class="catalog-empty" hidden>
+    Iniciá sesión para ver la bitácora de esta planta.
+  </p>
+  <p id="mensaje-faltante" class="catalog-empty" hidden>
+    No encontramos esa planta. <a href="coleccion.html">Volver a Colección</a>
+  </p>
+
+  <div id="bitacora-contenido" hidden>
+    <header class="bitacora-heading">
+      <figure class="bitacora-foto" id="bitacora-foto"></figure>
+      <div>
+        <p class="bitacora-kicker"><a href="coleccion.html">Colección</a></p>
+        <h1 id="bitacora-nombre"></h1>
+      </div>
+    </header>
+
+    <ul class="coleccion-card-facts" id="bitacora-estado"></ul>
+
+    <h2 class="bitacora-section-title">Registrar</h2>
+    <form id="form-cuidado">
+      <div class="field">
+        <label for="tipo-cuidado">Tipo</label>
+        <select class="input" id="tipo-cuidado">
+          <option value="regar" selected>Regar</option>
+          <option value="fertilizar">Fertilizar</option>
+          <option value="trasplantar">Trasplantar</option>
+          <option value="podar">Podar</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="fecha-cuidado">Fecha</label>
+        <input class="input" type="date" id="fecha-cuidado" required />
+      </div>
+      <div class="field">
+        <label for="notas-cuidado">Notas</label>
+        <input class="input" id="notas-cuidado" />
+      </div>
+      <p class="field-error" id="error-cuidado" hidden></p>
+      <button type="submit" class="btn btn-primary">Registrar</button>
+    </form>
+
+    <h2 class="bitacora-section-title">Historial</h2>
+    <ul id="lista-bitacora" class="bitacora-historial"></ul>
+  </div>
+
+  <dialog id="dialog-auth" class="modal">
+    <button type="button" class="modal-close" aria-label="Cerrar">&times;</button>
+    <p class="field-error" id="error-pagina-auth" hidden></p>
+    <h2 id="titulo-form-auth">Iniciar sesión</h2>
+
+    <form id="form-auth">
+      <div class="field">
+        <label for="email-auth">Email</label>
+        <input class="input" type="email" id="email-auth" required />
+      </div>
+      <div class="field">
+        <label for="password-auth">Contraseña</label>
+        <input class="input" type="password" id="password-auth" minlength="6" required />
+      </div>
+      <p class="field-error" id="error-auth" hidden></p>
+      <p class="field-status" id="status-auth" hidden></p>
+      <button class="btn btn-primary" type="submit" id="btn-submit-auth">Iniciar sesión</button>
+    </form>
+
+    <p style="margin-top: var(--space-6);">
+      <button class="btn-secondary btn" type="button" id="btn-toggle-auth">¿No tenés cuenta? Creá una</button>
+    </p>
+  </dialog>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script type="module" src="js/pages/bitacora.js"></script>
+</body>
+</html>

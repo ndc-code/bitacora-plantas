@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Detalle de planta — Bitácora de Plantas</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <h3 style="margin:0;">Bitácora de Plantas</h3>
+    <a class="btn btn-secondary" href="dashboard.html">Volver</a>
+  </header>
+
+  <main class="container" style="max-width: 720px;">
+    <p class="field-error" id="error-pagina" hidden></p>
+
+    <!-- Se oculta entero si la planta no existe o no es de esta persona. -->
+    <div id="contenido-planta">
+      <div id="foto-container" style="margin-top: var(--space-8);"></div>
+
+      <form id="form-planta">
+        <div class="field">
+          <label for="nombre">Nombre</label>
+          <input class="input" id="nombre" required />
+        </div>
+        <div class="field">
+          <label for="especie">Especie</label>
+          <input class="input" id="especie" />
+        </div>
+        <div class="field">
+          <label for="ubicacion">Ubicación</label>
+          <input class="input" id="ubicacion" />
+        </div>
+        <div class="field">
+          <label for="fecha_adquisicion">Fecha de adquisición</label>
+          <input class="input" type="date" id="fecha_adquisicion" />
+        </div>
+        <div class="field">
+          <label for="notas">Notas</label>
+          <textarea class="input" id="notas" rows="3"></textarea>
+        </div>
+        <div class="field">
+          <label for="foto">Cambiar foto</label>
+          <input type="file" id="foto" accept="image/*" />
+        </div>
+        <p class="field-error" id="error-planta" hidden></p>
+        <p class="field-status" id="status-planta" hidden></p>
+        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+      </form>
+
+      <h2 style="margin-top: var(--space-15);">Frecuencia de cuidados</h2>
+      <div id="config-cuidados"></div>
+      <p class="field-error" id="error-config-cuidados" hidden></p>
+
+      <h2 style="margin-top: var(--space-15);">Registrar cuidado</h2>
+      <form id="form-cuidado">
+        <div class="field">
+          <label for="tipo-cuidado">Tipo</label>
+          <select class="input" id="tipo-cuidado"></select>
+        </div>
+        <div class="field">
+          <label for="fecha-cuidado">Fecha</label>
+          <input class="input" type="date" id="fecha-cuidado" required />
+        </div>
+        <div class="field">
+          <label for="notas-cuidado">Notas</label>
+          <input class="input" id="notas-cuidado" />
+        </div>
+        <p class="field-error" id="error-cuidado" hidden></p>
+        <button type="submit" class="btn btn-primary">Registrar</button>
+      </form>
+
+      <h2 style="margin-top: var(--space-15);">Bitácora</h2>
+      <ul id="lista-bitacora" style="list-style:none; padding:0;"></ul>
+
+      <section style="margin-top: var(--space-15); padding-top: var(--space-6); border-top: 1px solid var(--color-border);">
+        <button type="button" class="btn btn-secondary" id="btn-eliminar-planta">Eliminar planta</button>
+        <p class="field-error" id="error-eliminar" hidden></p>
+      </section>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script type="module" src="js/pages/planta.js"></script>
+</body>
+</html>
