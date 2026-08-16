@@ -267,99 +267,187 @@ select.input {
 
 .catalog-page--coleccion .catalog-list {
   overflow-x: visible;
+  margin-top: 70px;
 }
 
 .catalog-page--coleccion .catalog-rows {
   display: flex;
   flex-direction: column;
-  gap: clamp(48px, 8vw, 96px);
-  padding-bottom: var(--space-15);  
-  margin-top: 70px !important;
+  padding-bottom: var(--space-15);
 }
 
-.catalog-page--coleccion .catalog-entry.is-filtered-out {
-  display: none !important;
+.catalog-page--coleccion .catalog-entry {
+  margin-top: -15px;
 }
 
-.coleccion-card {
-  display: grid;
-  grid-template-columns: minmax(240px, 1fr) minmax(0, 2fr);
-  gap: clamp(24px, 4vw, 48px);
-  align-items: start;
+.catalog-page--coleccion .catalog-entry:first-child {
+  margin-top: 0;
 }
 
-.coleccion-card-info {
+.coleccion-row {
+  display: flex;
+}
+
+.coleccion-row-link {
+  display: block;
+  min-width: 0;
+  max-width: 100%;
+  padding: clamp(2px, 0.5vw, 6px) 0;
+  text-decoration: none;
+  color: inherit;
+}
+
+.coleccion-row-title {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  max-width: 100%;
+}
+
+.coleccion-row-text {
+  display: block;
+  font-family: var(--font-heading);
+  font-weight: 400;
+  font-size: clamp(36px, 7vw, 88px);
+  line-height: 1.1;
+  color: var(--color-black);
+  transition: color 200ms ease;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   min-width: 0;
 }
 
-.coleccion-card-facts {
+.coleccion-row:hover .coleccion-row-text {
+  color: var(--color-terracotta);
+}
+
+.coleccion-eliminar-btn {
+  flex-shrink: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font-family: var(--font-body);
+  font-size: 11px;
+  color: var(--color-gray-mid);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  opacity: 0;
+  transition: opacity 150ms ease;
+  align-self: flex-start;
+  margin-top: 6px;
+}
+
+.coleccion-eliminar-btn::before {
+  content: '(';
+}
+
+.coleccion-eliminar-btn::after {
+  content: ')';
+}
+
+/* --- Riegos --- */
+.riegos-list {
+  margin-top: 70px;
+  padding: 0 var(--catalog-inline) var(--space-15);
+}
+
+.riegos-section + .riegos-section {
+  margin-top: var(--space-10);
+}
+
+.riegos-section-title {
+  font-family: var(--font-heading);
+  font-weight: 400;
+  font-size: 112px;
+  letter-spacing: -6px;
+  line-height: 1;
+  color: var(--color-black);
+  margin: 0 0 var(--space-6) 0;
+}
+
+.riegos-rows {
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-.coleccion-card-facts li {
+.riegos-row + .riegos-row {
+  margin-top: var(--space-2);
+}
+
+.riegos-row-link {
   display: flex;
   align-items: baseline;
-  justify-content: space-between;
-  gap: var(--space-4);
-  margin: 0;
-  padding: 10px 0;
-  border-bottom: 1px solid var(--color-black);
-  font-size: 14px;
-  line-height: 1.3;
-}
-
-.coleccion-card-facts li:first-child {
-  border-top: 1px solid var(--color-black);
-}
-
-.coleccion-card-facts li span:last-child,
-.coleccion-card-facts li h2,
-.coleccion-card-facts li .coleccion-bitacora-link {
-  margin: 0;
-  font: inherit;
-  font-weight: 400;
-  text-align: right;
-}
-
-.coleccion-bitacora-link {
-  color: inherit;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-
-.coleccion-riego-btn,
-.coleccion-eliminar-btn {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 4px;
-  margin: 0;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  font-family: inherit;
-  font-size: inherit;
-  font-weight: 400;
-  line-height: inherit;
-  color: inherit;
-  cursor:none;
-  text-align: left;
-}
-
-.coleccion-eliminar-btn {
-  text-align: right;
-}
-
-.coleccion-card-media {
-  margin: 0;
+  gap: var(--space-3);
+  padding: var(--space-2) 0;
   width: 100%;
+  text-decoration: none;
+  color: inherit;
+}
+
+.riegos-row {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  padding: var(--space-2) 0;
+}
+
+.riegos-row-nombre {
+  flex-shrink: 0;
+  font-size: 16px;
+  color: var(--color-black);
+}
+
+.riegos-row-linea {
+  flex: 1;
+  min-width: var(--space-6);
+  border-bottom: 1px dotted var(--color-gray-mid);
+  transform: translateY(-4px);
+}
+
+.riegos-row-valor {
+  flex-shrink: 0;
+  font-size: 14px;
+  color: var(--color-gray-mid);
+}
+
+.riegos-row-link:hover .riegos-row-nombre,
+.riegos-row-link:hover .riegos-row-valor {
+  color: var(--color-terracotta);
+}
+
+.riegos-vacio {
+  color: var(--color-gray-mid);
+  font-size: 14px;
+}
+
+.coleccion-row:hover .coleccion-eliminar-btn,
+.coleccion-eliminar-btn:focus-visible {
+  opacity: 1;
+}
+
+.coleccion-preview {
+  position: fixed;
+  right: var(--space-8);
+  bottom: var(--space-8);
+  margin: 0;
+  width: min(32vw, 420px);
   aspect-ratio: 4 / 3;
   overflow: hidden;
   background: var(--color-border);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 200ms ease;
+  z-index: 5;
 }
 
-.coleccion-card-media img {
+.coleccion-preview.is-visible {
+  opacity: 1;
+}
+
+.coleccion-preview-img {
   display: block;
   width: 100%;
   height: 100%;
@@ -367,13 +455,8 @@ select.input {
 }
 
 @media (max-width: 799px) {
-  .coleccion-card {
-    grid-template-columns: 1fr;
-    gap: var(--space-5);
-  }
-
-  .coleccion-card-media {
-    order: -1;
+  .coleccion-preview {
+    display: none;
   }
 }
 
@@ -622,10 +705,6 @@ select.input {
 
 .catalog-entry.is-filtered-out {
   display: none !important;
-}
-
-#coleccion-contenido {
-  margin-top: -70px;
 }
 
 .catalog-list {
@@ -1004,10 +1083,6 @@ select.input {
   }
 }
 
-.catalog-entry {
-  transition: opacity 0.15s ease;
-}
-
 .catalog-row {
   display: grid;
   grid-template-columns: var(--catalog-columns);
@@ -1016,6 +1091,7 @@ select.input {
   padding: 3px 0;
   color: var(--color-black);
   cursor: pointer;
+  transition: opacity 0.15s ease;
 }
 
 .catalog-row>* {
@@ -1040,14 +1116,6 @@ select.input {
 
 .catalog-entry.is-in-coleccion>.catalog-row .catalog-add {
   color: var(--color-white);
-}
-
-/* Las plantas que ya están en tu colección no se apagan: es la señal de que son
-   tuyas, y perderla al pasar el cursor sería peor que el propio atenuado. */
-@media (hover: hover) {
-  .catalog-page:not([data-view='2']):not([data-view='3']) .catalog-group-table:hover .catalog-entry.is-in-coleccion {
-    opacity: 1;
-  }
 }
 
 .catalog-row.is-header {
@@ -1121,28 +1189,34 @@ select.input {
 
 /* El atenuado por hover solo tiene sentido donde hay un puntero de verdad. En
    táctil los navegadores emulan `:hover` sobre el elemento que tocaste y lo
-   dejan pegado, así que al scrollear se encendía una fila al azar. */
-/* El disparador es `.catalog-group-table` (los encabezados y las filas de UNA
-   categoría), no `.catalog-group`, que además incluye el título gigante: pasar
-   el cursor por "Plantas de interior" no tiene que apagar nada. Y al ser por
-   categoría, tampoco alcanza a las plantas de las otras. */
+   dejan pegado, así que al scrollear se encendía una fila al azar. Sin
+   transition: es un cambio de estado instantáneo, como cualquier :hover. */
 @media (hover: hover) {
-  .catalog-group-table:hover .catalog-entry {
-    opacity: 0.2;
-  }
-
-  .catalog-group-table:hover .catalog-entry:hover,
-  .catalog-group-table:hover .catalog-entry.is-open {
-    opacity: 1;
+  .catalog-entry:hover>.catalog-row,
+  .catalog-entry.is-open>.catalog-row {
+    opacity: 0.3;
   }
 }
 
+/* Truco de grid-template-rows para animar de 0 a la altura del contenido sin
+   conocerla de antemano: el contenedor va a 0fr/1fr y el wrapper interno,
+   con overflow:hidden, es lo que efectivamente se recorta o se revela. Así
+   el panel empuja el resto del catálogo hacia abajo progresivamente en vez
+   de aparecer de golpe. */
 .catalog-accordion {
-  padding: var(--space-0) 0 var(--space-6);
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 300ms ease-in-out;
 }
 
-.catalog-accordion[hidden] {
-  display: none;
+.catalog-entry.is-open>.catalog-accordion {
+  grid-template-rows: 1fr;
+}
+
+.catalog-accordion-inner {
+  overflow: hidden;
+  padding: var(--space-0) 0 var(--space-6);
+  min-height: 0;
 }
 
 .catalog-gallery {
@@ -1334,6 +1408,11 @@ select.input {
     font-size: 26px;
     letter-spacing: -2px;
   }
+
+  .riegos-section-title {
+    font-size: 54px;
+    letter-spacing: -3px;
+  }
 }
 
 @media (max-width: 799px) {
@@ -1372,10 +1451,20 @@ select.input {
     font-size: 16px;
     letter-spacing: -1px;
   }
+
+  .riegos-section-title {
+    font-size: 34px;
+    letter-spacing: -1.5px;
+  }
 }
 
 @media (max-width: 379px) {
   .catalog-category-label {
+    font-size: 26px;
+    letter-spacing: -1px;
+  }
+
+  .riegos-section-title {
     font-size: 26px;
     letter-spacing: -1px;
   }
@@ -1980,7 +2069,6 @@ body.sidebar-open::before {
 }
 
 .catalog-page--bitacora .catalog-list,
-.bitacora-heading,
 #bitacora-contenido,
 #mensaje-sesion,
 #mensaje-faltante,
@@ -1989,25 +2077,21 @@ body.sidebar-open::before {
   padding-right: var(--catalog-inline);
 }
 
-#bitacora-contenido {
-  max-width: 720px;
+.bitacora-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 720px) minmax(280px, 1fr);
+  gap: var(--space-8);
+  align-items: start;
   padding-bottom: var(--space-15);
 }
 
-.bitacora-heading {
-  display: grid;
-  grid-template-columns: 96px minmax(0, 1fr);
-  gap: var(--space-5);
-  align-items: end;
-  margin: var(--space-8) 0 var(--space-6);
-  padding-left: 0;
-  padding-right: 0;
+.bitacora-main {
+  min-width: 0;
 }
 
 .bitacora-foto {
-  margin: 0;
-  width: 96px;
-  height: 96px;
+  margin: var(--space-10) 0 0;
+  aspect-ratio: 3 / 4;
   overflow: hidden;
   background: var(--color-border);
 }
@@ -2019,32 +2103,253 @@ body.sidebar-open::before {
   object-fit: cover;
 }
 
-.bitacora-kicker {
-  margin: 0 0 var(--space-2);
-  font-size: 14px;
+.bitacora-heading {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-6);
+  margin: var(--space-10) 0 var(--space-6);
 }
 
-.bitacora-kicker a {
-  color: inherit;
+.bitacora-heading-info {
+  min-width: 0;
+  flex: 1;
 }
 
 #bitacora-nombre {
   margin: 0;
-  font-size: 32px;
+  font-family: var(--font-heading);
   font-weight: 400;
-  line-height: 1.15;
+  font-size: 112px;
+  letter-spacing: -6px;
+  line-height: 1;
+  color: var(--color-black);
 }
 
-.bitacora-section-title {
-  margin: var(--space-10) 0 var(--space-4);
-  font-size: 20px;
-  font-weight: 400;
+.bitacora-especie {
+  margin: var(--space-3) 0 0;
+  max-width: 46ch;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--color-gray-mid);
+}
+
+.bitacora-eliminar-btn {
+  flex-shrink: 0;
+  margin-top: var(--space-4);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--color-gray-mid);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.bitacora-tabs {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-10);
+  padding: var(--space-3) 0;
+  background: var(--color-white);
+}
+
+.bitacora-tab {
+  padding: var(--space-2) var(--space-4);
+  color: var(--color-gray-mid);
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.bitacora-tab.is-active {
+  color: var(--color-black);
+  background: var(--color-border);
+}
+
+.bitacora-section {
+  display: grid;
+  grid-template-columns: 100px minmax(0, 1fr);
+  gap: var(--space-6);
+  margin-bottom: var(--space-10);
+  scroll-margin-top: 70px;
+}
+
+.bitacora-section-label {
+  margin: 0;
+  padding-top: var(--space-1);
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--color-gray-mid);
+}
+
+.bitacora-rows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+}
+
+.coleccion-riego-btn {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.bitacora-rows .riegos-row-nombre {
+  font-size: 14px;
+}
+
+.bitacora-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: var(--space-3);
+}
+
+.bitacora-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.bitacora-field--grow {
+  flex: 1;
+  min-width: 160px;
+}
+
+.bitacora-field label {
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--color-gray-mid);
+}
+
+.bitacora-input {
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: 0;
+  padding: var(--space-2) var(--space-3);
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--color-black);
+  height: 36px;
+}
+
+.bitacora-input:focus {
+  outline: none;
+  border-color: var(--color-black);
+}
+
+.bitacora-btn {
+  height: 36px;
+  padding: 0 var(--space-4);
+  border: 0;
+  background: var(--color-black);
+  color: var(--color-white);
+  font-family: var(--font-body);
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.bitacora-btn:hover {
+  opacity: 0.8;
+}
+
+.bitacora-subir-btn {
+  display: inline-flex;
+  align-items: center;
+  height: 36px;
+  padding: 0 var(--space-4);
+  border: 1px solid var(--color-border);
+  background: transparent;
+  color: var(--color-black);
+  font-family: var(--font-body);
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.bitacora-subir-btn:hover {
+  border-color: var(--color-black);
+}
+
+.bitacora-form .field-error {
+  flex-basis: 100%;
+  font-size: 13px;
+}
+
+.bitacora-galeria-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-4);
+}
+
+.bitacora-galeria-vacio {
+  grid-column: 1 / -1;
+  margin: 0;
+  font-size: 14px;
+  color: var(--color-gray-mid);
+}
+
+.bitacora-galeria-item {
+  position: relative;
+  margin: 0;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  background: var(--color-border);
+}
+
+.bitacora-galeria-item img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.bitacora-galeria-item figcaption {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  padding: var(--space-1) var(--space-2);
+  font-size: 11px;
+  color: var(--color-white);
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.55), transparent);
+}
+
+.bitacora-galeria-eliminar {
+  position: absolute;
+  top: var(--space-2);
+  right: var(--space-2);
+  width: 22px;
+  height: 22px;
+  border: 0;
+  background: rgba(0, 0, 0, 0.55);
+  color: var(--color-white);
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 150ms ease;
+}
+
+.bitacora-galeria-item:hover .bitacora-galeria-eliminar {
+  opacity: 1;
 }
 
 .bitacora-historial {
   list-style: none;
   margin: 0;
   padding: 0;
+  min-width: 0;
 }
 
 .bitacora-historial li {
@@ -2063,9 +2368,24 @@ body.sidebar-open::before {
     align-self: start;
     justify-self: start;
   }
+
+  #bitacora-nombre {
+    font-size: 54px;
+    letter-spacing: -3px;
+  }
 }
 
 @media (max-width: 799px) {
+  .bitacora-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .bitacora-foto {
+    order: -1;
+    aspect-ratio: 16 / 9;
+    margin-top: var(--space-6);
+  }
+
   .catalog-page--bitacora .catalog-list,
   #bitacora-contenido,
   #mensaje-sesion,
@@ -2073,5 +2393,26 @@ body.sidebar-open::before {
   #error-pagina {
     padding-left: var(--space-4);
     padding-right: var(--space-4);
+  }
+}
+
+@media (max-width: 640px) {
+  #bitacora-nombre {
+    font-size: 34px;
+    letter-spacing: -1.5px;
+  }
+
+  .bitacora-section {
+    grid-template-columns: 1fr;
+    gap: var(--space-2);
+  }
+
+  .bitacora-form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .bitacora-galeria-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }

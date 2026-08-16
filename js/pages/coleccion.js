@@ -1,19 +1,8 @@
 import { qs } from '../utils/dom.js';
 import { getSession } from '../services/auth.js';
 import { listarColeccion, quitarDeColeccion, onColeccionChange } from '../services/coleccion.js';
-import { entryMarkup, idDeColeccion, riegosDePlanta } from '../utils/coleccion-card.js';
-import {
-  refreshCatalogFilters,
-  wireCatalogFilters,
-  wireFiltersToggle,
-} from '../utils/catalog-filters.js';
+import { entryMarkup, idDeColeccion } from '../utils/coleccion-card.js';
 import { syncColeccionNavCount } from '../utils/coleccion-nav.js';
-import {
-  estacionActual,
-  refreshRiegoEstacion,
-  riegoParaEstacion,
-  wireRiegoEstacion,
-} from '../utils/catalog-riego-estacion.js';
 import { wireAuthModal } from '../utils/auth-modal.js';
 import { wireAuthNav } from '../utils/auth-nav.js';
 import { wireReloj } from '../utils/reloj.js';
@@ -35,25 +24,56 @@ async function render(root) {
   vacio.hidden = true;
 
   for (const planta of plantas) {
-    const riegos = riegosDePlanta(planta);
     const entry = document.createElement('div');
     entry.className = 'catalog-entry';
     entry.dataset.id = idDeColeccion(planta);
     entry.dataset.nombre = planta.nombre || '';
-    entry.dataset.especie = planta.especie || '';
-    entry.dataset.riego = riegoParaEstacion(riegos, planta.riego, estacionActual());
-    entry.dataset.riegos = JSON.stringify(riegos);
-    entry.dataset.luz = planta.luz || '';
-    entry.dataset.ubicacion = planta.ubicacion || '';
-    entry.dataset.suelo = planta.suelo || '';
-    entry.dataset.cuidado = planta.cuidado || '';
     entry.innerHTML = entryMarkup(planta);
     root.appendChild(entry);
   }
 
-  refreshRiegoEstacion(root);
-  refreshCatalogFilters(root);
+  mostrarPreviewInicial(root);
   await syncColeccionNavCount();
+}
+
+function mostrarPreviewInicial(root) {
+  const preview = qs('#coleccion-preview');
+  const previewImg = qs('#coleccion-preview-img');
+  const primerLink = root.querySelector('.coleccion-row-link');
+  if (!preview || !previewImg || !primerLink) return;
+
+  const imagen = primerLink.dataset.imagen;
+  if (!imagen) return;
+
+  previewImg.src = imagen;
+  previewImg.alt = primerLink.querySelector('.coleccion-row-text')?.textContent || '';
+  preview.classList.add('is-visible');
+}
+
+function wirePreview(root) {
+  const preview = qs('#coleccion-preview');
+  const previewImg = qs('#coleccion-preview-img');
+  if (!root || !preview || !previewImg) return;
+
+  root.addEventListener('mouseover', (event) => {
+    const link = event.target.closest('.coleccion-row-link');
+    if (!link || !root.contains(link)) return;
+
+    const imagen = link.dataset.imagen;
+    if (!imagen) return;
+
+    previewImg.src = imagen;
+    previewImg.alt = link.querySelector('.coleccion-row-text')?.textContent || '';
+    preview.classList.add('is-visible');
+  });
+
+  root.addEventListener('mouseout', (event) => {
+    const link = event.target.closest('.coleccion-row-link');
+    if (!link || !root.contains(link)) return;
+    if (link.contains(event.relatedTarget)) return;
+
+    preview.classList.remove('is-visible');
+  });
 }
 
 function wireEliminar(root) {
@@ -163,12 +183,8 @@ function abrirLogin() {
 function montarChrome() {
   wireReloj();
   wireEliminar(root);
-  wireCatalogFilters(root);
-  wireFiltersToggle();
   wireSidebarToggle();
-  wireRiegoEstacion(root, {
-    onChange: () => refreshCatalogFilters(root),
-  });
+  wirePreview(root);
 }
 
 function mostrarEstadoSinSesion() {

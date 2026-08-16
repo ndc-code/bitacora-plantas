@@ -3,19 +3,18 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Colección — Bitácora de Plantas</title>
+  <title>Riegos — Bitácora de Plantas</title>
   <link rel="stylesheet" href="css/styles.css" />
 </head>
-<body class="catalog-page catalog-page--coleccion">
+<body class="catalog-page catalog-page--riegos">
   <header class="catalog-header">
     <p class="catalog-header-left">
-      Tu colección personal: las plantas que sumaste desde el catálogo
-      para cuidar en casa.
+      Próximos riegos de tu colección y el historial de los últimos.
     </p>
     <nav class="catalog-nav" aria-label="Principal">
       <a class="catalog-nav-link" href="index.html">Index</a>
-      <a class="catalog-nav-link is-active" href="coleccion.html">Colección</a>
-      <a class="catalog-nav-link" href="riegos.html">Riegos</a>
+      <a class="catalog-nav-link" href="coleccion.html">Colección</a>
+      <a class="catalog-nav-link is-active" href="riegos.html">Riegos</a>
     </nav>
     <button
       type="button"
@@ -39,25 +38,28 @@
     <p class="catalog-sidebar-label">(Navegación)</p>
     <nav class="catalog-sidebar-nav" aria-label="Principal">
       <a class="catalog-sidebar-link" href="index.html">Index</a>
-      <a class="catalog-sidebar-link is-active" href="coleccion.html">Colección</a>
-      <a class="catalog-sidebar-link" href="riegos.html">Riegos</a>
+      <a class="catalog-sidebar-link" href="coleccion.html">Colección</a>
+      <a class="catalog-sidebar-link is-active" href="riegos.html">Riegos</a>
     </nav>
     <p class="catalog-sidebar-datetime">Buenos Aires, ARG <time data-reloj>23:46</time></p>
     <button type="button" class="catalog-sidebar-auth-btn" data-auth-nav>Iniciar sesión</button>
   </aside>
 
-  <div id="coleccion-contenido" hidden>
-    <main class="catalog-list" aria-label="Mi colección">
-      <div id="coleccion-rows" class="catalog-rows"></div>
-      <p id="mensaje-vacio" class="catalog-empty" hidden>
-        Todavía no hay plantas en tu colección. Sumá algunas desde Index con (Agregar).
-      </p>
-    </main>
+  <main id="riegos-contenido" class="riegos-list" hidden>
+    <section class="riegos-section">
+      <h2 class="riegos-section-title">Próximos</h2>
+      <ul id="riegos-proximos" class="riegos-rows"></ul>
+    </section>
 
-    <figure class="coleccion-preview" id="coleccion-preview" aria-hidden="true">
-      <img class="coleccion-preview-img" id="coleccion-preview-img" src="" alt="" />
-    </figure>
-  </div>
+    <section class="riegos-section">
+      <h2 class="riegos-section-title">Historial</h2>
+      <ul id="riegos-historial" class="riegos-rows"></ul>
+    </section>
+
+    <p id="mensaje-vacio" class="catalog-empty" hidden>
+      Todavía no hay plantas en tu colección. Sumá algunas desde Index con (Agregar).
+    </p>
+  </main>
 
   <dialog id="dialog-auth" class="modal">
     <button type="button" class="modal-close" aria-label="Cerrar">&times;</button>
@@ -84,6 +86,6 @@
   </dialog>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script type="module" src="js/pages/coleccion.js"></script>
+  <script type="module" src="js/pages/riegos.js"></script>
 </body>
 </html>

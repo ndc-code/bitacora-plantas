@@ -48,8 +48,6 @@ function applyFilters(form, root, searchInput) {
     if (!visible && entry.classList.contains('is-open')) {
       entry.classList.remove('is-open');
       entry.querySelector('.catalog-row')?.setAttribute('aria-expanded', 'false');
-      const panel = entry.querySelector('.catalog-accordion');
-      if (panel) panel.hidden = true;
     }
   });
 

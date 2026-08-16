@@ -295,21 +295,23 @@ function rowHtml(row) {
     <span>${row.cuidado}</span>
     <span class="catalog-cell--action"><button type="button" class="catalog-add" ${addAttrs} title="Agregar a Colección" aria-label="Agregar a Colección">(Agregar)</button></span>
   </div>
-  <div class="catalog-accordion" hidden>
-    <dl class="catalog-detail">
-      <div class="catalog-detail-row"><dt>Especie</dt><dd>${escapeAttr(row.species)}</dd></div>
-      <div class="catalog-detail-row"><dt>Sol</dt><dd>${escapeAttr(row.sol)}</dd></div>
-      <div class="catalog-detail-row"><dt>Luminosidad</dt><dd>${escapeAttr(row.luz)}</dd></div>
-      <div class="catalog-detail-row"><dt>Riego</dt><dd class="catalog-riego">${escapeAttr(row.riego)}</dd></div>
-      <div class="catalog-detail-row"><dt>Clima</dt><dd>${escapeAttr(row.clima)}</dd></div>
-      <div class="catalog-detail-row"><dt>Suelo</dt><dd>${escapeAttr(row.suelo)}</dd></div>
-      <div class="catalog-detail-row"><dt>Cuidado</dt><dd>${escapeAttr(row.cuidado)}</dd></div>
-    </dl>
-    <div class="catalog-gallery">
-    <figure class="catalog-gallery-item">
-      <img src="${escapeAttr(row.imagen)}" alt="${escapeAttr(row.name)} 1/1" loading="lazy" width="200" height="150" />
-      <figcaption>1/1</figcaption>
-    </figure>
+  <div class="catalog-accordion">
+    <div class="catalog-accordion-inner">
+      <dl class="catalog-detail">
+        <div class="catalog-detail-row"><dt>Especie</dt><dd>${escapeAttr(row.species)}</dd></div>
+        <div class="catalog-detail-row"><dt>Sol</dt><dd>${escapeAttr(row.sol)}</dd></div>
+        <div class="catalog-detail-row"><dt>Luminosidad</dt><dd>${escapeAttr(row.luz)}</dd></div>
+        <div class="catalog-detail-row"><dt>Riego</dt><dd class="catalog-riego">${escapeAttr(row.riego)}</dd></div>
+        <div class="catalog-detail-row"><dt>Clima</dt><dd>${escapeAttr(row.clima)}</dd></div>
+        <div class="catalog-detail-row"><dt>Suelo</dt><dd>${escapeAttr(row.suelo)}</dd></div>
+        <div class="catalog-detail-row"><dt>Cuidado</dt><dd>${escapeAttr(row.cuidado)}</dd></div>
+      </dl>
+      <div class="catalog-gallery">
+      <figure class="catalog-gallery-item">
+        <img src="${escapeAttr(row.imagen)}" alt="${escapeAttr(row.name)} 1/1" loading="lazy" width="200" height="150" />
+        <figcaption>1/1</figcaption>
+      </figure>
+      </div>
     </div>
   </div>
 </div>`;

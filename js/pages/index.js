@@ -6,7 +6,7 @@ import {
   quitarDeColeccion,
 } from '../services/coleccion.js';
 import { getSession } from '../services/auth.js';
-import { wireCatalogAccordion } from '../utils/catalog-accordion.js';
+import { esDesktopConHover, wireCatalogAccordion } from '../utils/catalog-accordion.js';
 import { wireCatalogFilters, wireFiltersToggle } from '../utils/catalog-filters.js';
 import { wireCatalogView } from '../utils/catalog-view.js';
 import { syncColeccionNavCount } from '../utils/coleccion-nav.js';
@@ -147,6 +147,37 @@ function wireAdd(root, authModal) {
   });
 }
 
+/**
+ * En desktop el click en el item ya no abre nada (el hover se encarga), así
+ * que queda libre para agregar/quitar de la colección. En mobile el click
+ * sigue siendo el que abre el panel de detalle, así que ahí no se toca.
+ */
+function wireEntryClickToAdd(root, authModal) {
+  if (!root) return;
+
+  root.addEventListener('click', (event) => {
+    if (event.target.closest('.catalog-add')) return; // ya lo maneja wireAdd
+    if (!esDesktopConHover()) return;
+
+    const view = qs('.catalog-page')?.dataset.view;
+    if (view === '2' || view === '3') return;
+
+    const entry = event.target.closest('.catalog-entry');
+    if (!entry || !root.contains(entry)) return;
+
+    const btn = entry.querySelector('.catalog-add[data-id]');
+    if (!btn) return;
+
+    getSession().then((session) => {
+      if (session) {
+        toggleColeccion(btn);
+        return;
+      }
+      authModal.open({ onSuccess: () => toggleColeccion(btn) });
+    });
+  });
+}
+
 async function onGallery3DSeleccion(btn) {
   const added = await estaEnColeccion(btn.dataset.id);
   if (added) marcarAgregado(btn);
@@ -230,6 +261,7 @@ const authModal = wireAuthModal();
 wireReloj();
 wireCatalogAccordion(root);
 wireAdd(catalogList, authModal);
+wireEntryClickToAdd(catalogList, authModal);
 wireNavColeccion(authModal);
 wireSidebarNavColeccion(authModal);
 wireCatalogFilters(root);
