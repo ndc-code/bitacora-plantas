@@ -579,6 +579,10 @@ select.input {
   text-underline-offset: 3px;
 }
 
+.catalog-theme-toggle-sep {
+  opacity: 0.45;
+}
+
 .catalog-auth-btn[disabled] {
   opacity: 0.5;
   cursor: default;
@@ -1156,6 +1160,38 @@ select.input {
   color: var(--color-canvas);
 }
 
+/* Sin puntero preciso no hay :hover, así que el ítem tocado necesita su
+   propia señal. Se pinta el `.catalog-entry` entero (fila + panel de
+   detalle desplegado), no solo la fila, con el mismo negro/blanco invertido
+   que el panel de detalle, para que todo el bloque se lea uniforme (el
+   título de la fila no se queda en un gris que desentona con el resto). Al
+   ser un elemento distinto de `.catalog-row` no hay conflicto de cascada
+   con el fondo negro de `.is-in-coleccion`: esa fila ya usa el mismo negro,
+   así que queda igual de integrada. Se suma un fallback de ancho (mismo
+   breakpoint que el resto del panel de detalle mobile en este archivo)
+   porque `hover: none` no siempre se activa en el modo "Responsive" de las
+   devtools sin elegir un dispositivo real, aunque sí funciona en un touch
+   de verdad. */
+@media (hover: none), (max-width: 767px) {
+  .catalog-entry.is-open {
+    background: var(--color-ink);
+    color: var(--color-canvas);
+    padding-left: 6px;
+    padding-right: 6px;
+    margin-left: -6px;
+    margin-right: -6px;
+  }
+
+  .catalog-entry.is-open>.catalog-row {
+    color: var(--color-canvas);
+    border-bottom: 1px solid var(--color-canvas);
+  }
+
+  .catalog-entry.is-open>.catalog-row .catalog-add {
+    color: var(--color-canvas);
+  }
+}
+
 .catalog-row.is-header {
   font-weight: 400;
   margin-top: var(--space-3);
@@ -1251,6 +1287,30 @@ select.input {
   grid-template-rows: 1fr;
 }
 
+/* Solo mobile/touch: en desktop el panel de detalle queda como antes (sin
+   fondo propio), el atenuado por hover ya distingue el estado abierto. Acá
+   se invierte respecto al tema de la página (igual que el sidebar): negro
+   sobre blanco en modo claro, blanco sobre #141413 en modo oscuro. Los hijos
+   con color propio (dt/dd, figcaption, el borde de cada fila) se pisan
+   explícitamente porque una regla con selector propio nunca hereda, sin
+   importar la especificidad. */
+@media (hover: none), (max-width: 767px) {
+  .catalog-entry.is-open>.catalog-accordion {
+    background: var(--color-ink);
+    color: var(--color-canvas);
+  }
+
+  .catalog-entry.is-open>.catalog-accordion .catalog-detail-row {
+    border-bottom-color: var(--color-canvas);
+  }
+
+  .catalog-entry.is-open>.catalog-accordion .catalog-detail-row dt,
+  .catalog-entry.is-open>.catalog-accordion .catalog-detail-row dd,
+  .catalog-entry.is-open>.catalog-accordion .catalog-gallery-item figcaption {
+    color: var(--color-canvas);
+  }
+}
+
 .catalog-accordion-inner {
   overflow: hidden;
   padding: var(--space-0) 0 var(--space-6);
@@ -1298,6 +1358,13 @@ select.input {
   }
 
   .catalog-entry.is-in-coleccion>.catalog-row {
+    margin-left: 0;
+    margin-right: 0;
+    padding-right: 0;
+    padding-left: 0;
+  }
+
+  .catalog-entry.is-open {
     margin-left: 0;
     margin-right: 0;
     padding-right: 0;
@@ -1723,8 +1790,13 @@ select.input {
 
 .catalog-sidebar-top {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: clamp(var(--space-10), 12vh, 120px);
+}
+
+.catalog-sidebar-top .catalog-theme-toggle {
+  font-size: 16px;
 }
 
 .catalog-sidebar-close {
@@ -1753,8 +1825,7 @@ select.input {
   opacity: 0.6;
 }
 
-.catalog-sidebar-auth-btn,
-.catalog-sidebar-theme-toggle {
+.catalog-sidebar-auth-btn {
   align-self: flex-start;
   margin: var(--space-4) 0 0;
   padding: 0;

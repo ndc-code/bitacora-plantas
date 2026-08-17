@@ -32,13 +32,18 @@
       Menú
     </button>
     <div class="catalog-meta">
-      <p>Buenos Aires, ARG <time data-reloj>23:46</time></p>
+      <p>
+        Buenos Aires, ARG <time data-reloj>23:46</time>
+        <span class="catalog-theme-toggle-sep" aria-hidden="true">·</span>
+        <button type="button" class="catalog-theme-toggle" data-theme-toggle aria-pressed="false">Noche</button>
+      </p>
       <button type="button" class="catalog-auth-btn" data-auth-nav>Iniciar sesión</button>
     </div>
   </header>
 
   <aside class="catalog-sidebar" id="catalog-sidebar" aria-label="Menú de navegación">
     <div class="catalog-sidebar-top">
+      <button type="button" class="catalog-theme-toggle" data-theme-toggle aria-pressed="false">Noche</button>
       <button type="button" class="catalog-sidebar-close" id="catalog-sidebar-close">Cerrar</button>
     </div>
     <p class="catalog-sidebar-label">(Navegación)</p>
@@ -48,7 +53,6 @@
       <a class="catalog-sidebar-link" href="riegos.html">Riegos</a>
     </nav>
     <p class="catalog-sidebar-datetime">Buenos Aires, ARG <time data-reloj>23:46</time></p>
-    <button type="button" class="catalog-sidebar-theme-toggle" data-theme-toggle aria-pressed="false">Noche</button>
     <button type="button" class="catalog-sidebar-auth-btn" data-auth-nav>Iniciar sesión</button>
   </aside>
 

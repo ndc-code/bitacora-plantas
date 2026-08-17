@@ -21,6 +21,7 @@
     <nav class="catalog-nav" aria-label="Principal">
       <a class="catalog-nav-link is-active" href="index.html">Index</a>
       <a class="catalog-nav-link" href="coleccion.html" id="nav-coleccion">Colección</a>
+      <a class="catalog-nav-link" href="riegos.html" id="nav-riegos">Riegos</a>
     </nav>
     <button
       type="button"
@@ -41,7 +42,11 @@
       Menú
     </button>
     <div class="catalog-meta">
-      <p>Buenos Aires, ARG <time data-reloj>23:46</time></p>
+      <p>
+        Buenos Aires, ARG <time data-reloj>23:46</time>
+        <span class="catalog-theme-toggle-sep" aria-hidden="true">·</span>
+        <button type="button" class="catalog-theme-toggle" data-theme-toggle aria-pressed="false">Noche</button>
+      </p>
       <div class="catalog-view-switch" role="group" aria-label="Vista de grilla">
         <button type="button" class="catalog-view-btn is-active" data-view="1" aria-pressed="true">1</button>
         <span class="catalog-view-sep" aria-hidden="true">||</span>
@@ -54,15 +59,16 @@
 
   <aside class="catalog-sidebar" id="catalog-sidebar" aria-label="Menú de navegación">
     <div class="catalog-sidebar-top">
+      <button type="button" class="catalog-theme-toggle" data-theme-toggle aria-pressed="false">Noche</button>
       <button type="button" class="catalog-sidebar-close" id="catalog-sidebar-close">Cerrar</button>
     </div>
     <p class="catalog-sidebar-label">(Navegación)</p>
     <nav class="catalog-sidebar-nav" aria-label="Principal">
       <a class="catalog-sidebar-link is-active" href="index.html">Index</a>
       <a class="catalog-sidebar-link" href="coleccion.html" id="sidebar-nav-coleccion">Colección</a>
+      <a class="catalog-sidebar-link" href="riegos.html" id="sidebar-nav-riegos">Riegos</a>
     </nav>
     <p class="catalog-sidebar-datetime">Buenos Aires, ARG <time data-reloj>23:46</time></p>
-    <button type="button" class="catalog-sidebar-theme-toggle" data-theme-toggle aria-pressed="false">Noche</button>
   </aside>
 
   <section class="catalog-filters" aria-label="Filtros del catálogo" hidden>

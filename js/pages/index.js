@@ -185,29 +185,19 @@ async function onGallery3DSeleccion(btn) {
   else marcarDisponible(btn);
 }
 
-function wireNavColeccion(authModal) {
-  const link = qs('#nav-coleccion');
+/**
+ * Links como "Colección" o "Riegos" llevan a páginas que requieren sesión:
+ * antes de navegar, chequea si hay una activa y si no, abre el modal de login
+ * en vez de dejar que la persona llegue a la página y se encuentre con el
+ * mensaje de "iniciá sesión" ahí.
+ */
+function wireGatedNavLink(selector, authModal, { closeSidebarFirst = false } = {}) {
+  const link = qs(selector);
   if (!link) return;
 
   link.addEventListener('click', (event) => {
     event.preventDefault();
-    getSession().then((session) => {
-      if (session) {
-        window.location.href = link.href;
-        return;
-      }
-      authModal.open({ onSuccess: () => window.location.href = link.href });
-    });
-  });
-}
-
-function wireSidebarNavColeccion(authModal) {
-  const link = qs('#sidebar-nav-coleccion');
-  if (!link) return;
-
-  link.addEventListener('click', (event) => {
-    event.preventDefault();
-    closeSidebar();
+    if (closeSidebarFirst) closeSidebar();
     getSession().then((session) => {
       if (session) {
         window.location.href = link.href;
@@ -264,8 +254,10 @@ wireThemeToggle();
 wireCatalogAccordion(root);
 wireAdd(catalogList, authModal);
 wireEntryClickToAdd(catalogList, authModal);
-wireNavColeccion(authModal);
-wireSidebarNavColeccion(authModal);
+wireGatedNavLink('#nav-coleccion', authModal);
+wireGatedNavLink('#sidebar-nav-coleccion', authModal, { closeSidebarFirst: true });
+wireGatedNavLink('#nav-riegos', authModal);
+wireGatedNavLink('#sidebar-nav-riegos', authModal, { closeSidebarFirst: true });
 wireCatalogFilters(root);
 wireFiltersToggle();
 wireSidebarToggle();
