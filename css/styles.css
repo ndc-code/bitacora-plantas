@@ -11,6 +11,7 @@
   --color-border: #dfdfdf;
   --color-placeholder: #a3a3a3;
   --color-error: #ff0000;
+  --color-green: #2f7d4f;
 
   --font-heading: 'PP Neue Montreal', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --font-body: Arial, sans-serif;
@@ -2079,7 +2080,7 @@ body.sidebar-open::before {
 
 .bitacora-layout {
   display: grid;
-  grid-template-columns: minmax(0, 720px) minmax(280px, 1fr);
+  grid-template-columns: 1.4fr 1fr;
   gap: var(--space-8);
   align-items: start;
   padding-bottom: var(--space-15);
@@ -2090,10 +2091,15 @@ body.sidebar-open::before {
 }
 
 .bitacora-foto {
+  position: sticky;
+  top: var(--space-6);
   margin: var(--space-10) 0 0;
+  width: 220px;
+  max-width: 100%;
   aspect-ratio: 3 / 4;
   overflow: hidden;
   background: var(--color-border);
+  justify-self: end;
 }
 
 .bitacora-foto img {
@@ -2106,8 +2112,8 @@ body.sidebar-open::before {
 .bitacora-heading {
   display: flex;
   align-items: flex-start;
-  gap: var(--space-6);
-  margin: var(--space-10) 0 var(--space-6);
+  gap: var(--space-15);
+  margin: var(--space-10) 0 40px;
 }
 
 .bitacora-heading-info {
@@ -2126,65 +2132,103 @@ body.sidebar-open::before {
 }
 
 .bitacora-especie {
-  margin: var(--space-3) 0 0;
-  max-width: 46ch;
+  margin: 40px 0 0;
+  max-width: 600px;
   font-size: 16px;
   line-height: 1.5;
   color: var(--color-gray-mid);
+  text-wrap: pretty;
 }
 
-.bitacora-eliminar-btn {
-  flex-shrink: 0;
-  margin-top: var(--space-4);
+.bitacora-detalle-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  list-style: none;
+  margin: 0;
   padding: 0;
-  border: 0;
-  background: transparent;
-  font-family: var(--font-body);
+  border-top: 1px solid var(--color-border);
+}
+
+.bitacora-detalle-item {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5);
+  border-bottom: 1px solid var(--color-border);
+  min-width: 0;
+}
+
+.bitacora-detalle-item:nth-child(odd) {
+  padding-left: 0;
+}
+
+.bitacora-detalle-item:nth-child(even) {
+  border-left: 1px solid var(--color-border);
+}
+
+.bitacora-detalle-idx {
+  margin-right: var(--space-3);
+  font-family: 'SFMono-Regular', ui-monospace, 'Courier New', monospace;
   font-size: 12px;
   color: var(--color-gray-mid);
-  text-decoration: underline;
-  text-underline-offset: 2px;
 }
 
-.bitacora-tabs {
-  position: sticky;
-  top: 0;
-  z-index: 3;
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  margin-bottom: var(--space-10);
-  padding: var(--space-3) 0;
-  background: var(--color-white);
-}
-
-.bitacora-tab {
-  padding: var(--space-2) var(--space-4);
-  color: var(--color-gray-mid);
-  font-size: 14px;
-  text-decoration: none;
-}
-
-.bitacora-tab.is-active {
+.bitacora-detalle-nombre {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 15px;
   color: var(--color-black);
-  background: var(--color-border);
+}
+
+.bitacora-detalle-valor {
+  flex-shrink: 0;
+  margin-left: var(--space-3);
+  font-family: 'SFMono-Regular', ui-monospace, 'Courier New', monospace;
+  font-size: 13px;
+  color: var(--color-gray-mid);
+}
+
+@media (max-width: 640px) {
+  .bitacora-detalle-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .bitacora-detalle-item:nth-child(even) {
+    border-left: 0;
+  }
+
+  .bitacora-detalle-item:nth-child(odd) {
+    padding-left: var(--space-5);
+  }
+}
+
+.bitacora-divider {
+  margin-bottom: var(--space-10);
+  border-top: 1px solid var(--color-border);
 }
 
 .bitacora-section {
   display: grid;
-  grid-template-columns: 100px minmax(0, 1fr);
-  gap: var(--space-6);
-  margin-bottom: var(--space-10);
+  grid-template-columns: 200px 1fr;
+  gap: 80px;
+  padding-bottom: var(--space-10);
   scroll-margin-top: 70px;
+}
+
+.bitacora-section + .bitacora-section {
+  padding-top: var(--space-10);
+  border-top: 1px solid var(--color-border);
 }
 
 .bitacora-section-label {
   margin: 0;
   padding-top: var(--space-1);
-  font-size: 11px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: var(--color-gray-mid);
+  font-size: 38px;
+  letter-spacing: -0.3px;
+  color: var(--color-black);
 }
 
 .bitacora-rows {
@@ -2201,8 +2245,7 @@ body.sidebar-open::before {
   background: transparent;
   font: inherit;
   color: inherit;
-  text-decoration: underline;
-  text-underline-offset: 2px;
+  text-decoration: none;
 }
 
 .bitacora-rows .riegos-row-nombre {
@@ -2214,6 +2257,10 @@ body.sidebar-open::before {
   flex-wrap: wrap;
   align-items: end;
   gap: var(--space-3);
+}
+
+.bitacora-form[hidden] {
+  display: none;
 }
 
 .bitacora-field {
@@ -2345,21 +2392,236 @@ body.sidebar-open::before {
   opacity: 1;
 }
 
-.bitacora-historial {
+.bitacora-notas-col {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.bitacora-agregar-btn {
+  display: block;
+  width: fit-content;
+  margin-bottom: var(--space-6);
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--color-border);
+  background: transparent;
+  color: var(--color-black);
+  font-family: var(--font-body);
+  font-size: 13px;
+  text-decoration: none;
+}
+
+.bitacora-agregar-btn:hover {
+  border-color: var(--color-black);
+}
+
+.bitacora-notas-col .bitacora-form {
+  margin-bottom: var(--space-6);
+  padding-bottom: var(--space-6);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.bitacora-galeria-col .bitacora-subir-btn {
+  margin-bottom: var(--space-6);
+}
+
+.bitacora-notas {
   list-style: none;
   margin: 0;
   padding: 0;
   min-width: 0;
+  border-top: 1px solid var(--color-border);
 }
 
-.bitacora-historial li {
-  padding: 10px 0;
-  border-bottom: 1px solid var(--color-black);
+.bitacora-nota-item {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-4);
+  padding: var(--space-4) 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.bitacora-nota-fecha {
+  flex-shrink: 0;
+  width: 90px;
+  font-family: 'SFMono-Regular', ui-monospace, 'Courier New', monospace;
+  font-size: 12px;
+  color: var(--color-gray-mid);
+}
+
+.bitacora-nota-texto {
+  flex: 1;
+  min-width: 0;
+  font-size: 15px;
+  color: var(--color-black);
+}
+
+.bitacora-nota-eliminar {
+  flex-shrink: 0;
+  align-self: center;
+}
+
+.bitacora-nota-item:hover .bitacora-nota-eliminar,
+.bitacora-nota-eliminar:focus-visible {
+  opacity: 1;
+}
+
+.bitacora-nota-vacio {
+  padding: var(--space-4) 0;
   font-size: 14px;
+  color: var(--color-gray-mid);
 }
 
-.bitacora-historial li p {
-  margin: var(--space-2) 0 0;
+.bitacora-riegos-col {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-8);
+}
+
+.bitacora-calendario {
+  width: 420px;
+  max-width: 100%;
+  flex-shrink: 0;
+  border: 1px solid var(--color-border);
+  padding: var(--space-5);
+}
+
+.bitacora-calendario-info {
+  min-width: 0;
+  padding-top: var(--space-2);
+}
+
+.bitacora-calendario-legend {
+  list-style: none;
+  margin: 0 0 var(--space-3);
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  font-size: 13px;
+  color: var(--color-charcoal);
+}
+
+.bitacora-calendario-legend li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.bitacora-calendario-punto {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--color-black);
+}
+
+.bitacora-calendario-punto.is-regado {
+  background: var(--color-green);
+}
+
+.bitacora-calendario-punto.is-hoy {
+  background: transparent;
+  border: 1px solid var(--color-black);
+}
+
+.bitacora-calendario-ayuda {
+  max-width: 220px;
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--color-gray-mid);
+}
+
+.bitacora-calendario-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-5);
+}
+
+.bitacora-calendario-mes {
+  margin: 0;
+  font-size: 18px;
+  text-transform: capitalize;
+  color: var(--color-black);
+}
+
+.bitacora-calendario-nav {
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--color-border);
+  background: transparent;
+  font-size: 15px;
+  color: var(--color-black);
+}
+
+.bitacora-calendario-nav:hover {
+  border-color: var(--color-black);
+}
+
+.bitacora-calendario-dias,
+.bitacora-calendario-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: var(--space-2);
+}
+
+.bitacora-calendario-dias {
+  margin-bottom: var(--space-2);
+}
+
+.bitacora-calendario-dia-nombre {
+  text-align: center;
+  font-size: 12px;
+  color: var(--color-gray-mid);
+}
+
+.bitacora-calendario-celda {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid transparent;
+  border-radius: 50%;
+  padding: 0;
+  font: inherit;
+  font-size: 14px;
+  color: var(--color-black);
+  background: transparent;
+  cursor: default;
+}
+
+.bitacora-calendario-celda.is-vacia {
+  visibility: hidden;
+}
+
+.bitacora-calendario-celda.is-hoy {
+  border: 1px solid var(--color-black);
+}
+
+.bitacora-calendario-celda.is-riego {
+  background: var(--color-black);
+  color: var(--color-white);
+}
+
+.bitacora-calendario-celda.is-regado {
+  background: var(--color-green);
+  color: var(--color-white);
+}
+
+.bitacora-calendario-celda:not(:disabled) {
+  cursor: pointer;
+}
+
+.bitacora-calendario-celda.is-riego:not(:disabled):hover,
+.bitacora-calendario-celda.is-regado:not(:disabled):hover {
+  border-color: var(--color-white);
+}
+
+.bitacora-calendario-vacio {
+  margin: var(--space-5) 0 0;
+  font-size: 13px;
+  color: var(--color-gray-mid);
 }
 
 @media (max-width: 1024px) {
@@ -2382,8 +2644,11 @@ body.sidebar-open::before {
 
   .bitacora-foto {
     order: -1;
+    width: 100%;
+    max-width: none;
     aspect-ratio: 16 / 9;
     margin-top: var(--space-6);
+    justify-self: stretch;
   }
 
   .catalog-page--bitacora .catalog-list,
@@ -2405,6 +2670,10 @@ body.sidebar-open::before {
   .bitacora-section {
     grid-template-columns: 1fr;
     gap: var(--space-2);
+  }
+
+  .bitacora-riegos-col {
+    flex-wrap: wrap;
   }
 
   .bitacora-form {

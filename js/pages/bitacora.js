@@ -1,9 +1,10 @@
-import { qs, qsa, escapeHtml, showError, clearError } from '../utils/dom.js';
+import { qs, escapeHtml, showError, clearError } from '../utils/dom.js';
 import { getSession } from '../services/auth.js';
-import { obtenerItemColeccion, quitarDeColeccion } from '../services/coleccion.js';
+import { obtenerItemColeccion } from '../services/coleccion.js';
 import {
   listarCuidadosColeccion,
   registrarCuidadoColeccion,
+  eliminarCuidadoColeccion,
 } from '../services/coleccion-cuidados.js';
 import {
   FOTOS_LIMITE,
@@ -12,15 +13,10 @@ import {
   eliminarFotoColeccion,
   obtenerUrlFoto,
 } from '../services/coleccion-fotos.js';
-import { riegosDePlanta, idDeColeccion } from '../utils/coleccion-card.js';
+import { riegosDePlanta } from '../utils/coleccion-card.js';
 import { categoriaDe } from '../utils/catalog-categorias.js';
-import {
-  estacionActual,
-  riegoParaEstacion,
-  wireRiegoEstacion,
-} from '../utils/catalog-riego-estacion.js';
-import { calcularProximoVencimiento } from '../utils/recordatorios.js';
-import { diasDeRiego, textoProximoRiego, formatFechaCorta } from '../utils/riego-frecuencia.js';
+import { estacionActual, riegoParaEstacion } from '../utils/catalog-riego-estacion.js';
+import { diasDeRiego, formatFechaCorta } from '../utils/riego-frecuencia.js';
 import { syncColeccionNavCount } from '../utils/coleccion-nav.js';
 import { wireAuthModal } from '../utils/auth-modal.js';
 import { wireAuthNav } from '../utils/auth-nav.js';
@@ -32,25 +28,21 @@ const ETIQUETAS_TIPO = {
   fertilizar: 'Fertilizar',
   trasplantar: 'Trasplantar',
   podar: 'Podar',
+  observacion: 'Observación',
   otro: 'Otro',
 };
 
+const MESES_LARGOS = [
+  'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
+  'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre',
+];
+const DIAS_SEMANA = ['L', 'M', 'M', 'J', 'V', 'S', 'D'];
+
 const coleccionId = new URLSearchParams(window.location.search).get('id');
 
-function fechaLocalISO(fecha = new Date()) {
-  const anio = fecha.getFullYear();
-  const mes = String(fecha.getMonth() + 1).padStart(2, '0');
-  const dia = String(fecha.getDate()).padStart(2, '0');
-  return `${anio}-${mes}-${dia}`;
-}
-
-function fechaInputAISO(valor) {
-  return new Date(`${valor}T00:00:00`).toISOString();
-}
-
-function ponerFechaDeHoy() {
-  qs('#fecha-cuidado').value = fechaLocalISO();
-}
+let mesCalendario = new Date();
+mesCalendario.setDate(1);
+let calendarioCtx = null;
 
 function toggleSidebar() {
   const sidebar = qs('#catalog-sidebar');
@@ -86,10 +78,6 @@ function wireSidebarToggle() {
       closeSidebar();
     }
   });
-}
-
-function ultimoRiegoDe(eventos) {
-  return eventos.find((evento) => evento.tipo === 'regar') ?? null;
 }
 
 function renderFoto(planta) {
@@ -133,6 +121,8 @@ function descripcionDe(planta) {
   const detalles = [
     planta.ubicacion ? `prefiere ${planta.ubicacion.toLowerCase()}` : null,
     planta.luz ? `luz ${planta.luz.toLowerCase()}` : null,
+    planta.suelo ? `suelo ${planta.suelo.toLowerCase()}` : null,
+    planta.cuidado ? `cuidado ${planta.cuidado.toLowerCase()}` : null,
   ].filter(Boolean);
 
   const partes = [];
@@ -140,112 +130,173 @@ function descripcionDe(planta) {
   if (categoria && categoria !== '—') partes.push(categoria.toLowerCase());
   const bajada = partes.join(' · ');
 
-  if (!detalles.length) return bajada;
-  return `${bajada}${bajada ? ' — ' : ''}${detalles.join(', ')}.`;
+  const cuerpo = detalles.length
+    ? `${bajada}${bajada ? ' — ' : ''}${detalles.join(', ')}.`
+    : bajada;
+
+  const enColeccion = planta.created_at
+    ? `En colección desde ${formatFechaCorta(planta.created_at)}.`
+    : '';
+
+  return [cuerpo, enColeccion].filter(Boolean).join(' ');
 }
 
-function filaMarkup(nombre, valor) {
+function filaDetalleMarkup(indice, nombre, valor) {
   return `
-    <li class="riegos-row">
-      <span class="riegos-row-nombre">${nombre}</span>
-      <span class="riegos-row-linea" aria-hidden="true"></span>
-      <span class="riegos-row-valor">${valor}</span>
+    <li class="bitacora-detalle-item">
+      <span class="bitacora-detalle-nombre"><span class="bitacora-detalle-idx">${String(indice).padStart(2, '0')}</span>${nombre}</span>
+      <span class="bitacora-detalle-valor">${valor}</span>
     </li>
   `;
 }
 
 function renderDetalle(planta) {
-  const estacion = estacionActual();
-  const riego = riegoParaEstacion(riegosDePlanta(planta), planta.riego, estacion);
-  const riegoLabel = `
-    <button type="button" class="coleccion-riego-btn" data-estacion="${escapeHtml(estacion)}" aria-label="Riego en ${escapeHtml(estacion)}. Clic para cambiar estación">
-      Riego <span class="coleccion-card-estacion">(${escapeHtml(estacion)})</span>
-    </button>
-  `;
-
   qs('#bitacora-detalle').innerHTML = [
-    filaMarkup('Categoría', escapeHtml(categoriaDe(planta))),
-    filaMarkup('Especie', escapeHtml(planta.especie || '—')),
-    filaMarkup('Ubicación', escapeHtml(planta.ubicacion || '—')),
-    filaMarkup('Luz', escapeHtml(planta.luz || '—')),
-    filaMarkup(riegoLabel, `<span class="catalog-riego">${escapeHtml(riego)}</span>`),
-    filaMarkup('Suelo', escapeHtml(planta.suelo || '—')),
-    filaMarkup('Cuidado', escapeHtml(planta.cuidado || '—')),
+    filaDetalleMarkup(1, 'Categoría', escapeHtml(categoriaDe(planta))),
+    filaDetalleMarkup(2, 'Especie', escapeHtml(planta.especie || '—')),
+    filaDetalleMarkup(3, 'Ubicación', escapeHtml(planta.ubicacion || '—')),
+    filaDetalleMarkup(4, 'Luz', escapeHtml(planta.luz || '—')),
+    filaDetalleMarkup(5, 'Suelo', escapeHtml(planta.suelo || '—')),
+    filaDetalleMarkup(6, 'Cuidado', escapeHtml(planta.cuidado || '—')),
   ].join('');
 }
 
-function renderEstado(planta, eventos) {
-  const riego = riegoParaEstacion(riegosDePlanta(planta), planta.riego, estacionActual());
-  const frecuenciaDias = diasDeRiego(riego);
-  const ultimo = ultimoRiegoDe(eventos);
-  const proxima = calcularProximoVencimiento({
-    ultimaFecha: ultimo?.fecha ?? null,
-    fechaAlta: planta.created_at,
-    frecuenciaDias,
-  });
-  const textoProximo = frecuenciaDias == null ? null : textoProximoRiego(proxima);
-
-  qs('#bitacora-estado').innerHTML = [
-    filaMarkup('En colección', escapeHtml(formatFechaCorta(planta.created_at))),
-    filaMarkup(
-      'Último riego',
-      ultimo ? escapeHtml(formatFechaCorta(ultimo.fecha)) : 'Sin registrar'
-    ),
-    filaMarkup('Próximo riego', escapeHtml(textoProximo ?? '—')),
-  ].join('');
-}
-
-function renderHistorial(eventos) {
-  const lista = qs('#lista-bitacora');
+function renderNotas(eventos) {
+  const lista = qs('#bitacora-notas');
   if (!eventos.length) {
-    lista.innerHTML = '<li>Todavía no hay registros.</li>';
+    lista.innerHTML = '<li class="bitacora-nota-vacio">Todavía no hay anotaciones.</li>';
     return;
   }
   lista.innerHTML = eventos
     .map(
       (evento) => `
-        <li>
-          <strong>${escapeHtml(ETIQUETAS_TIPO[evento.tipo] || evento.tipo)}</strong>
-          — ${escapeHtml(formatFechaCorta(evento.fecha))}
-          ${evento.notas ? `<p>${escapeHtml(evento.notas)}</p>` : ''}
+        <li class="bitacora-nota-item" data-id="${escapeHtml(evento.id)}">
+          <span class="bitacora-nota-fecha">${escapeHtml(formatFechaCorta(evento.fecha))}</span>
+          <span class="bitacora-nota-texto">
+            ${escapeHtml(ETIQUETAS_TIPO[evento.tipo] || evento.tipo)}
+            ${evento.notas ? `— ${escapeHtml(evento.notas)}` : ''}
+          </span>
+          <button type="button" class="coleccion-eliminar-btn bitacora-nota-eliminar">eliminar</button>
         </li>
       `
     )
     .join('');
 }
 
-function wireEliminar(planta) {
-  const btn = qs('#bitacora-eliminar-btn');
-  if (!btn) return;
+function mismoDia(a, b) {
+  return (
+    a.getFullYear() === b.getFullYear() &&
+    a.getMonth() === b.getMonth() &&
+    a.getDate() === b.getDate()
+  );
+}
 
-  btn.addEventListener('click', async () => {
-    if (btn.disabled) return;
+function fechasDeRiego(fechaInicio, frecuenciaDias) {
+  if (!frecuenciaDias || !fechaInicio) return [];
+  const fechas = [];
+  let actual = new Date(fechaInicio);
+  actual.setHours(0, 0, 0, 0);
+  const limite = new Date(actual);
+  limite.setFullYear(limite.getFullYear() + 1);
+  while (actual <= limite) {
+    fechas.push(new Date(actual));
+    actual = new Date(actual);
+    actual.setDate(actual.getDate() + frecuenciaDias);
+  }
+  return fechas;
+}
 
-    btn.disabled = true;
-    const textoOriginal = btn.textContent;
-    btn.textContent = 'Eliminando…';
+function renderCalendario() {
+  const cont = qs('#bitacora-calendario');
+  if (!cont || !calendarioCtx) return;
 
+  const { planta, eventos } = calendarioCtx;
+  const riego = riegoParaEstacion(riegosDePlanta(planta), planta.riego, estacionActual());
+  const frecuenciaDias = diasDeRiego(riego);
+  const fechasRiego = fechasDeRiego(planta.created_at, frecuenciaDias);
+
+  const anio = mesCalendario.getFullYear();
+  const mes = mesCalendario.getMonth();
+  const primerDia = new Date(anio, mes, 1);
+  const ultimoDia = new Date(anio, mes + 1, 0);
+  const offset = (primerDia.getDay() + 6) % 7;
+  const hoy = new Date();
+
+  const celdas = [];
+  for (let i = 0; i < offset; i++) {
+    celdas.push('<span class="bitacora-calendario-celda is-vacia"></span>');
+  }
+  for (let dia = 1; dia <= ultimoDia.getDate(); dia++) {
+    const fecha = new Date(anio, mes, dia);
+    const clases = ['bitacora-calendario-celda'];
+    const eventosDia = eventos.filter((e) => e.tipo === 'regar' && mismoDia(new Date(e.fecha), fecha));
+    const esDebida = fechasRiego.some((f) => mismoDia(f, fecha));
+    if (eventosDia.length) {
+      clases.push('is-regado');
+    } else if (esDebida) {
+      clases.push('is-riego');
+    }
+    if (mismoDia(fecha, hoy)) clases.push('is-hoy');
+    const interactiva = eventosDia.length > 0 || esDebida;
+    const idsRegado = eventosDia.map((e) => e.id).join(',');
+    celdas.push(
+      `<button type="button" class="${clases.join(' ')}" data-dia="${dia}" data-evento-ids="${idsRegado}" ${interactiva ? '' : 'disabled'}>${dia}</button>`
+    );
+  }
+
+  cont.innerHTML = `
+    <div class="bitacora-calendario-header">
+      <button type="button" class="bitacora-calendario-nav" data-mes="-1" aria-label="Mes anterior">‹</button>
+      <p class="bitacora-calendario-mes">${MESES_LARGOS[mes]} ${anio}</p>
+      <button type="button" class="bitacora-calendario-nav" data-mes="1" aria-label="Mes siguiente">›</button>
+    </div>
+    <div class="bitacora-calendario-dias">
+      ${DIAS_SEMANA.map((d) => `<span class="bitacora-calendario-dia-nombre">${d}</span>`).join('')}
+    </div>
+    <div class="bitacora-calendario-grid">${celdas.join('')}</div>
+    ${frecuenciaDias ? '' : '<p class="bitacora-calendario-vacio">Configurá la frecuencia de riego de esta planta para ver las próximas fechas.</p>'}
+  `;
+}
+
+function actualizarCalendario(planta, eventos) {
+  calendarioCtx = { planta, eventos };
+  renderCalendario();
+}
+
+function wireCalendario(planta) {
+  const cont = qs('#bitacora-calendario');
+  if (!cont || cont.dataset.wired) return;
+  cont.dataset.wired = '1';
+  cont.addEventListener('click', async (event) => {
+    const navBtn = event.target.closest('.bitacora-calendario-nav');
+    if (navBtn) {
+      mesCalendario.setMonth(mesCalendario.getMonth() + Number(navBtn.dataset.mes));
+      renderCalendario();
+      return;
+    }
+
+    const celda = event.target.closest('.bitacora-calendario-celda');
+    if (!celda || celda.disabled || !celda.dataset.dia) return;
+
+    const idsRegado = celda.dataset.eventoIds ? celda.dataset.eventoIds.split(',') : [];
+
+    celda.disabled = true;
     try {
-      const result = await quitarDeColeccion(idDeColeccion(planta));
-
-      if (result.ok || result.reason === 'missing') {
-        await syncColeccionNavCount();
-        window.location.href = 'coleccion.html';
-        return;
+      if (idsRegado.length) {
+        await Promise.all(idsRegado.map((id) => eliminarCuidadoColeccion(id)));
+      } else {
+        const fecha = new Date(
+          mesCalendario.getFullYear(),
+          mesCalendario.getMonth(),
+          Number(celda.dataset.dia),
+          12
+        );
+        await registrarCuidadoColeccion(planta.id, 'regar', fecha.toISOString(), null);
       }
-
-      btn.disabled = false;
-      btn.textContent = textoOriginal;
-      mostrarErrorDePagina(
-        result.reason === 'not_authenticated'
-          ? 'Iniciá sesión de nuevo para editar tu colección.'
-          : 'No pudimos eliminar la planta de tu colección. Probá otra vez.'
-      );
+      await pintarBitacora(planta);
     } catch (err) {
-      console.error('Error eliminando de la colección', err);
-      btn.disabled = false;
-      btn.textContent = textoOriginal;
-      mostrarErrorDePagina('No pudimos eliminar la planta de tu colección. Probá otra vez.');
+      console.error('No se pudo actualizar el riego', err);
+      celda.disabled = false;
     }
   });
 }
@@ -313,29 +364,27 @@ function wireEliminarFoto(planta) {
   });
 }
 
-function wireTabs() {
-  const tabs = qsa('.bitacora-tab');
-  const secciones = tabs
-    .map((tab) => document.querySelector(tab.getAttribute('href')))
-    .filter(Boolean);
+function wireEliminarNota(planta) {
+  const lista = qs('#bitacora-notas');
+  if (!lista) return;
 
-  if (!tabs.length || !secciones.length) return;
+  lista.addEventListener('click', async (event) => {
+    const btn = event.target.closest('.bitacora-nota-eliminar');
+    if (!btn) return;
 
-  const marcarActivo = (id) => {
-    tabs.forEach((tab) => {
-      tab.classList.toggle('is-active', tab.getAttribute('href') === `#${id}`);
-    });
-  };
+    const item = btn.closest('.bitacora-nota-item');
+    const id = item?.dataset.id;
+    if (!id || btn.disabled) return;
 
-  const observer = new IntersectionObserver(
-    (entries) => {
-      const visible = entries.find((entry) => entry.isIntersecting);
-      if (visible) marcarActivo(visible.target.id);
-    },
-    { rootMargin: '-20% 0px -70% 0px' }
-  );
-
-  secciones.forEach((seccion) => observer.observe(seccion));
+    btn.disabled = true;
+    try {
+      await eliminarCuidadoColeccion(id);
+      await pintarBitacora(planta);
+    } catch (err) {
+      console.error('No se pudo eliminar la nota', err);
+      btn.disabled = false;
+    }
+  });
 }
 
 function mostrarSolo(idVisible) {
@@ -352,21 +401,60 @@ async function pintarBitacora(planta) {
   qs('#bitacora-nombre').textContent = planta.nombre || '';
   qs('#bitacora-especie').textContent = descripcionDe(planta);
   document.title = `${planta.nombre || 'Bitácora'} — Bitácora de Plantas`;
-  renderEstado(planta, eventos);
   renderDetalle(planta);
-  renderHistorial(eventos);
+  renderNotas(eventos);
+  actualizarCalendario(planta, eventos);
   await renderGaleriaGrid(planta.id);
+}
+
+function wireAgregarEntrada() {
+  const btn = qs('#bitacora-agregar-btn');
+  const form = qs('#form-cuidado');
+  if (!btn || !form) return;
+
+  btn.addEventListener('click', () => {
+    const abrir = form.hidden;
+    form.hidden = !abrir;
+    btn.textContent = abrir ? 'Cancelar' : '+ Agregar entrada';
+    if (abrir) qs('#tipo-cuidado')?.focus();
+  });
+}
+
+function wireTipoCuidado() {
+  const select = qs('#tipo-cuidado');
+  const label = qs('#label-notas-cuidado');
+  const input = qs('#notas-cuidado');
+  if (!select || !label || !input) return;
+
+  const actualizar = () => {
+    const esObservacion = select.value === 'observacion';
+    label.textContent = esObservacion ? 'Qué observaste' : 'Notas';
+    input.placeholder = esObservacion ? 'Contá qué notaste en la planta' : 'Opcional';
+  };
+
+  select.addEventListener('change', actualizar);
+  actualizar();
 }
 
 function wireFormCuidado(planta) {
   const form = qs('#form-cuidado');
   const errorEl = qs('#error-cuidado');
   const submitBtn = form.querySelector('[type="submit"]');
+  const agregarBtn = qs('#bitacora-agregar-btn');
 
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
     if (submitBtn?.disabled) return;
     clearError(errorEl);
+
+    const tipo = qs('#tipo-cuidado').value;
+    const notas = qs('#notas-cuidado').value || null;
+
+    if (tipo === 'observacion' && !notas) {
+      showError(errorEl, 'Contá qué observaste en la planta.');
+      qs('#notas-cuidado').focus();
+      return;
+    }
 
     const textoOriginal = submitBtn?.textContent;
     if (submitBtn) {
@@ -387,14 +475,11 @@ function wireFormCuidado(planta) {
         return;
       }
 
-      const tipo = qs('#tipo-cuidado').value;
-      const fecha = qs('#fecha-cuidado').value;
-      const notas = qs('#notas-cuidado').value || null;
-
-      await registrarCuidadoColeccion(planta.id, tipo, fechaInputAISO(fecha), notas);
+      await registrarCuidadoColeccion(planta.id, tipo, new Date().toISOString(), notas);
       form.reset();
       qs('#tipo-cuidado').value = 'regar';
-      ponerFechaDeHoy();
+      form.hidden = true;
+      if (agregarBtn) agregarBtn.textContent = '+ Agregar entrada';
       await pintarBitacora(planta);
     } catch (err) {
       showError(errorEl, err.message);
@@ -446,11 +531,12 @@ function wireDetallePlanta(planta) {
   qs('#form-cuidado').dataset.wired = '1';
 
   wireFormCuidado(planta);
-  wireEliminar(planta);
+  wireAgregarEntrada();
+  wireTipoCuidado();
+  wireEliminarNota(planta);
   wireSubidaFoto(planta);
   wireEliminarFoto(planta);
-  wireRiegoEstacion(qs('#bitacora-detalle'));
-  ponerFechaDeHoy();
+  wireCalendario(planta);
 }
 
 const authModal = wireAuthModal();
@@ -470,7 +556,6 @@ const authNav = wireAuthNav({
 iniciarPagina(async function init() {
   wireReloj();
   wireSidebarToggle();
-  wireTabs();
   await authNav.sync();
   await syncColeccionNavCount();
 

@@ -62,67 +62,66 @@
           <h1 id="bitacora-nombre"></h1>
           <p class="bitacora-especie" id="bitacora-especie"></p>
         </div>
-        <button type="button" class="bitacora-eliminar-btn" id="bitacora-eliminar-btn">
-          Eliminar de colección
-        </button>
       </header>
 
-      <nav class="bitacora-tabs" aria-label="Secciones de la bitácora">
-        <a class="bitacora-tab is-active" href="#seccion-estado">Estado</a>
-        <a class="bitacora-tab" href="#seccion-detalle">Detalle</a>
-        <a class="bitacora-tab" href="#seccion-registrar">Registrar</a>
-        <a class="bitacora-tab" href="#seccion-historial">Historial</a>
-        <a class="bitacora-tab" href="#seccion-galeria">Galería</a>
-      </nav>
-
-      <section class="bitacora-section" id="seccion-estado">
-        <p class="bitacora-section-label">Estado</p>
-        <ul class="bitacora-rows" id="bitacora-estado"></ul>
-      </section>
+      <div class="bitacora-divider"></div>
 
       <section class="bitacora-section" id="seccion-detalle">
         <p class="bitacora-section-label">Detalle</p>
-        <ul class="bitacora-rows" id="bitacora-detalle"></ul>
+        <ul class="bitacora-detalle-grid" id="bitacora-detalle"></ul>
       </section>
 
-      <section class="bitacora-section" id="seccion-registrar">
-        <p class="bitacora-section-label">Registrar</p>
-        <form id="form-cuidado" class="bitacora-form">
-          <div class="bitacora-field">
-            <label for="tipo-cuidado">Tipo</label>
-            <select class="bitacora-input" id="tipo-cuidado">
-              <option value="regar" selected>Regar</option>
-              <option value="fertilizar">Fertilizar</option>
-              <option value="trasplantar">Trasplantar</option>
-              <option value="podar">Podar</option>
-            </select>
-          </div>
-          <div class="bitacora-field">
-            <label for="fecha-cuidado">Fecha</label>
-            <input class="bitacora-input" type="date" id="fecha-cuidado" required />
-          </div>
-          <div class="bitacora-field bitacora-field--grow">
-            <label for="notas-cuidado">Notas</label>
-            <input class="bitacora-input" id="notas-cuidado" />
-          </div>
-          <button type="submit" class="bitacora-btn">Registrar</button>
-          <label class="bitacora-subir-btn">
-            Subir foto
-            <input type="file" id="input-foto-galeria" accept="image/jpeg,image/png,image/webp,image/gif" hidden />
-          </label>
-          <p class="field-error" id="error-cuidado" hidden></p>
-          <p class="field-error" id="error-galeria" hidden></p>
-        </form>
+      <section class="bitacora-section" id="seccion-bitacora">
+        <p class="bitacora-section-label">Bitácora</p>
+        <div class="bitacora-notas-col">
+          <button type="button" class="bitacora-agregar-btn" id="bitacora-agregar-btn">+ Agregar entrada</button>
+          <form id="form-cuidado" class="bitacora-form" hidden>
+            <div class="bitacora-field">
+              <label for="tipo-cuidado">Tipo</label>
+              <select class="bitacora-input" id="tipo-cuidado">
+                <option value="regar" selected>Regar</option>
+                <option value="fertilizar">Fertilizar</option>
+                <option value="trasplantar">Trasplantar</option>
+                <option value="podar">Podar</option>
+                <option value="observacion">Observación</option>
+              </select>
+            </div>
+            <div class="bitacora-field bitacora-field--grow">
+              <label for="notas-cuidado" id="label-notas-cuidado">Notas</label>
+              <input class="bitacora-input" id="notas-cuidado" placeholder="Opcional" />
+            </div>
+            <button type="submit" class="bitacora-btn">Registrar</button>
+            <p class="field-error" id="error-cuidado" hidden></p>
+          </form>
+          <ul class="bitacora-notas" id="bitacora-notas"></ul>
+        </div>
       </section>
 
-      <section class="bitacora-section" id="seccion-historial">
-        <p class="bitacora-section-label">Historial</p>
-        <ul id="lista-bitacora" class="bitacora-historial"></ul>
+      <section class="bitacora-section" id="seccion-riegos">
+        <p class="bitacora-section-label">Riegos</p>
+        <div class="bitacora-riegos-col">
+          <div class="bitacora-calendario" id="bitacora-calendario"></div>
+          <div class="bitacora-calendario-info">
+            <ul class="bitacora-calendario-legend">
+              <li><span class="bitacora-calendario-punto is-hoy"></span>Hoy</li>
+              <li><span class="bitacora-calendario-punto is-riego"></span>A regar</li>
+              <li><span class="bitacora-calendario-punto is-regado"></span>Regado</li>
+            </ul>
+            <p class="bitacora-calendario-ayuda">Tocá una fecha marcada para cambiar su estado.</p>
+          </div>
+        </div>
       </section>
 
       <section class="bitacora-section" id="seccion-galeria">
         <p class="bitacora-section-label">Galería</p>
-        <div class="bitacora-galeria-grid" id="bitacora-galeria-grid"></div>
+        <div class="bitacora-galeria-col">
+          <label class="bitacora-subir-btn">
+            Subir foto
+            <input type="file" id="input-foto-galeria" accept="image/jpeg,image/png,image/webp,image/gif" hidden />
+          </label>
+          <p class="field-error" id="error-galeria" hidden></p>
+          <div class="bitacora-galeria-grid" id="bitacora-galeria-grid"></div>
+        </div>
       </section>
     </div>
 

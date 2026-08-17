@@ -5,7 +5,7 @@ import { listarCuidadosColeccion } from '../services/coleccion-cuidados.js';
 import { riegosDePlanta } from '../utils/coleccion-card.js';
 import { estacionActual, riegoParaEstacion } from '../utils/catalog-riego-estacion.js';
 import { calcularProximoVencimiento } from '../utils/recordatorios.js';
-import { diasDeRiego, textoProximoRiego, formatFechaCorta } from '../utils/riego-frecuencia.js';
+import { diasDeRiego, textoProximoRiego } from '../utils/riego-frecuencia.js';
 import { syncColeccionNavCount } from '../utils/coleccion-nav.js';
 import { wireAuthModal } from '../utils/auth-modal.js';
 import { wireAuthNav } from '../utils/auth-nav.js';
@@ -61,22 +61,6 @@ function renderProximos(datos) {
     .join('');
 }
 
-function renderHistorial(datos) {
-  const lista = qs('#riegos-historial');
-  const conUltimo = datos
-    .filter((d) => d.ultimo != null)
-    .sort((a, b) => new Date(b.ultimo.fecha).getTime() - new Date(a.ultimo.fecha).getTime());
-
-  if (!conUltimo.length) {
-    lista.innerHTML = '<li class="riegos-vacio">Todavía no hay riegos registrados.</li>';
-    return;
-  }
-
-  lista.innerHTML = conUltimo
-    .map((d) => filaMarkup(d.planta.nombre, d.planta.id, formatFechaCorta(d.ultimo.fecha)))
-    .join('');
-}
-
 async function render() {
   const vacio = qs('#mensaje-vacio');
   const plantas = await listarColeccion();
@@ -84,14 +68,12 @@ async function render() {
   if (plantas.length === 0) {
     vacio.hidden = false;
     qs('#riegos-proximos').innerHTML = '';
-    qs('#riegos-historial').innerHTML = '';
     return;
   }
 
   vacio.hidden = true;
   const datos = await Promise.all(plantas.map(calcularDatosPlanta));
   renderProximos(datos);
-  renderHistorial(datos);
 }
 
 function toggleSidebar() {
@@ -148,7 +130,6 @@ function abrirLogin() {
 function mostrarEstadoSinSesion() {
   const vacio = qs('#mensaje-vacio');
   qs('#riegos-proximos').innerHTML = '';
-  qs('#riegos-historial').innerHTML = '';
   if (vacio) {
     vacio.textContent = MENSAJE_SIN_SESION;
     vacio.hidden = false;

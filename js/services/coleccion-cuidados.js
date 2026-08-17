@@ -19,3 +19,8 @@ export async function registrarCuidadoColeccion(coleccionId, tipo, fecha, notas)
   if (error) throw error;
   return data;
 }
+
+export async function eliminarCuidadoColeccion(id) {
+  const { error } = await supabase.from('coleccion_cuidados').delete().eq('id', id);
+  if (error) throw error;
+}
