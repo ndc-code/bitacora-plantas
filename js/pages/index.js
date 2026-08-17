@@ -14,6 +14,7 @@ import { wireRiegoEstacion } from '../utils/catalog-riego-estacion.js';
 import { refreshCatalogFilters } from '../utils/catalog-filters.js';
 import { wireAuthModal } from '../utils/auth-modal.js';
 import { wireReloj } from '../utils/reloj.js';
+import { wireThemeToggle } from '../utils/theme.js';
 
 function parseGaleria(raw) {
   if (!raw) return [];
@@ -259,6 +260,7 @@ const root = qs('#catalog-rows');
 const catalogList = qs('.catalog-list');
 const authModal = wireAuthModal();
 wireReloj();
+wireThemeToggle();
 wireCatalogAccordion(root);
 wireAdd(catalogList, authModal);
 wireEntryClickToAdd(catalogList, authModal);

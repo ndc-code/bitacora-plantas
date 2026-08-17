@@ -10,6 +10,7 @@ import { syncColeccionNavCount } from '../utils/coleccion-nav.js';
 import { wireAuthModal } from '../utils/auth-modal.js';
 import { wireAuthNav } from '../utils/auth-nav.js';
 import { wireReloj } from '../utils/reloj.js';
+import { wireThemeToggle } from '../utils/theme.js';
 import { iniciarPagina } from '../utils/guard.js';
 
 function ultimoRiegoDe(eventos) {
@@ -140,6 +141,7 @@ function mostrarEstadoSinSesion() {
 iniciarPagina(async function init() {
   qs('#riegos-contenido').hidden = false;
   wireReloj();
+  wireThemeToggle();
   wireSidebarToggle();
   await authNav.sync();
 

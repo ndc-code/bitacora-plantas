@@ -4,6 +4,11 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Bitácora — Bitácora de Plantas</title>
+  <script>
+    try {
+      if (localStorage.getItem('tema') === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+    } catch (e) {}
+  </script>
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body class="catalog-page catalog-page--coleccion catalog-page--bitacora">
@@ -43,6 +48,7 @@
       <a class="catalog-sidebar-link" href="riegos.html">Riegos</a>
     </nav>
     <p class="catalog-sidebar-datetime">Buenos Aires, ARG <time data-reloj>23:46</time></p>
+    <button type="button" class="catalog-sidebar-theme-toggle" data-theme-toggle aria-pressed="false">Noche</button>
     <button type="button" class="catalog-sidebar-auth-btn" data-auth-nav>Iniciar sesión</button>
   </aside>
 

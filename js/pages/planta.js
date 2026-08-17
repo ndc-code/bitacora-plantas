@@ -3,6 +3,7 @@ import { listarConfig, guardarConfig, listarBitacora, registrarCuidado } from '.
 import { TIPOS_CUIDADO } from '../utils/recordatorios.js';
 import { qs, qsa, showError, clearError, showStatus, clearStatus, escapeHtml } from '../utils/dom.js';
 import { requerirSesion, iniciarPagina, mostrarErrorDePagina } from '../utils/guard.js';
+import { wireThemeToggle } from '../utils/theme.js';
 
 const ETIQUETAS_TIPO = {
   regar: 'Regar',
@@ -191,6 +192,8 @@ async function renderBitacora(plantaId) {
     )
     .join('');
 }
+
+wireThemeToggle();
 
 iniciarPagina(async function init() {
   const session = await requerirSesion();

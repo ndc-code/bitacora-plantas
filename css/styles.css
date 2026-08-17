@@ -1,6 +1,6 @@
 :root {
-  --color-black: #000000;
-  --color-white: #ffffff;
+  --color-ink: #000000;
+  --color-canvas: #ffffff;
   --color-navy: #1f2e3d;
   --color-terracotta: #ff6b35;
   --color-brown: #b4742d;
@@ -27,6 +27,22 @@
   --space-15: 60px;
 }
 
+/*
+ * Modo noche: se invierte el par ink/canvas (negro casi puro de fondo,
+ * blanco de texto) y se reajustan los grises que dependen de contraste
+ * contra el fondo. `<html data-theme>` lo pone el script inline del
+ * `<head>` de cada página antes del primer paint (ver wireThemeToggle en
+ * js/utils/theme.js).
+ */
+:root[data-theme='dark'] {
+  --color-ink: #ffffff;
+  --color-canvas: #141413;
+  --color-border: #3d3d3d;
+  --color-charcoal: #cccccc;
+  --color-gray-mid: #9e9e9e;
+  --color-placeholder: #808080;
+}
+
 * {
   box-sizing: border-box;
   cursor: default !important;
@@ -46,8 +62,8 @@ body {
   margin: 0;
   font-family: var(--font-body);
   font-size: 20px;
-  color: var(--color-black);
-  background: var(--color-white);
+  color: var(--color-ink);
+  background: var(--color-canvas);
 }
 
 h1,
@@ -103,8 +119,8 @@ h3 {
 }
 
 .btn-primary {
-  background: var(--color-black);
-  color: var(--color-white);
+  background: var(--color-ink);
+  color: var(--color-canvas);
 }
 
 .btn-primary:hover {
@@ -117,7 +133,7 @@ h3 {
 
 .btn-secondary {
   background: transparent;
-  color: var(--color-black);
+  color: var(--color-ink);
   border: 1px solid var(--color-border);
 }
 
@@ -126,7 +142,7 @@ h3 {
 }
 
 .card {
-  background: var(--color-white);
+  background: var(--color-canvas);
   border: 1px solid var(--color-border);
   border-radius: 0;
   padding: var(--space-6);
@@ -146,18 +162,18 @@ h3 {
 .input,
 textarea.input,
 select.input {
-  background: var(--color-white);
+  background: var(--color-canvas);
   border: 1px solid var(--color-border);
   border-radius: 0;
   padding: 12px 16px;
   font-family: var(--font-body);
   font-size: 18px;
-  color: var(--color-black);
+  color: var(--color-ink);
 }
 
 .input:focus {
   outline: none;
-  border-color: var(--color-black);
+  border-color: var(--color-ink);
 }
 
 .input::placeholder {
@@ -259,8 +275,8 @@ select.input {
      contenido en lugar de empujarlo. */
   position: relative;
   min-height: 100vh;
-  background: var(--color-white);
-  color: var(--color-black);
+  background: var(--color-canvas);
+  color: var(--color-ink);
   font-family: 'PP Neue Montreal', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   font-size: 14px;
   line-height: 1;
@@ -311,7 +327,7 @@ select.input {
   font-weight: 400;
   font-size: clamp(36px, 7vw, 88px);
   line-height: 1.1;
-  color: var(--color-black);
+  color: var(--color-ink);
   transition: color 200ms ease;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -364,7 +380,7 @@ select.input {
   font-size: 112px;
   letter-spacing: -6px;
   line-height: 1;
-  color: var(--color-black);
+  color: var(--color-ink);
   margin: 0 0 var(--space-6) 0;
 }
 
@@ -396,9 +412,13 @@ select.input {
 }
 
 .riegos-row-nombre {
-  flex-shrink: 0;
+  flex-shrink: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   font-size: 16px;
-  color: var(--color-black);
+  color: var(--color-ink);
 }
 
 .riegos-row-linea {
@@ -474,7 +494,7 @@ select.input {
   max-width: 550px;
   text-wrap: balance;
   margin: 0;
-  color: var(--color-black);
+  color: var(--color-ink);
   line-height: 1.35;
 }
 
@@ -487,7 +507,7 @@ select.input {
 }
 
 .catalog-nav-link {
-  color: var(--color-black);
+  color: var(--color-ink);
   text-decoration: none;
 }
 
@@ -508,7 +528,7 @@ select.input {
   font-size: inherit;
   font-weight: 400;
   line-height: 1;
-  color: var(--color-black);
+  color: var(--color-ink);
   cursor: pointer;
   justify-self: start;
 }
@@ -520,7 +540,7 @@ select.input {
   align-items: flex-end;
   gap: var(--space-3);
   text-align: right;
-  color: var(--color-black);
+  color: var(--color-ink);
   justify-self: end;
 }
 
@@ -533,13 +553,30 @@ select.input {
   padding: 0;
   border: 0;
   background: transparent;
-  color: var(--color-black);
+  color: var(--color-ink);
   font-family: inherit;
   font-size: inherit;
   line-height: 1;  
   text-underline-offset: 4px;
   cursor: pointer;
   margin-top: -4px;
+}
+
+.catalog-theme-toggle {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.catalog-theme-toggle:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 .catalog-auth-btn[disabled] {
@@ -563,7 +600,7 @@ select.input {
   font-size: inherit;
   font-weight: 400;
   line-height: 1;
-  color: var(--color-black);
+  color: var(--color-ink);
   cursor: pointer;
 }
 
@@ -592,20 +629,20 @@ select.input {
   margin: 0;
   padding: 0 0 2px;
   border: 0;
-  border-bottom: 1px solid var(--color-black);
+  border-bottom: 1px solid var(--color-ink);
   border-radius: 0;
   background: transparent;
   font-family: inherit;
   font-size: inherit;
   font-weight: 400;
   line-height: 1;
-  color: var(--color-black);
+  color: var(--color-ink);
   outline: none;
   box-sizing: border-box;
 }
 
 .catalog-search input::placeholder {
-  color: var(--color-black);
+  color: var(--color-ink);
   opacity: 0.45;
 }
 
@@ -634,7 +671,7 @@ select.input {
   left: 0;
   right: 0;
   z-index: 2;
-  background: var(--color-white);
+  background: var(--color-canvas);
   padding: 0 var(--catalog-inline) var(--space-2);
 }
 
@@ -654,9 +691,9 @@ select.input {
   width: 100%;
   margin: 0;
   padding: 10px 14px;
-  border: 1px solid var(--color-black);
+  border: 1px solid var(--color-ink);
   border-radius: 0;
-  background: var(--color-white);
+  background: var(--color-canvas);
   box-shadow: none;
   box-sizing: border-box;
 }
@@ -681,7 +718,7 @@ select.input {
   line-height: 1.15;
   letter-spacing: 0;
   text-transform: lowercase;
-  color: var(--color-black);
+  color: var(--color-ink);
   cursor: pointer;
   user-select: none;
 }
@@ -693,15 +730,15 @@ select.input {
   height: 11px;
   margin: 0;
   flex-shrink: 0;
-  border: 1px solid var(--color-black);
+  border: 1px solid var(--color-ink);
   border-radius: 0;
-  background: var(--color-white);
+  background: var(--color-canvas);
   cursor: pointer;
 }
 
 .catalog-filter-option input[type='checkbox']:checked {
-  background: var(--color-black);
-  box-shadow: inset 0 0 0 2px var(--color-white);
+  background: var(--color-ink);
+  box-shadow: inset 0 0 0 2px var(--color-canvas);
 }
 
 .catalog-entry.is-filtered-out {
@@ -815,7 +852,7 @@ select.input {
   font-size: 12px;
   font-weight: 400;
   line-height: 1.2;
-  color: var(--color-black);
+  color: var(--color-ink);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -886,7 +923,7 @@ select.input {
   right: 0;
   z-index: 2;
   padding-bottom: var(--space-3);
-  background: var(--color-white);
+  background: var(--color-canvas);
 }
 
 .catalog-page[data-view='3'] .catalog-list {
@@ -948,18 +985,18 @@ select.input {
 }
 
 .catalog-add--gallery3d {
-  border: 1px solid var(--color-black);
-  background: var(--color-white);
+  border: 1px solid var(--color-ink);
+  background: var(--color-canvas);
   padding: 6px 16px;
   font-family: inherit;
   font-size: 14px;
-  color: var(--color-black);
+  color: var(--color-ink);
   cursor: pointer;
 }
 
 .catalog-add--gallery3d.is-added {
   background: transparent;
-  color: var(--color-black);
+  color: var(--color-ink);
 }
 
 /* El radio del anillo es fijo (400px, ver TRANSFORM_ORIGIN en
@@ -1090,7 +1127,7 @@ select.input {
   column-gap: var(--catalog-gap);
   align-items: baseline;
   padding: 3px 0;
-  color: var(--color-black);
+  color: var(--color-ink);
   cursor: pointer;
   transition: opacity 0.15s ease;
 }
@@ -1107,8 +1144,8 @@ select.input {
 }
 
 .catalog-entry.is-in-coleccion>.catalog-row {
-  background: var(--color-black);
-  color: var(--color-white);
+  background: var(--color-ink);
+  color: var(--color-canvas);
   padding-left: 6px;
   padding-right: 6px;
   margin-left: -6px;
@@ -1116,7 +1153,7 @@ select.input {
 }
 
 .catalog-entry.is-in-coleccion>.catalog-row .catalog-add {
-  color: var(--color-white);
+  color: var(--color-canvas);
 }
 
 .catalog-row.is-header {
@@ -1134,7 +1171,7 @@ select.input {
   gap: var(--space-4);
   padding: var(--space-4) 0 var(--space-2);
   margin-top: 60px;
-  border-bottom: 1px solid var(--color-black);
+  border-bottom: 1px solid var(--color-ink);
 }
 
 /* Solo la primera categoría del catálogo va sin margen. Va por `.catalog-group`
@@ -1150,14 +1187,14 @@ select.input {
   font-size: 112px;
   margin-bottom: 0;
   letter-spacing: -6px;
-  color: var(--color-black);
+  color: var(--color-ink);
 }
 
 .catalog-category-count {
   font-size: 54px;
   margin-top: -5px;
   letter-spacing: -5px;
-  color: var(--color-black);
+  color: var(--color-ink);
 }
 
 .catalog-page[data-view='3'] .catalog-category {
@@ -1183,7 +1220,7 @@ select.input {
   font-size: inherit;
   font-weight: 400;
   line-height: 1;
-  color: var(--color-black);
+  color: var(--color-ink);
   cursor: pointer;
   text-align: left;
 }
@@ -1245,13 +1282,13 @@ select.input {
 
 .catalog-detail-row dt {
   margin: 0;
-  color: var(--color-black);  
+  color: var(--color-ink);  
 }
 
 .catalog-detail-row dd {
   margin: 0;
   text-align: right;
-  color: var(--color-black);
+  color: var(--color-ink);
 }
 
 /* En mobile, al abrir una planta se ve toda su data en filas antes que la foto */
@@ -1294,7 +1331,7 @@ select.input {
   margin-top: var(--space-1);
   font-size: 12px;
   line-height: 1;
-  color: var(--color-black);
+  color: var(--color-ink);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1321,7 +1358,7 @@ select.input {
   padding: 0;
   border: 0;
   background: transparent;
-  color: var(--color-black);
+  color: var(--color-ink);
   font-family: inherit;
   font-size: inherit;
   line-height: 1;
@@ -1335,7 +1372,7 @@ select.input {
 
 .catalog-empty {
   margin: var(--space-8) 0 0;
-  color: var(--color-black);
+  color: var(--color-ink);
 }
 
 @media (max-width: 799px) {
@@ -1475,6 +1512,8 @@ select.input {
   position: relative;
   width: 100%;
   max-width: 420px;
+  background: var(--color-canvas);
+  color: var(--color-ink);
   border: 1px solid var(--color-border);
   border-radius: 0;
   padding: var(--space-8);
@@ -1494,7 +1533,7 @@ select.input {
   padding: 0;
   border: 0;
   background: transparent;
-  color: var(--color-black);
+  color: var(--color-ink);
   font-family: inherit;
   font-size: 28px;
   line-height: 1;
@@ -1534,7 +1573,7 @@ select.input {
 
 .modal .input:focus {
   outline: none;
-  border-color: var(--color-black);
+  border-color: var(--color-ink);
 }
 
 .modal .btn-primary {
@@ -1657,7 +1696,7 @@ select.input {
   font-size: inherit;
   font-weight: 400;
   line-height: 1;
-  color: var(--color-black);
+  color: var(--color-ink);
   cursor: pointer;
   justify-self: start;
 }
@@ -1668,8 +1707,8 @@ select.input {
   inset: 0;
   width: 100%;
   height: 100vh;
-  background: var(--color-black);
-  color: var(--color-white);
+  background: var(--color-ink);
+  color: var(--color-canvas);
   padding: var(--space-6) var(--space-6) var(--space-8);
   z-index: 999;
   transform: translateX(-100%);
@@ -1693,7 +1732,7 @@ select.input {
   padding: 0;
   border: 0;
   background: transparent;
-  color: var(--color-white);
+  color: var(--color-canvas);
   font-family: inherit;
   font-size: 16px;
   line-height: 1;
@@ -1703,24 +1742,25 @@ select.input {
 .catalog-sidebar-label {
   margin: 0 0 var(--space-6);
   font-size: 16px;
-  color: var(--color-white);
+  color: var(--color-canvas);
   opacity: 0.6;
 }
 
 .catalog-sidebar-datetime {
   margin: 300px 0 0;
   font-size: 14px;
-  color: var(--color-white);
+  color: var(--color-canvas);
   opacity: 0.6;
 }
 
-.catalog-sidebar-auth-btn {
+.catalog-sidebar-auth-btn,
+.catalog-sidebar-theme-toggle {
   align-self: flex-start;
   margin: var(--space-4) 0 0;
   padding: 0;
   border: 0;
   background: transparent;
-  color: var(--color-white);
+  color: var(--color-canvas);
   font-family: inherit;
   font-size: 16px;
   line-height: 1;
@@ -1746,7 +1786,7 @@ select.input {
 .catalog-sidebar-link {
   display: block;
   padding: 0;
-  color: var(--color-white);
+  color: var(--color-canvas);
   text-decoration: underline;
   text-underline-offset: 8px;
   font-family: var(--font-heading);
@@ -2128,7 +2168,7 @@ body.sidebar-open::before {
   font-size: 112px;
   letter-spacing: -6px;
   line-height: 1;
-  color: var(--color-black);
+  color: var(--color-ink);
 }
 
 .bitacora-especie {
@@ -2180,7 +2220,7 @@ body.sidebar-open::before {
   text-overflow: ellipsis;
   white-space: nowrap;
   font-size: 15px;
-  color: var(--color-black);
+  color: var(--color-ink);
 }
 
 .bitacora-detalle-valor {
@@ -2228,7 +2268,7 @@ body.sidebar-open::before {
   padding-top: var(--space-1);
   font-size: 38px;
   letter-spacing: -0.3px;
-  color: var(--color-black);
+  color: var(--color-ink);
 }
 
 .bitacora-rows {
@@ -2282,27 +2322,27 @@ body.sidebar-open::before {
 }
 
 .bitacora-input {
-  background: var(--color-white);
+  background: var(--color-canvas);
   border: 1px solid var(--color-border);
   border-radius: 0;
   padding: var(--space-2) var(--space-3);
   font-family: var(--font-body);
   font-size: 14px;
-  color: var(--color-black);
+  color: var(--color-ink);
   height: 36px;
 }
 
 .bitacora-input:focus {
   outline: none;
-  border-color: var(--color-black);
+  border-color: var(--color-ink);
 }
 
 .bitacora-btn {
   height: 36px;
   padding: 0 var(--space-4);
   border: 0;
-  background: var(--color-black);
-  color: var(--color-white);
+  background: var(--color-ink);
+  color: var(--color-canvas);
   font-family: var(--font-body);
   font-size: 14px;
   cursor: pointer;
@@ -2319,14 +2359,14 @@ body.sidebar-open::before {
   padding: 0 var(--space-4);
   border: 1px solid var(--color-border);
   background: transparent;
-  color: var(--color-black);
+  color: var(--color-ink);
   font-family: var(--font-body);
   font-size: 14px;
   cursor: pointer;
 }
 
 .bitacora-subir-btn:hover {
-  border-color: var(--color-black);
+  border-color: var(--color-ink);
 }
 
 .bitacora-form .field-error {
@@ -2368,7 +2408,7 @@ body.sidebar-open::before {
   bottom: 0;
   padding: var(--space-1) var(--space-2);
   font-size: 11px;
-  color: var(--color-white);
+  color: var(--color-canvas);
   background: linear-gradient(to top, rgba(0, 0, 0, 0.55), transparent);
 }
 
@@ -2380,7 +2420,7 @@ body.sidebar-open::before {
   height: 22px;
   border: 0;
   background: rgba(0, 0, 0, 0.55);
-  color: var(--color-white);
+  color: var(--color-canvas);
   font-size: 14px;
   line-height: 1;
   cursor: pointer;
@@ -2405,14 +2445,14 @@ body.sidebar-open::before {
   padding: var(--space-2) var(--space-4);
   border: 1px solid var(--color-border);
   background: transparent;
-  color: var(--color-black);
+  color: var(--color-ink);
   font-family: var(--font-body);
   font-size: 13px;
   text-decoration: none;
 }
 
 .bitacora-agregar-btn:hover {
-  border-color: var(--color-black);
+  border-color: var(--color-ink);
 }
 
 .bitacora-notas-col .bitacora-form {
@@ -2453,7 +2493,7 @@ body.sidebar-open::before {
   flex: 1;
   min-width: 0;
   font-size: 15px;
-  color: var(--color-black);
+  color: var(--color-ink);
 }
 
 .bitacora-nota-eliminar {
@@ -2512,7 +2552,7 @@ body.sidebar-open::before {
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: var(--color-black);
+  background: var(--color-ink);
 }
 
 .bitacora-calendario-punto.is-regado {
@@ -2521,7 +2561,7 @@ body.sidebar-open::before {
 
 .bitacora-calendario-punto.is-hoy {
   background: transparent;
-  border: 1px solid var(--color-black);
+  border: 1px solid var(--color-ink);
 }
 
 .bitacora-calendario-ayuda {
@@ -2543,7 +2583,7 @@ body.sidebar-open::before {
   margin: 0;
   font-size: 18px;
   text-transform: capitalize;
-  color: var(--color-black);
+  color: var(--color-ink);
 }
 
 .bitacora-calendario-nav {
@@ -2552,11 +2592,11 @@ body.sidebar-open::before {
   border: 1px solid var(--color-border);
   background: transparent;
   font-size: 15px;
-  color: var(--color-black);
+  color: var(--color-ink);
 }
 
 .bitacora-calendario-nav:hover {
-  border-color: var(--color-black);
+  border-color: var(--color-ink);
 }
 
 .bitacora-calendario-dias,
@@ -2586,7 +2626,7 @@ body.sidebar-open::before {
   padding: 0;
   font: inherit;
   font-size: 14px;
-  color: var(--color-black);
+  color: var(--color-ink);
   background: transparent;
   cursor: default;
 }
@@ -2596,17 +2636,17 @@ body.sidebar-open::before {
 }
 
 .bitacora-calendario-celda.is-hoy {
-  border: 1px solid var(--color-black);
+  border: 1px solid var(--color-ink);
 }
 
 .bitacora-calendario-celda.is-riego {
-  background: var(--color-black);
-  color: var(--color-white);
+  background: var(--color-ink);
+  color: var(--color-canvas);
 }
 
 .bitacora-calendario-celda.is-regado {
   background: var(--color-green);
-  color: var(--color-white);
+  color: var(--color-canvas);
 }
 
 .bitacora-calendario-celda:not(:disabled) {
@@ -2615,7 +2655,7 @@ body.sidebar-open::before {
 
 .bitacora-calendario-celda.is-riego:not(:disabled):hover,
 .bitacora-calendario-celda.is-regado:not(:disabled):hover {
-  border-color: var(--color-white);
+  border-color: var(--color-canvas);
 }
 
 .bitacora-calendario-vacio {
@@ -2643,12 +2683,22 @@ body.sidebar-open::before {
   }
 
   .bitacora-foto {
+    position: static;
     order: -1;
     width: 100%;
     max-width: none;
     aspect-ratio: 16 / 9;
     margin-top: var(--space-6);
     justify-self: stretch;
+  }
+
+  .bitacora-riegos-col {
+    flex-wrap: wrap;
+  }
+
+  .bitacora-calendario {
+    width: 100%;
+    flex-shrink: 1;
   }
 
   .catalog-page--bitacora .catalog-list,
@@ -2670,10 +2720,6 @@ body.sidebar-open::before {
   .bitacora-section {
     grid-template-columns: 1fr;
     gap: var(--space-2);
-  }
-
-  .bitacora-riegos-col {
-    flex-wrap: wrap;
   }
 
   .bitacora-form {

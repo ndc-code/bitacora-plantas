@@ -6,6 +6,7 @@ import { syncColeccionNavCount } from '../utils/coleccion-nav.js';
 import { wireAuthModal } from '../utils/auth-modal.js';
 import { wireAuthNav } from '../utils/auth-nav.js';
 import { wireReloj } from '../utils/reloj.js';
+import { wireThemeToggle } from '../utils/theme.js';
 import { iniciarPagina, mostrarErrorDePagina } from '../utils/guard.js';
 
 async function render(root) {
@@ -182,6 +183,7 @@ function abrirLogin() {
  */
 function montarChrome() {
   wireReloj();
+  wireThemeToggle();
   wireEliminar(root);
   wireSidebarToggle();
   wirePreview(root);

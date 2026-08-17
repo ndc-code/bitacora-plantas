@@ -4,12 +4,20 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Detalle de planta — Bitácora de Plantas</title>
+  <script>
+    try {
+      if (localStorage.getItem('tema') === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+    } catch (e) {}
+  </script>
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
   <header class="topbar">
     <h3 style="margin:0;">Bitácora de Plantas</h3>
-    <a class="btn btn-secondary" href="dashboard.html">Volver</a>
+    <div style="display:flex; align-items:center; gap: var(--space-4);">
+      <button type="button" class="catalog-theme-toggle" data-theme-toggle aria-pressed="false">Noche</button>
+      <a class="btn btn-secondary" href="dashboard.html">Volver</a>
+    </div>
   </header>
 
   <main class="container" style="max-width: 720px;">
