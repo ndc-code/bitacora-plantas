@@ -57,6 +57,7 @@ function plantaDesdeBoton(btn) {
 }
 
 function etiquetaDisponible(btn) {
+  if (btn.classList.contains('catalog-add--variedad')) return '+';
   return btn.classList.contains('catalog-add--tile') ||
     btn.classList.contains('catalog-add--spotlight')
     ? '(+)'
@@ -64,6 +65,7 @@ function etiquetaDisponible(btn) {
 }
 
 function etiquetaAgregado(btn) {
+  if (btn.classList.contains('catalog-add--variedad')) return '−'; // signo menos
   return btn.classList.contains('catalog-add--tile') ||
     btn.classList.contains('catalog-add--spotlight')
     ? '(-)'
@@ -84,26 +86,36 @@ function marcarAgregado(btn) {
   btn.title = 'Eliminar de Colección';
 }
 
+/** La fila se resalta si el género o cualquiera de sus variedades está agregada. */
+function refrescarFilaColeccion(entry) {
+  if (!entry) return;
+  entry.classList.toggle('is-in-coleccion', Boolean(entry.querySelector('.catalog-add.is-added')));
+}
+
 function syncFilaColeccion(id, added) {
+  const entries = new Set();
   qsa(`.catalog-add[data-id="${CSS.escape(id)}"]`).forEach((btn) => {
     if (added) marcarAgregado(btn);
     else marcarDisponible(btn);
-    btn.closest('.catalog-entry')?.classList.toggle('is-in-coleccion', added);
+    const entry = btn.closest('.catalog-entry');
+    if (entry) entries.add(entry);
   });
+  entries.forEach(refrescarFilaColeccion);
 }
 
 async function syncBotones() {
-  const entries = qsa('.catalog-entry');
-  for (const entry of entries) {
-    const btn = entry.querySelector('.catalog-add[data-id]');
-    if (!btn) continue;
-    const added = await estaEnColeccion(btn.dataset.id);
-    qsa('.catalog-add[data-id]', entry).forEach((b) => {
-      if (added) marcarAgregado(b);
-      else marcarDisponible(b);
-    });
-    entry.classList.toggle('is-in-coleccion', added);
+  // Cada id de catálogo (género o variedad) se chequea una sola vez y marca
+  // todos sus botones; la variedad no hereda el estado del género.
+  const porId = new Map();
+  for (const btn of qsa('.catalog-add[data-id]')) {
+    if (!porId.has(btn.dataset.id)) porId.set(btn.dataset.id, []);
+    porId.get(btn.dataset.id).push(btn);
   }
+  for (const [id, botones] of porId) {
+    const added = await estaEnColeccion(id);
+    botones.forEach((b) => (added ? marcarAgregado(b) : marcarDisponible(b)));
+  }
+  qsa('.catalog-entry').forEach(refrescarFilaColeccion);
 }
 
 async function toggleColeccion(btn) {
@@ -158,6 +170,7 @@ function wireEntryClickToAdd(root, authModal) {
 
   root.addEventListener('click', (event) => {
     if (event.target.closest('.catalog-add')) return; // ya lo maneja wireAdd
+    if (event.target.closest('.catalog-gallery')) return; // los + de variedad la manejan
     if (!esDesktopConHover()) return;
 
     const view = qs('.catalog-page')?.dataset.view;

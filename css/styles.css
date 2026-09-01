@@ -1320,6 +1320,7 @@ select.input {
 .catalog-gallery {
   display: flex;
   flex-wrap: nowrap;
+  align-items: flex-start;
   gap: var(--space-3);
   overflow-x: auto;
   padding-bottom: var(--space-2);
@@ -1373,25 +1374,28 @@ select.input {
 }
 
 .catalog-gallery-item {
+  position: relative;
   flex: 0 0 auto;
-  width: min(160px, 28vw);
   margin: 0;
-}
-
-@media (max-width: 767px) {
-  .catalog-gallery-item {
-    flex: 0 0 auto;
-    width: min(360px, 50vw);
-    margin: 0;
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 .catalog-gallery-item img {
   display: block;
-  width: 100%;
-  aspect-ratio: 4 / 3;
+  height: 150px;
+  width: auto;
+  max-width: 260px;
   object-fit: cover;
-  background: var(--color-border);
+  object-position: left center;
+}
+
+@media (max-width: 767px) {
+  .catalog-gallery-item img {
+    height: 200px;
+    max-width: 70vw;
+  }
 }
 
 .catalog-gallery-item figcaption {
@@ -1435,6 +1439,36 @@ select.input {
 
 .catalog-add.is-added {
   opacity: 0.55;
+}
+
+/* + / - para agregar esa especie suelta a la Colección, apoyado en la esquina
+   superior izquierda de su miniatura (sin separación). Va después de
+   `.catalog-add` para ganarle a su min-width/border/margin. */
+.catalog-add--variedad {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  min-width: 0;
+  min-height: 0;
+  width: 22px;
+  height: 22px;
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--color-ink);
+  background: var(--color-canvas);
+  color: var(--color-ink);
+  font-size: 14px;
+  line-height: 1;
+  opacity: 1;
+}
+
+.catalog-add--variedad.is-added {
+  opacity: 1;
+  background: var(--color-ink);
+  color: var(--color-canvas);
 }
 
 .catalog-empty {

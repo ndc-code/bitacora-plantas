@@ -7,44 +7,211 @@ const PLANTAS_PATH = path.join(__dirname, '..', 'index.html');
 
 /**
  * Catálogo tomado del índice de un libro de jardinería (plantas de interior,
- * herbáceas perennes, bulbosas, gramíneas, enredaderas y cubresuelos,
- * arbustos y árboles). Cada planta define su luz preferida en la escala que
+ * suculentas, cactus, herbáceas perennes, bulbosas, gramíneas, enredaderas y
+ * cubresuelos, arbustos y árboles). Cada planta define su luz preferida en la escala que
  * corresponde a su categoría: Alta/Media/Baja para interior, o
  * Directa/Indirecta/Sombra para exterior. El campo "Sol" se deriva de la luz.
  * El campo "Clima" indica la franja térmica que la planta tolera mejor:
  * Frío / Templado / Cálido.
  */
-const CATEGORIES = [
+export const CATEGORIES = [
   {
+    // "Índice de especies" del libro de plantas de interior. El libro numera las
+    // especies (se conservan sólo las listadas); nombre = género, especie = la
+    // entrada exacta del índice (binomio, cultivar o "<género> sp.").
     label: 'Plantas de interior',
     plants: [
-      // Las 5 primeras preservan id/imagen/riego exactos de las filas ya cargadas en el catálogo.
-      ['Azalea', 'Ericáceas', 'Indirecta', 'Franco', 'Fácil', 'Cada 7 días', 'Templado', { id: 'azalea::ericaceas::exterior', imagen: 'https://images.unsplash.com/photo-1653245690893-720376e521cb?auto=format&fit=crop&w=1400&q=80' }],
-      ['Rafis', 'Arecáceas', 'Media', 'Franco', 'Medio', 'Cada 7 días', 'Templado', { id: 'rafis::arecaceas::interior', imagen: 'https://images.unsplash.com/photo-1648806098714-d20de45d4226?auto=format&fit=crop&w=1400&q=80' }],
-      ['Palo de Agua', 'Asparagáceas', 'Media', 'Franco', 'Fácil', 'Cada 10 días', 'Cálido', { id: 'palo de agua::asparagaceas::interior', imagen: 'https://images.unsplash.com/photo-1612363066736-a4a933de2cab?auto=format&fit=crop&w=1400&q=80' }],
-      ['Kentia', 'Arecáceas', 'Media', 'Franco', 'Medio', 'Cada 7 días', 'Templado', { id: 'kentia::arecaceas::interior', imagen: 'https://images.unsplash.com/photo-1768692857070-e57811d9ccaa?auto=format&fit=crop&w=1400&q=80' }],
-      ['Ficus Benjamina', 'Moráceas', 'Alta', 'Arenoso', 'Medio', 'Cada 10 días', 'Cálido', { id: 'ficus benjamina::moraceas::interior', imagen: 'https://images.unsplash.com/photo-1596547609713-821db6524310?auto=format&fit=crop&w=1400&q=80' }],
-      ['Cordiline', "Cordyline fruticosa 'Rubra'", 'Media', 'Franco', 'Fácil', 'Cada 10 días', 'Cálido'],
-      ['Begonia', 'Begonia x tuberhybrida', 'Media', 'Franco', 'Medio', 'Cada 7 días', 'Templado'],
-      ['Bromelia', 'Aechmea fasciata', 'Media', 'Franco', 'Fácil', 'Cada 14 días', 'Cálido'],
-      ['Orquídea', 'Phalaenopsis sp.', 'Media', 'Franco', 'Exigente', 'Cada 10 días', 'Cálido'],
-      ['Violeta africana', 'Saintpaulia ionantha', 'Media', 'Franco', 'Exigente', 'Cada 7 días', 'Cálido'],
+      ['Aeschynanthus', 'Aeschynanthus sp.', 'Media', 'Franco', 'Medio', 'Cada 7 días', 'Cálido'],
       ['Aglaonema', 'Aglaonema commutatum', 'Baja', 'Franco', 'Fácil', 'Cada 10 días', 'Cálido'],
-      ['Aspidistra', 'Aspidistra elatior', 'Baja', 'Franco', 'Fácil', 'Cada 14 días', 'Templado'],
-      ['Culandrillo', 'Adiantum raddianum', 'Media', 'Franco', 'Exigente', 'Cada 5 días', 'Templado'],
+      ['Alocasia', "Alocasia 'Amazónica'", 'Media', 'Franco', 'Exigente', 'Cada 5 días', 'Cálido'],
+      ['Anthurium', 'Anthurium andraeanum', 'Media', 'Franco', 'Medio', 'Cada 7 días', 'Cálido'],
+      ['Aphelandra', 'Aphelandra squarrosa', 'Media', 'Franco', 'Exigente', 'Cada 5 días', 'Cálido'],
+      ['Asplenium', 'Asplenium nidus', 'Baja', 'Franco', 'Medio', 'Cada 7 días', 'Cálido'],
+      ['Begonia', 'Begonia sp.', 'Media', 'Franco', 'Medio', 'Cada 7 días', 'Templado'],
+      ['Bromelias', 'Bromeliaceae', 'Media', 'Franco', 'Fácil', 'Cada 14 días', 'Cálido'],
+      ['Caladium', 'Caladium bicolor', 'Media', 'Franco', 'Exigente', 'Cada 7 días', 'Cálido'],
+      ['Calathea', 'Calathea makoyana', 'Baja', 'Franco', 'Exigente', 'Cada 5 días', 'Cálido'],
       ['Chamaedorea', 'Chamaedorea elegans', 'Media', 'Franco', 'Fácil', 'Cada 7 días', 'Cálido'],
-      ['Difenbaquia', "Dieffenbachia seguine 'Tropic Snow'", 'Media', 'Franco', 'Medio', 'Cada 7 días', 'Cálido'],
-      ['Nido de ave', 'Asplenium nidus', 'Baja', 'Franco', 'Medio', 'Cada 7 días', 'Cálido'],
-      ['Maranta', "Maranta leuconeura 'Kerchoveana'", 'Baja', 'Franco', 'Medio', 'Cada 5 días', 'Cálido'],
-      ['Peperomia', 'Peperomia caperata', 'Media', 'Franco', 'Fácil', 'Cada 10 días', 'Cálido'],
-      ['Sansevieria', "Sansevieria trifasciata 'Laurentii'", 'Baja', 'Arenoso', 'Fácil', 'Cada 21 días', 'Cálido'],
-      ['Scheflera', 'Schefflera arboricola', 'Media', 'Franco', 'Fácil', 'Cada 10 días', 'Cálido'],
-      ['Spatifilum', 'Spathiphyllum wallisii', 'Baja', 'Franco', 'Fácil', 'Cada 7 días', 'Cálido'],
       ['Cissus', 'Cissus alata', 'Media', 'Franco', 'Fácil', 'Cada 10 días', 'Cálido'],
-      ['Filodendro', 'Philodendron hederaceum var. oxycardium', 'Baja', 'Franco', 'Fácil', 'Cada 10 días', 'Cálido'],
-      ['Potus', 'Epipremnum sp. = Scindapsus aureus', 'Baja', 'Franco', 'Fácil', 'Cada 10 días', 'Cálido'],
-      ['Singonium', 'Syngonium podophyllum', 'Media', 'Franco', 'Fácil', 'Cada 10 días', 'Cálido'],
-      ['Helecho', 'Nephrolepis exaltata', 'Media', 'Franco', 'Medio', 'Cada 5 días', 'Templado'],
+      ['Clerodendrum', 'Clerodendrum thomsoniae', 'Alta', 'Franco', 'Medio', 'Cada 7 días', 'Cálido'],
+      ['Codiaeum', 'Codiaeum variegatum', 'Alta', 'Franco', 'Medio', 'Cada 7 días', 'Cálido'],
+      ['Columnea', 'Columnea microphylla', 'Media', 'Franco', 'Medio', 'Cada 7 días', 'Cálido'],
+      ['Cordyline', 'Cordyline fruticosa', 'Media', 'Franco', 'Fácil', 'Cada 10 días', 'Cálido'],
+      ['Ctenanthe', 'Ctenanthe sp.', 'Baja', 'Franco', 'Exigente', 'Cada 5 días', 'Cálido'],
+      ['Dieffenbachia', 'Dieffenbachia seguine', 'Media', 'Franco', 'Medio', 'Cada 7 días', 'Cálido'],
+      ['Dracaena', 'Dracaena fragrans', 'Media', 'Franco', 'Fácil', 'Cada 10 días', 'Cálido', { id: 'palo de agua::asparagaceas::interior' }],
+      ['Epipremnum', 'Epipremnum aureum', 'Baja', 'Franco', 'Fácil', 'Cada 10 días', 'Cálido'],
+      ['Episcia', 'Episcia cupreata', 'Media', 'Franco', 'Medio', 'Cada 7 días', 'Cálido'],
+      ['Farfugium', 'Farfugium japonicum', 'Media', 'Franco', 'Medio', 'Cada 7 días', 'Templado'],
+      ['Ficus elástica', 'Ficus elastica', 'Alta', 'Franco', 'Fácil', 'Cada 10 días', 'Cálido'],
+      ['Ficus pandurata', 'Ficus lyrata', 'Alta', 'Franco', 'Medio', 'Cada 10 días', 'Cálido'],
+      ['Fittonia', 'Fittonia albivenis', 'Baja', 'Franco', 'Exigente', 'Cada 5 días', 'Cálido'],
+      ['Gynura', 'Gynura aurantiaca', 'Alta', 'Franco', 'Fácil', 'Cada 7 días', 'Cálido'],
+      ['Hemigraphis', 'Hemigraphis colorata', 'Media', 'Franco', 'Fácil', 'Cada 7 días', 'Cálido'],
+      ['Helechos', 'Nephrolepis exaltata', 'Media', 'Franco', 'Medio', 'Cada 5 días', 'Templado'],
+      ['Kentia', 'Howea forsteriana', 'Media', 'Franco', 'Medio', 'Cada 7 días', 'Templado', { id: 'kentia::arecaceas::interior' }],
+      ['Maranta', 'Maranta leuconeura', 'Baja', 'Franco', 'Medio', 'Cada 5 días', 'Cálido'],
+      ['Monstera adansonii', 'Monstera adansonii', 'Media', 'Franco', 'Fácil', 'Cada 10 días', 'Cálido'],
+      ['Monstera deliciosa', 'Monstera deliciosa', 'Media', 'Franco', 'Fácil', 'Cada 10 días', 'Cálido'],
+      ['Oxalis', 'Oxalis triangularis', 'Media', 'Franco', 'Fácil', 'Cada 7 días', 'Templado'],
+      ['Pilea', 'Pilea peperomioides', 'Media', 'Franco', 'Fácil', 'Cada 7 días', 'Templado'],
+      ['Peperomia', 'Peperomia sp.', 'Media', 'Franco', 'Fácil', 'Cada 10 días', 'Cálido'],
+      ['Philodendron', 'Philodendron sp.', 'Baja', 'Franco', 'Fácil', 'Cada 10 días', 'Cálido'],
+      ['Rafis', 'Rhapis excelsa', 'Media', 'Franco', 'Medio', 'Cada 7 días', 'Templado', { id: 'rafis::arecaceas::interior' }],
+      ['Rohdea', 'Rohdea japonica', 'Baja', 'Franco', 'Fácil', 'Cada 14 días', 'Templado'],
+      ['Saintpaulia', 'Saintpaulia ionantha', 'Media', 'Franco', 'Exigente', 'Cada 7 días', 'Cálido'],
+      ['Schefflera', 'Schefflera arboricola', 'Media', 'Franco', 'Fácil', 'Cada 10 días', 'Cálido'],
+      ['Sansevieria', 'Sansevieria trifasciata', 'Baja', 'Arenoso', 'Fácil', 'Cada 21 días', 'Cálido'],
+      ['Sinningia', 'Sinningia speciosa', 'Media', 'Franco', 'Exigente', 'Cada 7 días', 'Cálido'],
+      ['Spathiphyllum', 'Spathiphyllum wallisii', 'Baja', 'Franco', 'Fácil', 'Cada 7 días', 'Cálido'],
+      ['Stromanthe', 'Stromanthe thalia', 'Media', 'Franco', 'Exigente', 'Cada 5 días', 'Cálido'],
+      ['Syngonium', 'Syngonium podophyllum', 'Media', 'Franco', 'Fácil', 'Cada 10 días', 'Cálido'],
+      ['Tradescantia', 'Tradescantia spathacea', 'Alta', 'Franco', 'Fácil', 'Cada 7 días', 'Cálido'],
+      ['Zamioculcas', 'Zamioculcas zamiifolia', 'Baja', 'Arenoso', 'Fácil', 'Cada 21 días', 'Cálido'],
+    ],
+  },
+  {
+    // "Suculentas no cactáceas" + "Familia aizoáceas" del índice del libro.
+    // El libro lista géneros; la especie queda como "<Género> sp." salvo los
+    // pocos casos en que el índice ya trae binomio.
+    label: 'Suculentas',
+    plants: [
+      ['Adenium', 'Adenium sp.', 'Directa', 'Arenoso', 'Medio', 'Cada 14 días', 'Cálido'],
+      ['Adromischus', 'Adromischus sp.', 'Directa', 'Arenoso', 'Fácil', 'Cada 21 días', 'Cálido'],
+      ['Aeonium', 'Aeonium sp.', 'Directa', 'Arenoso', 'Fácil', 'Cada 14 días', 'Templado'],
+      ['Aichryson', 'Aichryson sp.', 'Indirecta', 'Franco', 'Fácil', 'Cada 10 días', 'Templado'],
+      ['Agave', 'Agave sp.', 'Directa', 'Arenoso', 'Fácil', 'Cada 30 días', 'Cálido'],
+      ['Aloe', 'Aloe sp.', 'Directa', 'Arenoso', 'Fácil', 'Cada 21 días', 'Cálido'],
+      ['Anacampseros', 'Anacampseros sp.', 'Directa', 'Arenoso', 'Fácil', 'Cada 21 días', 'Cálido'],
+      ['Avonia', 'Avonia sp.', 'Directa', 'Arenoso', 'Medio', 'Cada 21 días', 'Cálido'],
+      ['Bowiea', 'Bowiea sp.', 'Indirecta', 'Arenoso', 'Fácil', 'Cada 21 días', 'Cálido'],
+      ['Caralluma', 'Caralluma sp.', 'Directa', 'Arenoso', 'Fácil', 'Cada 21 días', 'Cálido'],
+      ['Ceropegia', 'Ceropegia sp.', 'Indirecta', 'Arenoso', 'Fácil', 'Cada 14 días', 'Cálido'],
+      ['Cissus', 'Cissus sp.', 'Indirecta', 'Franco', 'Fácil', 'Cada 10 días', 'Cálido'],
+      ['Cotyledon', 'Cotyledon sp.', 'Directa', 'Arenoso', 'Fácil', 'Cada 21 días', 'Cálido'],
+      ['Crassula', 'Crassula sp.', 'Indirecta', 'Arenoso', 'Fácil', 'Cada 21 días', 'Templado'],
+      ['Cremnosedum', 'Cremnosedum sp.', 'Directa', 'Arenoso', 'Fácil', 'Cada 21 días', 'Templado'],
+      ['Cyphostemma', 'Cyphostemma sp.', 'Directa', 'Arenoso', 'Medio', 'Cada 21 días', 'Cálido'],
+      ['Deuterocohnia', 'Deuterocohnia sp.', 'Directa', 'Arenoso', 'Fácil', 'Cada 30 días', 'Cálido'],
+      ['Dioscorea', 'Dioscorea sp.', 'Indirecta', 'Franco', 'Medio', 'Cada 14 días', 'Cálido'],
+      ['Dyckia', 'Dyckia sp.', 'Directa', 'Arenoso', 'Fácil', 'Cada 30 días', 'Templado'],
+      ['Fockea', 'Fockea sp.', 'Directa', 'Arenoso', 'Medio', 'Cada 21 días', 'Cálido'],
+      ['Echeveria', 'Echeveria sp.', 'Directa', 'Arenoso', 'Fácil', 'Cada 21 días', 'Templado'],
+      ['Euphorbia', 'Euphorbia sp.', 'Directa', 'Arenoso', 'Fácil', 'Cada 21 días', 'Cálido'],
+      ['Gasteria', 'Gasteria sp.', 'Indirecta', 'Arenoso', 'Fácil', 'Cada 21 días', 'Templado'],
+      ['Graptopetalum', 'Graptopetalum sp.', 'Directa', 'Arenoso', 'Fácil', 'Cada 21 días', 'Templado'],
+      ['Haemanthus', 'Haemanthus sp.', 'Indirecta', 'Franco', 'Fácil', 'Cada 14 días', 'Templado'],
+      ['Hesperaloe', 'Hesperaloe sp.', 'Directa', 'Arenoso', 'Fácil', 'Cada 30 días', 'Templado'],
+      ['Haworthia', 'Haworthia sp.', 'Indirecta', 'Arenoso', 'Fácil', 'Cada 21 días', 'Templado'],
+      ['Hoodia', 'Hoodia sp.', 'Directa', 'Arenoso', 'Medio', 'Cada 21 días', 'Cálido'],
+      ['Hoya', 'Hoya sp.', 'Indirecta', 'Franco', 'Fácil', 'Cada 10 días', 'Cálido'],
+      ['Huernia', 'Huernia sp.', 'Indirecta', 'Arenoso', 'Fácil', 'Cada 21 días', 'Cálido'],
+      ['Jatropha', 'Jatropha sp.', 'Directa', 'Arenoso', 'Medio', 'Cada 14 días', 'Cálido'],
+      ['Kalanchoe', 'Kalanchoe sp.', 'Indirecta', 'Arenoso', 'Fácil', 'Cada 14 días', 'Cálido'],
+      ['Ledebouria', 'Ledebouria sp.', 'Indirecta', 'Franco', 'Fácil', 'Cada 14 días', 'Templado'],
+      ['Lenophyllum', 'Lenophyllum sp.', 'Directa', 'Arenoso', 'Fácil', 'Cada 21 días', 'Cálido'],
+      ['Manfreda', 'Manfreda sp.', 'Directa', 'Arenoso', 'Fácil', 'Cada 21 días', 'Cálido'],
+      ['Monadenium', 'Monadenium sp.', 'Directa', 'Arenoso', 'Fácil', 'Cada 21 días', 'Cálido'],
+      ['Monanthes', 'Monanthes sp.', 'Indirecta', 'Franco', 'Medio', 'Cada 10 días', 'Templado'],
+      ['Nolina', 'Nolina sp.', 'Directa', 'Arenoso', 'Fácil', 'Cada 30 días', 'Templado'],
+      ['Othonna', 'Othonna sp.', 'Directa', 'Arenoso', 'Fácil', 'Cada 21 días', 'Templado'],
+      ['Oxalis', 'Oxalis sp.', 'Indirecta', 'Franco', 'Fácil', 'Cada 7 días', 'Templado'],
+      ['Pachyphytum', 'Pachyphytum sp.', 'Directa', 'Arenoso', 'Fácil', 'Cada 21 días', 'Templado'],
+      ['Pachypodium', 'Pachypodium sp.', 'Directa', 'Arenoso', 'Medio', 'Cada 14 días', 'Cálido'],
+      ['Pelargonium', 'Pelargonium sp.', 'Directa', 'Franco', 'Fácil', 'Cada 10 días', 'Templado'],
+      ['Plumeria', 'Plumeria sp.', 'Directa', 'Franco', 'Medio', 'Cada 14 días', 'Cálido'],
+      ['Portulaca', 'Portulaca sp.', 'Directa', 'Arenoso', 'Fácil', 'Cada 10 días', 'Cálido'],
+      ['Portulacaria', 'Portulacaria sp.', 'Directa', 'Arenoso', 'Fácil', 'Cada 21 días', 'Cálido'],
+      ['Sansevieria', 'Sansevieria sp.', 'Sombra', 'Arenoso', 'Fácil', 'Cada 21 días', 'Cálido'],
+      ['Sempervivum', 'Sempervivum sp.', 'Directa', 'Arenoso', 'Fácil', 'Cada 21 días', 'Frío'],
+      ['Sedum', 'Sedum sp.', 'Directa', 'Arenoso', 'Fácil', 'Cada 21 días', 'Templado'],
+      ['Senecio', 'Senecio sp.', 'Indirecta', 'Arenoso', 'Fácil', 'Cada 14 días', 'Cálido'],
+      ['Sinningia', 'Sinningia sp.', 'Indirecta', 'Franco', 'Medio', 'Cada 7 días', 'Cálido'],
+      ['Stapelia', 'Stapelia sp.', 'Directa', 'Arenoso', 'Fácil', 'Cada 21 días', 'Cálido'],
+      ['Synadenium', 'Synadenium sp.', 'Directa', 'Franco', 'Fácil', 'Cada 14 días', 'Cálido'],
+      ['Talinum', 'Talinum sp.', 'Directa', 'Arenoso', 'Fácil', 'Cada 14 días', 'Cálido'],
+      ['Tillandsia', 'Tillandsia sp.', 'Indirecta', 'Arenoso', 'Medio', 'Cada 7 días', 'Cálido'],
+      ['Villadia', 'Villadia sp.', 'Directa', 'Arenoso', 'Fácil', 'Cada 21 días', 'Templado'],
+      ['Xerosicyos', 'Xerosicyos sp.', 'Indirecta', 'Arenoso', 'Fácil', 'Cada 14 días', 'Cálido'],
+      ['Aptenia', 'Aptenia sp.', 'Directa', 'Arenoso', 'Fácil', 'Cada 14 días', 'Templado'],
+      ['Lampranthus', 'Lampranthus sp.', 'Directa', 'Arenoso', 'Fácil', 'Cada 14 días', 'Templado'],
+      ['Delosperma', 'Delosperma sp.', 'Directa', 'Arenoso', 'Fácil', 'Cada 14 días', 'Frío'],
+      ['Oscularia', 'Oscularia sp.', 'Directa', 'Arenoso', 'Fácil', 'Cada 14 días', 'Templado'],
+      ['Faucaria', 'Faucaria sp.', 'Directa', 'Arenoso', 'Fácil', 'Cada 21 días', 'Templado'],
+      ['Glottiphyllum', 'Glottiphyllum sp.', 'Directa', 'Arenoso', 'Fácil', 'Cada 21 días', 'Templado'],
+      ['Titanopsis', 'Titanopsis sp.', 'Directa', 'Arenoso', 'Exigente', 'Cada 30 días', 'Cálido'],
+      ['Trichodiadema', 'Trichodiadema sp.', 'Directa', 'Arenoso', 'Fácil', 'Cada 21 días', 'Templado'],
+      ['Conophytum', 'Conophytum sp.', 'Directa', 'Arenoso', 'Exigente', 'Cada 30 días', 'Cálido'],
+      ['Fenestraria', 'Fenestraria sp.', 'Directa', 'Arenoso', 'Exigente', 'Cada 30 días', 'Cálido'],
+      ['Frithia', 'Frithia sp.', 'Directa', 'Arenoso', 'Exigente', 'Cada 30 días', 'Cálido'],
+      ['Lithops', 'Lithops sp.', 'Directa', 'Arenoso', 'Exigente', 'Cada 30 días', 'Cálido'],
+      ['Pleiospilos', 'Pleiospilos sp.', 'Directa', 'Arenoso', 'Exigente', 'Cada 30 días', 'Cálido'],
+    ],
+  },
+  {
+    // "Suculentas cactáceas" del índice del libro. Género + "sp." salvo los
+    // binomios que el índice ya trae. Por defecto: sol directo, sustrato
+    // arenoso, riego muy espaciado, clima cálido.
+    label: 'Cactus',
+    plants: [
+      ['Acanthocalycium', 'Acanthocalycium sp.', 'Directa', 'Arenoso', 'Fácil', 'Cada 30 días', 'Cálido'],
+      ['Aporocactus', 'Aporocactus sp.', 'Indirecta', 'Franco', 'Fácil', 'Cada 14 días', 'Templado'],
+      ['Ariocarpus', 'Ariocarpus sp.', 'Directa', 'Arenoso', 'Exigente', 'Cada 30 días', 'Cálido'],
+      ['Astrophytum', 'Astrophytum sp.', 'Directa', 'Arenoso', 'Medio', 'Cada 30 días', 'Cálido'],
+      ['Austrocactus', 'Austrocactus sp.', 'Directa', 'Arenoso', 'Fácil', 'Cada 21 días', 'Frío'],
+      ['Aztekium', 'Aztekium sp.', 'Directa', 'Arenoso', 'Exigente', 'Cada 30 días', 'Cálido'],
+      ['Blossfeldia', 'Blossfeldia liliputana', 'Directa', 'Arenoso', 'Exigente', 'Cada 30 días', 'Cálido'],
+      ['Carnegiea', 'Carnegiea sp.', 'Directa', 'Arenoso', 'Fácil', 'Cada 30 días', 'Cálido'],
+      ['Cereus', 'Cereus sp.', 'Directa', 'Arenoso', 'Fácil', 'Cada 30 días', 'Cálido'],
+      ['Cleistocactus', 'Cleistocactus sp.', 'Directa', 'Arenoso', 'Fácil', 'Cada 30 días', 'Cálido'],
+      ['Cochemiea', 'Cochemiea sp.', 'Directa', 'Arenoso', 'Fácil', 'Cada 30 días', 'Cálido'],
+      ['Copiapoa', 'Copiapoa sp.', 'Directa', 'Arenoso', 'Medio', 'Cada 30 días', 'Cálido'],
+      ['Coryphantha', 'Coryphantha sp.', 'Directa', 'Arenoso', 'Fácil', 'Cada 30 días', 'Cálido'],
+      ['Cumarinia', 'Cumarinia sp.', 'Directa', 'Arenoso', 'Fácil', 'Cada 30 días', 'Cálido'],
+      ['Denmoza', 'Denmoza sp.', 'Directa', 'Arenoso', 'Fácil', 'Cada 30 días', 'Cálido'],
+      ['Discocactus', 'Discocactus sp.', 'Directa', 'Arenoso', 'Medio', 'Cada 21 días', 'Cálido'],
+      ['Echinocactus', 'Echinocactus sp.', 'Directa', 'Arenoso', 'Fácil', 'Cada 30 días', 'Cálido'],
+      ['Echinocereus', 'Echinocereus sp.', 'Directa', 'Arenoso', 'Fácil', 'Cada 30 días', 'Cálido'],
+      ['Echinofossulocactus', 'Echinofossulocactus sp.', 'Directa', 'Arenoso', 'Fácil', 'Cada 30 días', 'Cálido'],
+      ['Echinopsis', 'Echinopsis sp.', 'Directa', 'Arenoso', 'Fácil', 'Cada 21 días', 'Templado'],
+      ['Epithelantha', 'Epithelantha sp.', 'Directa', 'Arenoso', 'Medio', 'Cada 30 días', 'Cálido'],
+      ['Eriosyce', 'Eriosyce sp.', 'Directa', 'Arenoso', 'Fácil', 'Cada 30 días', 'Cálido'],
+      ['Escobaria', 'Escobaria sp.', 'Directa', 'Arenoso', 'Fácil', 'Cada 30 días', 'Templado'],
+      ['Espostoa', 'Espostoa sp.', 'Directa', 'Arenoso', 'Fácil', 'Cada 30 días', 'Cálido'],
+      ['Ferocactus', 'Ferocactus sp.', 'Directa', 'Arenoso', 'Fácil', 'Cada 30 días', 'Cálido'],
+      ['Frailea', 'Frailea sp.', 'Directa', 'Arenoso', 'Fácil', 'Cada 21 días', 'Templado'],
+      ['Gymnocalycium', 'Gymnocalycium sp.', 'Indirecta', 'Arenoso', 'Fácil', 'Cada 21 días', 'Cálido'],
+      ['Haageocereus', 'Haageocereus sp.', 'Directa', 'Arenoso', 'Fácil', 'Cada 30 días', 'Cálido'],
+      ['Harrisia', 'Harrisia sp.', 'Directa', 'Arenoso', 'Fácil', 'Cada 30 días', 'Cálido'],
+      ['Leuchtenbergia', 'Leuchtenbergia sp.', 'Directa', 'Arenoso', 'Medio', 'Cada 30 días', 'Cálido'],
+      ['Lophophora', 'Lophophora sp.', 'Directa', 'Arenoso', 'Exigente', 'Cada 30 días', 'Cálido'],
+      ['Lobivia', 'Lobivia sp.', 'Directa', 'Arenoso', 'Fácil', 'Cada 21 días', 'Templado'],
+      ['Maihueniopsis', 'Maihueniopsis sp.', 'Directa', 'Arenoso', 'Fácil', 'Cada 21 días', 'Frío'],
+      ['Matucana', 'Matucana sp.', 'Directa', 'Arenoso', 'Fácil', 'Cada 30 días', 'Cálido'],
+      ['Mammillaria', 'Mammillaria sp.', 'Directa', 'Arenoso', 'Fácil', 'Cada 21 días', 'Cálido'],
+      ['Melocactus', 'Melocactus sp.', 'Directa', 'Arenoso', 'Medio', 'Cada 21 días', 'Cálido'],
+      ['Monvillea', 'Monvillea sp.', 'Directa', 'Arenoso', 'Fácil', 'Cada 30 días', 'Cálido'],
+      ['Myrtillocactus', 'Myrtillocactus geometrizans', 'Directa', 'Arenoso', 'Fácil', 'Cada 30 días', 'Cálido'],
+      ['Obregonia', 'Obregonia sp.', 'Directa', 'Arenoso', 'Exigente', 'Cada 30 días', 'Cálido'],
+      ['Notocactus', 'Notocactus sp.', 'Directa', 'Arenoso', 'Fácil', 'Cada 21 días', 'Templado'],
+      ['Opuntia', 'Opuntia sp.', 'Directa', 'Arenoso', 'Fácil', 'Cada 30 días', 'Cálido'],
+      ['Oreocereus', 'Oreocereus sp.', 'Directa', 'Arenoso', 'Fácil', 'Cada 30 días', 'Cálido'],
+      ['Parodia', 'Parodia sp.', 'Directa', 'Arenoso', 'Fácil', 'Cada 21 días', 'Templado'],
+      ['Peniocereus', 'Peniocereus sp.', 'Directa', 'Arenoso', 'Fácil', 'Cada 30 días', 'Cálido'],
+      ['Pereskia', 'Pereskia sp.', 'Directa', 'Franco', 'Fácil', 'Cada 14 días', 'Cálido'],
+      ['Pyrrhocactus', 'Pyrrhocactus sp.', 'Directa', 'Arenoso', 'Fácil', 'Cada 30 días', 'Cálido'],
+      ['Quiabentia', 'Quiabentia sp.', 'Directa', 'Franco', 'Fácil', 'Cada 14 días', 'Cálido'],
+      ['Rebutia', 'Rebutia sp.', 'Directa', 'Arenoso', 'Fácil', 'Cada 21 días', 'Templado'],
+      ['Sclerocactus', 'Sclerocactus sp.', 'Directa', 'Arenoso', 'Exigente', 'Cada 30 días', 'Frío'],
+      ['Stenocereus', 'Stenocereus sp.', 'Directa', 'Arenoso', 'Fácil', 'Cada 30 días', 'Cálido'],
+      ['Stetsonia', 'Stetsonia coryne', 'Directa', 'Arenoso', 'Fácil', 'Cada 30 días', 'Cálido'],
+      ['Strombocactus', 'Strombocactus sp.', 'Directa', 'Arenoso', 'Exigente', 'Cada 30 días', 'Cálido'],
+      ['Thelocactus', 'Thelocactus sp.', 'Directa', 'Arenoso', 'Fácil', 'Cada 30 días', 'Cálido'],
+      ['Tephrocactus', 'Tephrocactus sp.', 'Directa', 'Arenoso', 'Fácil', 'Cada 21 días', 'Templado'],
+      ['Trichocereus', 'Trichocereus sp.', 'Directa', 'Arenoso', 'Fácil', 'Cada 30 días', 'Cálido'],
+      ['Turbinicarpus', 'Turbinicarpus sp.', 'Directa', 'Arenoso', 'Medio', 'Cada 30 días', 'Cálido'],
+      ['Uebelmannia', 'Uebelmannia sp.', 'Directa', 'Arenoso', 'Medio', 'Cada 21 días', 'Cálido'],
+      ['Weingartia', 'Weingartia sp.', 'Directa', 'Arenoso', 'Fácil', 'Cada 30 días', 'Cálido'],
     ],
   },
   {
@@ -195,11 +362,122 @@ const CATEGORIES = [
   },
 ];
 
+/**
+ * Géneros de Suculentas con especies ornamentales bien diferenciadas. Cuando un
+ * `row.name` figura acá, la galería de la ficha (la que se abre en la vista 1)
+ * muestra una foto por especie con su nombre de pie, en vez de una sola con
+ * "1/1". Cada entrada es `[texto del pie, término para buscar/descargar la foto]`;
+ * si es un string, sirve para las dos cosas. La clave es el `name` de la fila.
+ */
+export const VARIEDADES = {
+  Haworthia: [
+    ['Haworthia fasciata', 'Haworthiopsis fasciata'],
+    ['Haworthia attenuata', 'Haworthiopsis attenuata'],
+    ['Haworthia cooperi', 'Haworthia cooperi'],
+    ['Haworthia cymbiformis', 'Haworthia cymbiformis'],
+    ['Haworthia limifolia', 'Haworthiopsis limifolia'],
+    ['Haworthia retusa', 'Haworthia retusa'],
+    ['Haworthia truncata', 'Haworthia truncata'],
+    ['Haworthia margaritifera', 'Haworthiopsis pumila'],
+  ],
+  Echeveria: [
+    'Echeveria elegans',
+    'Echeveria agavoides',
+    'Echeveria pulvinata',
+    'Echeveria setosa',
+    'Echeveria derenbergii',
+    'Echeveria lilacina',
+  ],
+  Aloe: [
+    'Aloe vera',
+    'Aloe arborescens',
+    ['Aloe aristata', 'Aristaloe aristata'],
+    ['Aloe variegata', 'Gonialoe variegata'],
+    'Aloe ferox',
+    'Aloe polyphylla',
+  ],
+  Gasteria: ['Gasteria bicolor', 'Gasteria batesiana', 'Gasteria glomerata', 'Gasteria carinata'],
+  Sedum: [
+    'Sedum morganianum',
+    'Sedum rubrotinctum',
+    'Sedum dasyphyllum',
+    'Sedum nussbaumerianum',
+    'Sedum adolphii',
+  ],
+  Kalanchoe: [
+    'Kalanchoe blossfeldiana',
+    'Kalanchoe tomentosa',
+    'Kalanchoe daigremontiana',
+    'Kalanchoe thyrsiflora',
+    'Kalanchoe beharensis',
+  ],
+  Sempervivum: [
+    'Sempervivum tectorum',
+    'Sempervivum arachnoideum',
+    'Sempervivum calcareum',
+    'Sempervivum montanum',
+  ],
+  Crassula: [
+    'Crassula ovata',
+    'Crassula perforata',
+    'Crassula muscosa',
+    'Crassula capitella',
+    'Crassula arborescens',
+  ],
+  Agave: [
+    'Agave americana',
+    'Agave attenuata',
+    'Agave victoriae-reginae',
+    'Agave parryi',
+    'Agave filifera',
+  ],
+  Aeonium: ['Aeonium arboreum', 'Aeonium haworthii', 'Aeonium tabuliforme', 'Aeonium canariense'],
+  Graptopetalum: [
+    'Graptopetalum paraguayense',
+    'Graptopetalum amethystinum',
+    'Graptopetalum bellum',
+  ],
+  Cotyledon: ['Cotyledon orbiculata', 'Cotyledon tomentosa'],
+  Senecio: [
+    'Senecio rowleyanus',
+    'Senecio radicans',
+    'Senecio haworthii',
+    ['Senecio serpens', 'Curio repens'],
+  ],
+  Euphorbia: [
+    'Euphorbia tirucalli',
+    'Euphorbia milii',
+    'Euphorbia trigona',
+    'Euphorbia obesa',
+    'Euphorbia ingens',
+  ],
+  Lithops: [
+    'Lithops lesliei',
+    'Lithops aucampiae',
+    'Lithops karasmontana',
+    'Lithops optica',
+    'Lithops salicola',
+  ],
+  Sansevieria: [
+    'Sansevieria trifasciata',
+    ['Sansevieria cylindrica', 'Dracaena angolensis'],
+    ['Sansevieria masoniana', 'Dracaena masoniana'],
+    'Sansevieria zeylanica',
+  ],
+  Pachyphytum: ['Pachyphytum oviferum', 'Pachyphytum compactum', 'Pachyphytum hookeri'],
+  Adromischus: ['Adromischus cristatus', 'Adromischus maculatus', 'Adromischus marianiae'],
+  Portulacaria: ['Portulacaria afra'],
+};
+
 const RIEGOS = ['Cada 5 días', 'Cada 7 días', 'Cada 10 días', 'Cada 14 días', 'Cada 21 días', 'Cada 30 días'];
 
-/** Placeholder confiable (siempre carga), distinto por planta según su slug */
+/**
+ * Foto local de la planta, descargada y recortada a cuadrado por
+ * `scripts/fetch-plant-images.mjs`. La ruta es relativa a la raíz del sitio,
+ * donde viven index.html / planta.html / coleccion.html.
+ */
 function imagenParaSlug(slug) {
-  return `https://picsum.photos/seed/${slug}/1400/1400`;
+  return `assets/img/plantas/${slug}.jpg`;
 }
 
 function riegosEstacionales(riegoBase) {
@@ -242,6 +520,28 @@ function buildRow([name, species, luz, suelo, cuidado, riegoBase, clima, overrid
   const imagen = overrides?.imagen ?? imagenParaSlug(slug);
   const id = overrides?.id ?? `${name}::${species}::${slug}`.toLowerCase();
 
+  // Galería de la ficha: una foto por variedad con su nombre, o una sola
+  // (pie = la especie) cuando el género no tiene lista de variedades. Cuando
+  // sí tiene, cada variedad lleva su propio id para agregarse suelta a la
+  // Colección (p. ej. "Haworthia fasciata" y no el género entero).
+  const defs = VARIEDADES[name];
+  const tieneVariedades = Boolean(defs);
+  const variedades = defs
+    ? defs
+        .map((v) => {
+          const [caption, query] = Array.isArray(v) ? v : [v, v];
+          const vslug = slugify(query);
+          return {
+            caption,
+            especie: query,
+            imagen: imagenParaSlug(vslug),
+            id: `${caption}::${query}::${vslug}`.toLowerCase(),
+          };
+        })
+        .sort((a, b) => a.caption.localeCompare(b.caption, 'es', { sensitivity: 'base' }))
+    : [{ caption: species, especie: species, imagen, id }];
+  const galeria = variedades.map((v) => v.imagen);
+
   return {
     name,
     species,
@@ -254,13 +554,16 @@ function buildRow([name, species, luz, suelo, cuidado, riegoBase, clima, overrid
     sol,
     categoria,
     imagen,
+    galeria,
+    variedades,
+    tieneVariedades,
     id,
   };
 }
 
 function rowHtml(row) {
   const riegosAttr = escapeAttr(JSON.stringify(row.riegos));
-  const addAttrs = `data-id="${escapeAttr(row.id)}" data-nombre="${escapeAttr(row.name)}" data-especie="${escapeAttr(row.species)}" data-riego="${escapeAttr(row.riego)}" data-riegos="${riegosAttr}" data-clima="${escapeAttr(row.clima)}" data-luz="${escapeAttr(row.luz)}" data-ubicacion="${escapeAttr(row.sol)}" data-suelo="${escapeAttr(row.suelo)}" data-cuidado="${escapeAttr(row.cuidado)}" data-imagen="${escapeAttr(row.imagen)}" data-galeria="${escapeAttr(JSON.stringify([row.imagen]))}"`;
+  const addAttrs = `data-id="${escapeAttr(row.id)}" data-nombre="${escapeAttr(row.name)}" data-especie="${escapeAttr(row.species)}" data-riego="${escapeAttr(row.riego)}" data-riegos="${riegosAttr}" data-clima="${escapeAttr(row.clima)}" data-luz="${escapeAttr(row.luz)}" data-ubicacion="${escapeAttr(row.sol)}" data-suelo="${escapeAttr(row.suelo)}" data-cuidado="${escapeAttr(row.cuidado)}" data-imagen="${escapeAttr(row.imagen)}" data-galeria="${escapeAttr(JSON.stringify(row.galeria))}"`;
 
   return `<div class="catalog-entry" data-riego="${escapeAttr(row.riego)}" data-riegos="${riegosAttr}" data-clima="${escapeAttr(row.clima)}" data-luz="${escapeAttr(row.luz)}" data-ubicacion="${escapeAttr(row.sol)}" data-suelo="${escapeAttr(row.suelo)}" data-cuidado="${escapeAttr(row.cuidado)}">
   <figure class="catalog-tile">
@@ -307,10 +610,18 @@ function rowHtml(row) {
         <div class="catalog-detail-row"><dt>Cuidado</dt><dd>${escapeAttr(row.cuidado)}</dd></div>
       </dl>
       <div class="catalog-gallery">
-      <figure class="catalog-gallery-item">
-        <img src="${escapeAttr(row.imagen)}" alt="${escapeAttr(row.name)} 1/1" loading="lazy" width="200" height="150" />
-        <figcaption>1/1</figcaption>
-      </figure>
+${row.variedades
+  .map((v) => {
+    const btn = row.tieneVariedades
+      ? `<button type="button" class="catalog-add catalog-add--variedad" data-id="${escapeAttr(v.id)}" data-nombre="${escapeAttr(v.caption)}" data-especie="${escapeAttr(v.especie)}" data-riego="${escapeAttr(row.riego)}" data-riegos="${riegosAttr}" data-clima="${escapeAttr(row.clima)}" data-luz="${escapeAttr(row.luz)}" data-ubicacion="${escapeAttr(row.sol)}" data-suelo="${escapeAttr(row.suelo)}" data-cuidado="${escapeAttr(row.cuidado)}" data-imagen="${escapeAttr(v.imagen)}" data-galeria="${escapeAttr(JSON.stringify([v.imagen]))}" title="Agregar ${escapeAttr(v.caption)} a Colección" aria-label="Agregar ${escapeAttr(v.caption)} a Colección">+</button>
+        `
+      : '';
+    return `      <figure class="catalog-gallery-item">
+        ${btn}<img src="${escapeAttr(v.imagen)}" alt="${escapeAttr(v.caption)}" loading="lazy" height="150" />
+        <figcaption>${escapeAttr(v.caption)}</figcaption>
+      </figure>`;
+  })
+  .join('\n')}
       </div>
     </div>
   </div>
@@ -356,7 +667,11 @@ function main() {
   // plantas de las otras categorías. Con el DOM plano no había forma de
   // expresarlo en CSS, porque no existe un selector de "hermanos hasta el
   // próximo encabezado".
-  for (const { label, plants } of CATEGORIES) {
+  // Los bloques se emiten en orden alfabético de categoría (colación española,
+  // sin distinguir acentos ni mayúsculas). CATEGORIES conserva el orden temático
+  // del libro, que sólo lo usa writeCategoriasModule().
+  const categoriasOrdenadas = [...CATEGORIES].sort((a, b) => collator.compare(a.label, b.label));
+  for (const { label, plants } of categoriasOrdenadas) {
     const sorted = [...plants].sort((a, b) => collator.compare(a[0], b[0]));
     blocks.push({ categoryHeader: label, rows: sorted.map((p) => buildRow(p, label)) });
   }
@@ -410,8 +725,13 @@ function writeCategoriasModule() {
   console.log(`Índice de categorías escrito en ${path.relative(path.join(__dirname, '..'), CATEGORIAS_PATH)}.`);
 }
 
-if (process.argv.includes('--categorias-only')) {
-  writeCategoriasModule();
-} else {
-  main();
+const isMain =
+  process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+
+if (isMain) {
+  if (process.argv.includes('--categorias-only')) {
+    writeCategoriasModule();
+  } else {
+    main();
+  }
 }
