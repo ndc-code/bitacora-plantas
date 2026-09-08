@@ -1972,6 +1972,10 @@ select.input {
     display: none;
   }
 
+  .catalog-meta .catalog-auth-group {
+    display: contents;
+  }
+
   .catalog-view-switch {
     grid-area: views;
     justify-self: end;
@@ -2837,82 +2841,129 @@ body.sidebar-open::before {
   }
 }
 
-/* ---- Ajustes: copias de seguridad ---- */
-.ajustes-main {
-  padding: var(--space-10) var(--catalog-inline, var(--space-4)) var(--space-15);
-  max-width: 760px;
-  margin: 0 auto;
+/* ---- Ajustes: reusa el layout de la bitácora ---- */
+#ajustes-main {
+  padding-left: var(--catalog-inline);
+  padding-right: var(--catalog-inline);
+  padding-bottom: var(--space-15);
 }
 
-.ajustes-titulo {
-  margin: 0 0 var(--space-4);
+#ajustes-nombre {
+  margin: 0;
   font-family: var(--font-heading);
-  font-size: 38px;
-  letter-spacing: -0.3px;
+  font-weight: 400;
+  font-size: 112px;
+  letter-spacing: -6px;
+  line-height: 1;
+  color: var(--color-ink);
 }
 
-.ajustes-nota {
-  margin: 0 0 var(--space-6);
-  color: var(--color-gray-mid);
-  font-size: 16px;
-  line-height: 1.5;
-  max-width: 60ch;
+@media (max-width: 1024px) {
+  #ajustes-nombre {
+    font-size: 54px;
+    letter-spacing: -3px;
+  }
+}
+
+@media (max-width: 640px) {
+  #ajustes-nombre {
+    font-size: 34px;
+    letter-spacing: -1.5px;
+  }
+}
+
+.ajustes-panel {
+  min-width: 0;
 }
 
 .ajustes-acciones {
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-3);
-  margin-bottom: var(--space-4);
+  margin-bottom: var(--space-6);
 }
 
 .ajustes-restaurar-archivo {
   cursor: pointer;
 }
 
+.ajustes-acciones .btn {
+  height: auto;
+  min-width: 0;
+  padding: 12px 20px;
+  font-size: 15px;
+}
+
 .ajustes-lista {
-  margin-top: var(--space-5);
+  border-top: 1px solid var(--color-border);
 }
 
 .ajustes-copia-row {
   display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  padding: var(--space-3) 0;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-4) 0;
   border-bottom: 1px solid var(--color-border);
 }
 
-.ajustes-copia-row:last-child {
-  border-bottom: none;
-}
-
 .ajustes-copia-main {
-  flex: 1;
   min-width: 0;
 }
 
 .ajustes-copia-when {
-  font-weight: 400;
-  font-size: 16px;
+  font-size: 15px;
+  color: var(--color-ink);
 }
 
 .ajustes-copia-label {
-  font-size: 14px;
+  margin-top: var(--space-1);
+  font-family: 'SFMono-Regular', ui-monospace, 'Courier New', monospace;
+  font-size: 13px;
   color: var(--color-gray-mid);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
-.ajustes-copia-row .btn {
-  flex: 0 0 auto;
+.ajustes-copia-acciones {
+  flex-shrink: 0;
+  display: flex;
+  gap: var(--space-2);
+}
+
+.ajustes-copia-acciones .btn {
   height: auto;
   min-width: 0;
   padding: 8px 14px;
-  font-size: 15px;
+  font-size: 13px;
+}
+
+.ajustes-nota-lista {
+  padding: var(--space-4) 0;
+  font-size: 14px;
+  color: var(--color-gray-mid);
+}
+
+/* "Ajustes" al lado de "Cerrar sesión", no debajo. */
+.catalog-auth-group {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+}
+
+.catalog-sidebar-auth-group {
+  align-self: flex-start;
+  margin: var(--space-4) 0 0;
+}
+
+.catalog-sidebar-auth-group .catalog-sidebar-auth-btn {
+  margin: 0;
 }
 
 @media (max-width: 640px) {
+  .ajustes-copia-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
   .ajustes-acciones .btn {
     flex: 1 1 100%;
   }

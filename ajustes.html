@@ -20,7 +20,6 @@
       <a class="catalog-nav-link" href="index.html">Index</a>
       <a class="catalog-nav-link" href="coleccion.html">Colección</a>
       <a class="catalog-nav-link" href="riegos.html">Riegos</a>
-      <a class="catalog-nav-link is-active" href="ajustes.html" data-ajustes-link hidden>Ajustes</a>
     </nav>
     <button
       type="button"
@@ -37,8 +36,10 @@
         <span class="catalog-theme-toggle-sep" aria-hidden="true">·</span>
         <button type="button" class="catalog-theme-toggle" data-theme-toggle aria-pressed="false">Noche</button>
       </p>
-      <button type="button" class="catalog-auth-btn" data-auth-nav>Iniciar sesión</button>
-      <a class="catalog-auth-btn" href="ajustes.html" data-ajustes-link hidden>Ajustes</a>
+      <span class="catalog-auth-group">
+        <button type="button" class="catalog-auth-btn" data-auth-nav>Iniciar sesión</button>
+        <a class="catalog-auth-btn" href="ajustes.html" data-ajustes-link hidden>Ajustes</a>
+      </span>
     </div>
   </header>
 
@@ -52,42 +53,54 @@
       <a class="catalog-sidebar-link" href="index.html">Index</a>
       <a class="catalog-sidebar-link" href="coleccion.html">Colección</a>
       <a class="catalog-sidebar-link" href="riegos.html">Riegos</a>
-      <a class="catalog-sidebar-link is-active" href="ajustes.html" data-ajustes-link hidden>Ajustes</a>
     </nav>
     <p class="catalog-sidebar-datetime">Buenos Aires, ARG <time data-reloj>00:00</time></p>
-    <button type="button" class="catalog-sidebar-auth-btn" data-auth-nav>Iniciar sesión</button>
-    <a class="catalog-sidebar-auth-btn" href="ajustes.html" data-ajustes-link hidden>Ajustes</a>
+    <span class="catalog-auth-group catalog-sidebar-auth-group">
+      <button type="button" class="catalog-sidebar-auth-btn" data-auth-nav>Iniciar sesión</button>
+      <a class="catalog-sidebar-auth-btn" href="ajustes.html" data-ajustes-link hidden>Ajustes</a>
+    </span>
   </aside>
 
-  <main id="ajustes-main" class="ajustes-main">
+  <main id="ajustes-main">
+    <header class="bitacora-heading">
+      <div class="bitacora-heading-info">
+        <h1 id="ajustes-nombre">Ajustes</h1>
+        <p class="bitacora-especie">
+          Una copia de seguridad guarda una foto completa de todo: tu colección,
+          la bitácora de cada planta (riegos y notas) y las fotos de galería. Si
+          algún día se borra o se rompe algo, restaurás y vuelve tal cual estaba.
+          Se hace una copia automática por día; también podés crear una ahora o
+          descargar un archivo para guardar por tu cuenta.
+        </p>
+      </div>
+    </header>
+
+    <div class="bitacora-divider"></div>
+
     <p id="ajustes-sin-sesion" class="catalog-empty" hidden>
       Iniciá sesión para gestionar tus copias de seguridad.
       <button type="button" class="btn btn-primary" id="btn-abrir-login-ajustes">Iniciar sesión</button>
     </p>
 
-    <section id="ajustes-contenido" class="ajustes-seccion" hidden>
-      <h1 class="ajustes-titulo">Copias de seguridad</h1>
-      <p class="ajustes-nota">
-        Una copia guarda una foto completa de todo: tu colección, la bitácora de
-        cada planta (riegos y notas) y las fotos de galería. Si algún día se
-        borra o se rompe algo, restaurás y vuelve tal cual estaba. Se hace una
-        copia automática por día; también podés crear una ahora o descargar un
-        archivo para guardar por tu cuenta.
-      </p>
+    <section id="ajustes-contenido" hidden>
+      <div class="bitacora-section">
+        <p class="bitacora-section-label">Copias de seguridad</p>
+        <div class="ajustes-panel">
+          <div class="ajustes-acciones">
+            <button type="button" class="btn btn-primary" id="btn-crear-copia">Crear copia ahora</button>
+            <button type="button" class="btn btn-secondary" id="btn-descargar-copia">Descargar copia (.json)</button>
+            <label class="btn btn-secondary ajustes-restaurar-archivo">
+              Restaurar desde archivo
+              <input type="file" accept="application/json,.json" id="input-restaurar-archivo" hidden />
+            </label>
+          </div>
 
-      <div class="ajustes-acciones">
-        <button type="button" class="btn btn-primary" id="btn-crear-copia">Crear copia ahora</button>
-        <button type="button" class="btn btn-secondary" id="btn-descargar-copia">Descargar copia (.json)</button>
-        <label class="btn btn-secondary ajustes-restaurar-archivo">
-          Restaurar desde archivo
-          <input type="file" accept="application/json,.json" id="input-restaurar-archivo" hidden />
-        </label>
+          <p class="field-error" id="ajustes-error" hidden></p>
+          <p class="field-status" id="ajustes-estado" hidden></p>
+
+          <div id="lista-copias" class="ajustes-lista"></div>
+        </div>
       </div>
-
-      <p class="field-error" id="ajustes-error" hidden></p>
-      <p class="field-status" id="ajustes-estado" hidden></p>
-
-      <div id="lista-copias" class="ajustes-lista"></div>
     </section>
   </main>
 
