@@ -55,6 +55,11 @@ export function wireAuthNav({ onLogin } = {}) {
       btn.textContent = haySesion ? 'Cerrar sesión' : 'Iniciar sesión';
       btn.disabled = false;
     });
+
+    // El link "Ajustes" (copias de seguridad) solo tiene sentido con sesión.
+    qsa('[data-ajustes-link]').forEach((link) => {
+      link.hidden = !haySesion;
+    });
   }
 
   return { sync };

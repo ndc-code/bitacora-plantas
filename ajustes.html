@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Riegos — Bitácora de Plantas</title>
+  <title>Ajustes — Bitácora de Plantas</title>
   <script>
     try {
       if (localStorage.getItem('tema') === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
@@ -11,16 +11,16 @@
   </script>
   <link rel="stylesheet" href="css/styles.css" />
 </head>
-<body class="catalog-page catalog-page--riegos">
+<body class="catalog-page catalog-page--ajustes">
   <header class="catalog-header">
     <p class="catalog-header-left">
-      Próximos riegos de tu colección.
+      Copias de seguridad de tu colección, bitácora y fotos.
     </p>
     <nav class="catalog-nav" aria-label="Principal">
       <a class="catalog-nav-link" href="index.html">Index</a>
       <a class="catalog-nav-link" href="coleccion.html">Colección</a>
-      <a class="catalog-nav-link is-active" href="riegos.html">Riegos</a>
-      <a class="catalog-nav-link" href="ajustes.html" data-ajustes-link hidden>Ajustes</a>
+      <a class="catalog-nav-link" href="riegos.html">Riegos</a>
+      <a class="catalog-nav-link is-active" href="ajustes.html" data-ajustes-link hidden>Ajustes</a>
     </nav>
     <button
       type="button"
@@ -33,7 +33,7 @@
     </button>
     <div class="catalog-meta">
       <p>
-        Buenos Aires, ARG <time data-reloj>23:46</time>
+        Buenos Aires, ARG <time data-reloj>00:00</time>
         <span class="catalog-theme-toggle-sep" aria-hidden="true">·</span>
         <button type="button" class="catalog-theme-toggle" data-theme-toggle aria-pressed="false">Noche</button>
       </p>
@@ -51,23 +51,44 @@
     <nav class="catalog-sidebar-nav" aria-label="Principal">
       <a class="catalog-sidebar-link" href="index.html">Index</a>
       <a class="catalog-sidebar-link" href="coleccion.html">Colección</a>
-      <a class="catalog-sidebar-link is-active" href="riegos.html">Riegos</a>
-      <a class="catalog-sidebar-link" href="ajustes.html" data-ajustes-link hidden>Ajustes</a>
+      <a class="catalog-sidebar-link" href="riegos.html">Riegos</a>
+      <a class="catalog-sidebar-link is-active" href="ajustes.html" data-ajustes-link hidden>Ajustes</a>
     </nav>
-    <p class="catalog-sidebar-datetime">Buenos Aires, ARG <time data-reloj>23:46</time></p>
+    <p class="catalog-sidebar-datetime">Buenos Aires, ARG <time data-reloj>00:00</time></p>
     <button type="button" class="catalog-sidebar-auth-btn" data-auth-nav>Iniciar sesión</button>
     <a class="catalog-sidebar-auth-btn" href="ajustes.html" data-ajustes-link hidden>Ajustes</a>
   </aside>
 
-  <main id="riegos-contenido" class="riegos-list" hidden>
-    <section class="riegos-section">
-      <h2 class="riegos-section-title">Próximos</h2>
-      <ul id="riegos-proximos" class="riegos-rows"></ul>
-    </section>
-
-    <p id="mensaje-vacio" class="catalog-empty" hidden>
-      Todavía no hay plantas en tu colección. Sumá algunas desde Index con (Agregar).
+  <main id="ajustes-main" class="ajustes-main">
+    <p id="ajustes-sin-sesion" class="catalog-empty" hidden>
+      Iniciá sesión para gestionar tus copias de seguridad.
+      <button type="button" class="btn btn-primary" id="btn-abrir-login-ajustes">Iniciar sesión</button>
     </p>
+
+    <section id="ajustes-contenido" class="ajustes-seccion" hidden>
+      <h1 class="ajustes-titulo">Copias de seguridad</h1>
+      <p class="ajustes-nota">
+        Una copia guarda una foto completa de todo: tu colección, la bitácora de
+        cada planta (riegos y notas) y las fotos de galería. Si algún día se
+        borra o se rompe algo, restaurás y vuelve tal cual estaba. Se hace una
+        copia automática por día; también podés crear una ahora o descargar un
+        archivo para guardar por tu cuenta.
+      </p>
+
+      <div class="ajustes-acciones">
+        <button type="button" class="btn btn-primary" id="btn-crear-copia">Crear copia ahora</button>
+        <button type="button" class="btn btn-secondary" id="btn-descargar-copia">Descargar copia (.json)</button>
+        <label class="btn btn-secondary ajustes-restaurar-archivo">
+          Restaurar desde archivo
+          <input type="file" accept="application/json,.json" id="input-restaurar-archivo" hidden />
+        </label>
+      </div>
+
+      <p class="field-error" id="ajustes-error" hidden></p>
+      <p class="field-status" id="ajustes-estado" hidden></p>
+
+      <div id="lista-copias" class="ajustes-lista"></div>
+    </section>
   </main>
 
   <dialog id="dialog-auth" class="modal">
@@ -95,6 +116,6 @@
   </dialog>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script type="module" src="js/pages/riegos.js"></script>
+  <script type="module" src="js/pages/ajustes.js"></script>
 </body>
 </html>
