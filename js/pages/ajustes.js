@@ -55,7 +55,7 @@ function formatearFecha(iso) {
 
 async function renderLista() {
   const box = qs('#lista-copias');
-  box.innerHTML = '<p class="ajustes-nota">Cargando copias…</p>';
+  box.innerHTML = '<p class="ajustes-nota-lista">Cargando copias…</p>';
   let copias;
   try {
     copias = await listarCopias();
@@ -65,7 +65,7 @@ async function renderLista() {
     return;
   }
   if (!copias.length) {
-    box.innerHTML = '<p class="ajustes-nota">Todavía no hay copias. Creá la primera con el botón de arriba.</p>';
+    box.innerHTML = '<p class="ajustes-nota-lista">Todavía no hay copias. Creá la primera con el botón de arriba.</p>';
     return;
   }
   box.innerHTML = copias
@@ -75,8 +75,10 @@ async function renderLista() {
           <div class="ajustes-copia-when">${escapeHtml(formatearFecha(c.created_at))}</div>
           <div class="ajustes-copia-label">${escapeHtml(c.label || 'Copia')} · ${c.photo_count || 0} foto(s)</div>
         </div>
-        <button type="button" class="btn btn-secondary" data-accion="restaurar">Restaurar</button>
-        <button type="button" class="btn btn-secondary" data-accion="borrar" aria-label="Borrar copia">Borrar</button>
+        <div class="ajustes-copia-acciones">
+          <button type="button" class="btn btn-secondary" data-accion="restaurar">Restaurar</button>
+          <button type="button" class="btn btn-secondary" data-accion="borrar" aria-label="Borrar copia">Borrar</button>
+        </div>
       </div>
     `)
     .join('');
