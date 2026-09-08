@@ -207,7 +207,6 @@ function wireSidebarToggle() {
 
 async function entrar() {
   const haySesion = Boolean(await getSession());
-  qs('#ajustes-sin-sesion').hidden = haySesion;
   qs('#ajustes-contenido').hidden = !haySesion;
   if (!haySesion) return;
 
@@ -221,7 +220,6 @@ iniciarPagina(async function init() {
   wireSidebarToggle();
   await authNav.sync();
 
-  qs('#btn-abrir-login-ajustes')?.addEventListener('click', abrirLogin);
   qs('#btn-crear-copia').addEventListener('click', onCrearCopia);
   qs('#btn-descargar-copia').addEventListener('click', onDescargar);
   qs('#input-restaurar-archivo').addEventListener('change', (e) => onRestaurarArchivo(e.target));

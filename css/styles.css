@@ -2942,20 +2942,6 @@ body.sidebar-open::before {
   color: var(--color-gray-mid);
 }
 
-.ajustes-sin-sesion {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: var(--space-3);
-  margin-top: var(--space-8);
-}
-
-.ajustes-sin-sesion-nota {
-  margin: 0;
-  font-size: 14px;
-  color: var(--color-gray-mid);
-}
-
 /* "Ajustes" al lado de "Cerrar sesión", no debajo. */
 .catalog-auth-group {
   display: flex;
