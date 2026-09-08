@@ -43,6 +43,36 @@
   --color-placeholder: #808080;
 }
 
+/*
+ * Tema por estación (inspirado en bergerfohr.com). `data-season` lo fija el JS
+ * a la estación real de Buenos Aires por mes de calendario (ver
+ * js/utils/reloj.js -> estacionActualTema y catalog-season-theme.js); el
+ * usuario no lo elige. Está siempre presente y tiñe todo el sitio con el color
+ * de la estación según el momento del día (`data-theme`, también automático).
+ */
+:root[data-season='invierno']  { --color-estacion: #3c6ef6; }
+:root[data-season='primavera'] { --color-estacion: #52ea90; }
+:root[data-season='verano']    { --color-estacion: #fdf251; }
+:root[data-season='otono']     { --color-estacion: #e8412e; }
+
+:root[data-season]:not([data-theme='dark']) {
+  --color-ink: var(--color-estacion);
+  --color-canvas: #ffffff;
+}
+
+:root[data-theme='dark'][data-season] {
+  --color-ink: var(--color-estacion);
+  --color-canvas: #000000;
+}
+
+/*
+ * El amarillo de Verano es muy claro: de día casi no se lee sobre blanco. Ahí
+ * el texto queda en negro en vez del amarillo.
+ */
+:root[data-season='verano']:not([data-theme='dark']) {
+  --color-ink: #000000;
+}
+
 * {
   box-sizing: border-box;
   cursor: default !important;
@@ -581,6 +611,15 @@ select.input {
 
 .catalog-theme-toggle-sep {
   opacity: 0.45;
+}
+
+/*
+ * Estación y momento del día: texto fijo, no interactivo. Los pinta el reloj
+ * (js/utils/reloj.js) según la fecha y hora reales de Buenos Aires; el usuario
+ * no los elige.
+ */
+.catalog-theme-label {
+  line-height: 1;
 }
 
 .catalog-auth-btn[disabled] {
