@@ -546,8 +546,20 @@ select.input {
   text-underline-offset: 3px;
 }
 
-.catalog-filters-toggle {
+/*
+ * "Filtros" y los números de vista (1/2/3) apilados en la misma columna, como
+ * en bitacora-filotaxia: el toggle arriba y la grilla justo debajo.
+ */
+.catalog-filters-group {
   grid-column: 6;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
+  justify-self: start;
+}
+
+.catalog-filters-toggle {
   display: inline-flex;
   align-items: center;
   margin: 0;
@@ -560,7 +572,6 @@ select.input {
   line-height: 1;
   color: var(--color-ink);
   cursor: pointer;
-  justify-self: start;
 }
 
 .catalog-meta {
@@ -631,7 +642,6 @@ select.input {
   display: inline-flex;
   align-items: baseline;
   gap: 6px;
-  margin-top: -4px;
 }
 
 .catalog-view-btn {
@@ -1988,6 +1998,12 @@ select.input {
     grid-area: menu;
     align-self: start;
     justify-self: end;
+  }
+
+  /* En tablet/móvil el header vuelve a un layout por áreas: que "Filtros" y la
+     grilla sean ítems sueltos otra vez (en desktop van apilados en un grupo). */
+  .catalog-filters-group {
+    display: contents;
   }
 
   .catalog-filters-toggle {
