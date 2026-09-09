@@ -4,6 +4,7 @@ import { TIPOS_CUIDADO } from '../utils/recordatorios.js';
 import { qs, qsa, showError, clearError, showStatus, clearStatus, escapeHtml } from '../utils/dom.js';
 import { requerirSesion, iniciarPagina, mostrarErrorDePagina } from '../utils/guard.js';
 import { wireThemeToggle } from '../utils/theme.js';
+import { wireReloj } from '../utils/reloj.js';
 
 const ETIQUETAS_TIPO = {
   regar: 'Regar',
@@ -193,6 +194,7 @@ async function renderBitacora(plantaId) {
     .join('');
 }
 
+wireReloj();
 wireThemeToggle();
 
 iniciarPagina(async function init() {

@@ -5,8 +5,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Bitácora — Bitácora de Plantas</title>
   <script>
+    // Anti-flash: fija estación y momento del día ANTES del primer paint, con
+    // la hora de Buenos Aires. El JS (js/utils/reloj.js) los mantiene al día
+    // después. Estaciones por mes (hemisferio sur); cortes fijos: Día 06-18.
     try {
-      if (localStorage.getItem('tema') === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+      var zona = 'America/Argentina/Buenos_Aires';
+      var partes = new Intl.DateTimeFormat('en-US', {
+        timeZone: zona, month: 'numeric', hour: '2-digit', hour12: false,
+      }).formatToParts(new Date()).reduce(function (acc, p) {
+        acc[p.type] = p.value; return acc;
+      }, {});
+      var mes = Number(partes.month);
+      var hora = Number(partes.hour) % 24;
+      var estaciones = [
+        'verano', 'verano', 'otono', 'otono', 'otono', 'invierno',
+        'invierno', 'invierno', 'invierno', 'primavera', 'primavera', 'verano',
+      ];
+      document.documentElement.setAttribute('data-season', estaciones[mes - 1]);
+      var tema = hora >= 6 && hora < 18 ? 'light' : 'dark';
+      if (tema !== 'light') document.documentElement.setAttribute('data-theme', tema);
     } catch (e) {}
   </script>
   <link rel="stylesheet" href="css/styles.css" />
@@ -32,10 +49,11 @@
       Menú
     </button>
     <div class="catalog-meta">
+      <p><time data-hora-completa>00:00 AR 01 ENE 2026</time></p>
       <p>
-        Buenos Aires, ARG <time data-reloj>23:46</time>
+        <span class="catalog-theme-label" data-estacion-tema>Invierno</span>
         <span class="catalog-theme-toggle-sep" aria-hidden="true">·</span>
-        <button type="button" class="catalog-theme-toggle" data-theme-toggle aria-pressed="false">Noche</button>
+        <span class="catalog-theme-label" data-theme-toggle>Noche</span>
       </p>
       <span class="catalog-auth-group">
         <button type="button" class="catalog-auth-btn" data-auth-nav>Iniciar sesión</button>
@@ -46,7 +64,9 @@
 
   <aside class="catalog-sidebar" id="catalog-sidebar" aria-label="Menú de navegación">
     <div class="catalog-sidebar-top">
-      <button type="button" class="catalog-theme-toggle" data-theme-toggle aria-pressed="false">Noche</button>
+      <span class="catalog-theme-label" data-estacion-tema>Invierno</span>
+      <span class="catalog-theme-toggle-sep" aria-hidden="true">·</span>
+      <span class="catalog-theme-label" data-theme-toggle>Noche</span>
       <button type="button" class="catalog-sidebar-close" id="catalog-sidebar-close">Cerrar</button>
     </div>
     <p class="catalog-sidebar-label">(Navegación)</p>
@@ -55,7 +75,7 @@
       <a class="catalog-sidebar-link is-active" href="coleccion.html">Colección</a>
       <a class="catalog-sidebar-link" href="riegos.html">Riegos</a>
     </nav>
-    <p class="catalog-sidebar-datetime">Buenos Aires, ARG <time data-reloj>23:46</time></p>
+    <p class="catalog-sidebar-datetime"><time data-hora-completa>00:00 AR 01 ENE 2026</time></p>
     <span class="catalog-auth-group catalog-sidebar-auth-group">
       <button type="button" class="catalog-sidebar-auth-btn" data-auth-nav>Iniciar sesión</button>
       <a class="catalog-sidebar-auth-btn" href="ajustes.html" data-ajustes-link hidden>Ajustes</a>
