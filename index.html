@@ -40,15 +40,24 @@
       <a class="catalog-nav-link" href="coleccion.html" id="nav-coleccion">Colección</a>
       <a class="catalog-nav-link" href="riegos.html" id="nav-riegos">Riegos</a>
     </nav>
-    <button
-      type="button"
-      class="catalog-filters-toggle"
-      id="catalog-filters-toggle"
-      aria-expanded="false"
-      aria-controls="catalog-filters"
-    >
-      Filtros
-    </button>
+    <div class="catalog-filters-group">
+      <button
+        type="button"
+        class="catalog-filters-toggle"
+        id="catalog-filters-toggle"
+        aria-expanded="false"
+        aria-controls="catalog-filters"
+      >
+        Filtros
+      </button>
+      <div class="catalog-view-switch" role="group" aria-label="Vista de grilla">
+        <button type="button" class="catalog-view-btn is-active" data-view="1" aria-pressed="true">1</button>
+        <span class="catalog-view-sep" aria-hidden="true">||</span>
+        <button type="button" class="catalog-view-btn" data-view="2" aria-pressed="false">2</button>
+        <span class="catalog-view-sep" aria-hidden="true">||</span>
+        <button type="button" class="catalog-view-btn" data-view="3" aria-pressed="false">3</button>
+      </div>
+    </div>
     <button
       type="button"
       class="catalog-menu-toggle"
@@ -65,13 +74,6 @@
         <span class="catalog-theme-toggle-sep" aria-hidden="true">·</span>
         <span class="catalog-theme-label" data-theme-toggle>Noche</span>
       </p>
-      <div class="catalog-view-switch" role="group" aria-label="Vista de grilla">
-        <button type="button" class="catalog-view-btn is-active" data-view="1" aria-pressed="true">1</button>
-        <span class="catalog-view-sep" aria-hidden="true">||</span>
-        <button type="button" class="catalog-view-btn" data-view="2" aria-pressed="false">2</button>
-        <span class="catalog-view-sep" aria-hidden="true">||</span>
-        <button type="button" class="catalog-view-btn" data-view="3" aria-pressed="false">3</button>
-      </div>
     </div>
   </header>
 
@@ -127,6 +129,7 @@
           spellcheck="false"
         />
       </label>
+      <button type="button" class="catalog-filters-close" id="catalog-filters-close" aria-label="Cerrar filtros">&times;</button>
     </form>
   </section>
 

@@ -546,8 +546,20 @@ select.input {
   text-underline-offset: 3px;
 }
 
-.catalog-filters-toggle {
+/*
+ * "Filtros" y los números de vista (1/2/3) apilados en la misma columna, como
+ * en bitacora-filotaxia: el toggle arriba y la grilla justo debajo.
+ */
+.catalog-filters-group {
   grid-column: 6;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
+  justify-self: start;
+}
+
+.catalog-filters-toggle {
   display: inline-flex;
   align-items: center;
   margin: 0;
@@ -560,7 +572,6 @@ select.input {
   line-height: 1;
   color: var(--color-ink);
   cursor: pointer;
-  justify-self: start;
 }
 
 .catalog-meta {
@@ -631,7 +642,6 @@ select.input {
   display: inline-flex;
   align-items: baseline;
   gap: 6px;
-  margin-top: -4px;
 }
 
 .catalog-view-btn {
@@ -746,6 +756,12 @@ select.input {
   column-count: 7;
   column-gap: 24px;
   width: 100%;
+}
+
+/* En desktop el mismo botón "Filtros" cierra el panel; el × solo aparece en el
+   modal de mobile (ver el @media más abajo). */
+.catalog-filters-close {
+  display: none;
 }
 
 .catalog-filter-option {
@@ -1575,6 +1591,74 @@ select.input {
   }
 }
 
+/*
+ * En tablet/móvil los filtros se abren como un modal: fondo oscuro a pantalla
+ * completa con el panel centrado y un × para cerrar, en vez del panel pegado
+ * al header. Igual que bitacora-filotaxia.
+ */
+@media (max-width: 1023px) {
+  .catalog-filters:not([hidden]) {
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    margin: 0;
+    padding: var(--space-8) var(--space-4);
+    background: rgba(31, 46, 61, 0.5);
+    overflow-y: auto;
+  }
+
+  .catalog-filters-panel {
+    position: relative;
+    grid-template-columns: 1fr;
+    row-gap: var(--space-4);
+    width: 100%;
+    max-width: 420px;
+    margin: auto 0;
+    max-height: 85vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+  }
+
+  .catalog-filters-options {
+    grid-column: 1;
+    column-count: 2;
+    column-gap: 16px;
+  }
+
+  .catalog-search {
+    grid-column: 1;
+    max-width: 16rem;
+    margin-left: 0;
+  }
+
+  .catalog-filters-close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 4px;
+    right: 6px;
+    width: 28px;
+    height: 28px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--color-ink);
+    font-family: inherit;
+    font-size: 22px;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  .catalog-filters-close:hover {
+    opacity: 0.6;
+  }
+}
+
 @media (max-width: 1024px) {
   .catalog-category-label,
   .catalog-category-count {
@@ -1988,6 +2072,12 @@ select.input {
     grid-area: menu;
     align-self: start;
     justify-self: end;
+  }
+
+  /* En tablet/móvil el header vuelve a un layout por áreas: que "Filtros" y la
+     grilla sean ítems sueltos otra vez (en desktop van apilados en un grupo). */
+  .catalog-filters-group {
+    display: contents;
   }
 
   .catalog-filters-toggle {
