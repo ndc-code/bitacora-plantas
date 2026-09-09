@@ -758,6 +758,12 @@ select.input {
   width: 100%;
 }
 
+/* En desktop el mismo botón "Filtros" cierra el panel; el × solo aparece en el
+   modal de mobile (ver el @media más abajo). */
+.catalog-filters-close {
+  display: none;
+}
+
 .catalog-filter-option {
   display: flex;
   align-items: center;
@@ -1582,6 +1588,74 @@ select.input {
     grid-template-columns: repeat(3, minmax(0, 1fr));
     column-gap: 12px;
     row-gap: 50px;
+  }
+}
+
+/*
+ * En tablet/móvil los filtros se abren como un modal: fondo oscuro a pantalla
+ * completa con el panel centrado y un × para cerrar, en vez del panel pegado
+ * al header. Igual que bitacora-filotaxia.
+ */
+@media (max-width: 1023px) {
+  .catalog-filters:not([hidden]) {
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    margin: 0;
+    padding: var(--space-8) var(--space-4);
+    background: rgba(31, 46, 61, 0.5);
+    overflow-y: auto;
+  }
+
+  .catalog-filters-panel {
+    position: relative;
+    grid-template-columns: 1fr;
+    row-gap: var(--space-4);
+    width: 100%;
+    max-width: 420px;
+    margin: auto 0;
+    max-height: 85vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+  }
+
+  .catalog-filters-options {
+    grid-column: 1;
+    column-count: 2;
+    column-gap: 16px;
+  }
+
+  .catalog-search {
+    grid-column: 1;
+    max-width: 16rem;
+    margin-left: 0;
+  }
+
+  .catalog-filters-close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 4px;
+    right: 6px;
+    width: 28px;
+    height: 28px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--color-ink);
+    font-family: inherit;
+    font-size: 22px;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  .catalog-filters-close:hover {
+    opacity: 0.6;
   }
 }
 

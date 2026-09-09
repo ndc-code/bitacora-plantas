@@ -92,15 +92,36 @@ export function wireFiltersToggle() {
   const section = qs('.catalog-filters');
   const toggle = qs('#catalog-filters-toggle');
   const panel = qs('#catalog-filters');
+  const closeBtn = qs('#catalog-filters-close');
   if (!section || !toggle || !panel) return;
 
-  toggle.addEventListener('click', () => {
-    const open = toggle.getAttribute('aria-expanded') === 'true';
-    const nextOpen = !open;
+  const esModal = () => window.matchMedia('(max-width: 1023px)').matches;
+
+  function setOpen(nextOpen) {
     toggle.setAttribute('aria-expanded', String(nextOpen));
     section.classList.toggle('is-collapsed', !nextOpen);
     section.hidden = !nextOpen;
     panel.hidden = !nextOpen;
+  }
+
+  toggle.addEventListener('click', () => {
+    setOpen(toggle.getAttribute('aria-expanded') !== 'true');
+  });
+
+  closeBtn?.addEventListener('click', () => setOpen(false));
+
+  // En el modal de mobile, tocar el fondo oscuro (fuera del panel) cierra.
+  section.addEventListener('click', (event) => {
+    if (esModal() && !event.target.closest('.catalog-filters-panel')) {
+      setOpen(false);
+    }
+  });
+
+  // Escape cierra el modal.
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && !section.hidden && esModal()) {
+      setOpen(false);
+    }
   });
 }
 
