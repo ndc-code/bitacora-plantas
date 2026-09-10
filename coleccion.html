@@ -49,7 +49,7 @@
       Menú
     </button>
     <div class="catalog-meta">
-      <p><time data-hora-completa>00:00 AR 01 ENE 2026</time></p>
+      <p><time data-hora-completa>00:00 01 ENE 2026</time></p>
       <p>
         <span class="catalog-theme-label" data-estacion-tema>Invierno</span>
         <span class="catalog-theme-toggle-sep" aria-hidden="true">·</span>
@@ -64,9 +64,12 @@
 
   <aside class="catalog-sidebar" id="catalog-sidebar" aria-label="Menú de navegación">
     <div class="catalog-sidebar-top">
-      <span class="catalog-theme-label" data-estacion-tema>Invierno</span>
-      <span class="catalog-theme-toggle-sep" aria-hidden="true">·</span>
-      <span class="catalog-theme-label" data-theme-toggle>Noche</span>
+      <p class="catalog-sidebar-mode">
+        <span class="catalog-theme-label" data-theme-toggle>Noche</span>
+        <span class="catalog-theme-toggle-sep" aria-hidden="true">/</span>
+        <span class="catalog-theme-label" data-estacion-tema>Invierno</span>
+        <time data-hora-completa>00:00 01 ENE 2026</time>
+      </p>
       <button type="button" class="catalog-sidebar-close" id="catalog-sidebar-close">Cerrar</button>
     </div>
     <p class="catalog-sidebar-label">(Navegación)</p>
@@ -75,7 +78,6 @@
       <a class="catalog-sidebar-link is-active" href="coleccion.html">Colección</a>
       <a class="catalog-sidebar-link" href="riegos.html">Riegos</a>
     </nav>
-    <p class="catalog-sidebar-datetime"><time data-hora-completa>00:00 AR 01 ENE 2026</time></p>
     <span class="catalog-auth-group catalog-sidebar-auth-group">
       <button type="button" class="catalog-sidebar-auth-btn" data-auth-nav>Iniciar sesión</button>
       <a class="catalog-sidebar-auth-btn" href="ajustes.html" data-ajustes-link hidden>Ajustes</a>

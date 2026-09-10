@@ -330,7 +330,7 @@ export const CATEGORIES = [
     ],
   },
   {
-    label: 'Árboles',
+    label: 'Arboles',
     plants: [
       ['Roble de los pantanos', 'Quercus palustris', 'Directa', 'Arcilloso', 'Fácil', 'Cada 21 días', 'Frío'],
       ['Fresno americano', 'Fraxinus americana', 'Directa', 'Franco', 'Fácil', 'Cada 21 días', 'Frío'],
@@ -615,7 +615,8 @@ ${row.variedades
     const btn = row.tieneVariedades
       ? `<button type="button" class="catalog-add catalog-add--variedad" data-id="${escapeAttr(v.id)}" data-nombre="${escapeAttr(v.caption)}" data-especie="${escapeAttr(v.especie)}" data-riego="${escapeAttr(row.riego)}" data-riegos="${riegosAttr}" data-clima="${escapeAttr(row.clima)}" data-luz="${escapeAttr(row.luz)}" data-ubicacion="${escapeAttr(row.sol)}" data-suelo="${escapeAttr(row.suelo)}" data-cuidado="${escapeAttr(row.cuidado)}" data-imagen="${escapeAttr(v.imagen)}" data-galeria="${escapeAttr(JSON.stringify([v.imagen]))}" title="Agregar ${escapeAttr(v.caption)} a Colección" aria-label="Agregar ${escapeAttr(v.caption)} a Colección">+</button>
         `
-      : '';
+      : `<button type="button" class="catalog-add catalog-add--variedad" ${addAttrs} title="Agregar a Colección" aria-label="Agregar a Colección">+</button>
+        `;
     return `      <figure class="catalog-gallery-item">
         ${btn}<img src="${escapeAttr(v.imagen)}" alt="${escapeAttr(v.caption)}" loading="lazy" height="150" />
         <figcaption>${escapeAttr(v.caption)}</figcaption>

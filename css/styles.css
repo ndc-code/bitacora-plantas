@@ -365,10 +365,6 @@ select.input {
   min-width: 0;
 }
 
-.coleccion-row:hover .coleccion-row-text {
-  color: var(--color-terracotta);
-}
-
 .coleccion-eliminar-btn {
   flex-shrink: 0;
   margin: 0;
@@ -462,11 +458,6 @@ select.input {
   flex-shrink: 0;
   font-size: 14px;
   color: var(--color-gray-mid);
-}
-
-.riegos-row-link:hover .riegos-row-nombre,
-.riegos-row-link:hover .riegos-row-valor {
-  color: var(--color-terracotta);
 }
 
 .riegos-vacio {
@@ -1705,8 +1696,8 @@ select.input {
   }
 
   .catalog-category-label {
-    font-size: 34px;
-    letter-spacing: -1.5px;
+    font-size: 44px;
+    letter-spacing: -2px;
   }
 
   .catalog-category-count {
@@ -1722,8 +1713,8 @@ select.input {
 
 @media (max-width: 379px) {
   .catalog-category-label {
-    font-size: 26px;
-    letter-spacing: -1px;
+    font-size: 34px;
+    letter-spacing: -1.5px;
   }
 
   .riegos-section-title {
@@ -1948,12 +1939,25 @@ select.input {
 .catalog-sidebar-top {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   margin-bottom: clamp(var(--space-10), 12vh, 120px);
 }
 
-.catalog-sidebar-top .catalog-theme-toggle {
-  font-size: 16px;
+/* Dos líneas: la fecha y hora arriba (ocupa el ancho completo con `order`, sin
+   tocar el HTML) y "Noche / Invierno" debajo. */
+.catalog-sidebar-mode {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-1) var(--space-2);
+  margin: 0;
+  color: var(--color-canvas);
+  font-size: inherit;
+}
+
+.catalog-sidebar-mode time {
+  order: -1;
+  flex-basis: 100%;
 }
 
 .catalog-sidebar-close {
@@ -1963,7 +1967,7 @@ select.input {
   background: transparent;
   color: var(--color-canvas);
   font-family: inherit;
-  font-size: 16px;
+  font-size: inherit;
   line-height: 1;
   cursor: pointer;
 }
@@ -1971,13 +1975,6 @@ select.input {
 .catalog-sidebar-label {
   margin: 0 0 var(--space-6);
   font-size: 16px;
-  color: var(--color-canvas);
-  opacity: 0.6;
-}
-
-.catalog-sidebar-datetime {
-  margin: 300px 0 0;
-  font-size: 14px;
   color: var(--color-canvas);
   opacity: 0.6;
 }
@@ -2005,7 +2002,7 @@ select.input {
 .catalog-sidebar-nav {
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
+  gap: var(--space-1);
   list-style: none;
   margin: 0;
   padding: 0;
@@ -2015,7 +2012,7 @@ select.input {
   display: block;
   padding: 0;
   color: var(--color-canvas);
-  text-decoration: underline;
+  text-decoration: none;
   text-underline-offset: 8px;
   font-family: var(--font-heading);
   font-size: clamp(36px, 9vw, 64px);
@@ -2025,6 +2022,8 @@ select.input {
 }
 
 .catalog-sidebar-link.is-active {
+  margin-bottom: 5px;
+  text-decoration: underline;
   opacity: 1;
 }
 
@@ -2109,6 +2108,15 @@ select.input {
     grid-area: views;
     justify-self: end;
     margin-top: -30px;
+  }
+
+  /* Acerca el primer bloque al header en mobile, como bitacora-filotaxia. */
+  .catalog-list {
+    margin-top: var(--space-6);
+  }
+
+  .catalog-category {
+    margin-top: var(--space-8);
   }
 }
 
@@ -2447,7 +2455,7 @@ body.sidebar-open::before {
 
 .bitacora-detalle-idx {
   margin-right: var(--space-3);
-  font-family: 'SFMono-Regular', ui-monospace, 'Courier New', monospace;
+  font-family: var(--font-heading);
   font-size: 12px;
   color: var(--color-gray-mid);
 }
@@ -2464,7 +2472,7 @@ body.sidebar-open::before {
 .bitacora-detalle-valor {
   flex-shrink: 0;
   margin-left: var(--space-3);
-  font-family: 'SFMono-Regular', ui-monospace, 'Courier New', monospace;
+  font-family: var(--font-heading);
   font-size: 13px;
   color: var(--color-gray-mid);
 }
