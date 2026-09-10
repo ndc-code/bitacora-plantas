@@ -25,16 +25,16 @@ test('formatearFechaEstacion usa las estaciones del hemisferio sur', () => {
   assert.equal(formatearFechaEstacion(new Date('2026-12-13T15:00:00.000Z')), '13 dic Verano');
 });
 
-test('formatearHoraCompleta arma "19:18 AR 08 SEP 2026": mes abreviado en mayúscula y "AR"', () => {
+test('formatearHoraCompleta arma "19:18 08 SEP 2026": mes abreviado en mayúscula', () => {
   const d = new Date('2026-09-08T22:18:00.000Z'); // 19:18 del 8 en Buenos Aires
-  assert.equal(formatearHoraCompleta(d), '19:18 AR 08 SEP 2026');
+  assert.equal(formatearHoraCompleta(d), '19:18 08 SEP 2026');
 });
 
 test('formatearHoraCompleta abrevia el mes a 3 letras sin punto en todos los meses', () => {
   const meses = [
-    ['2026-01-15T15:00:00.000Z', '12:00 AR 15 ENE 2026'],
-    ['2026-09-15T15:00:00.000Z', '12:00 AR 15 SEP 2026'],
-    ['2026-12-15T15:00:00.000Z', '12:00 AR 15 DIC 2026'],
+    ['2026-01-15T15:00:00.000Z', '12:00 15 ENE 2026'],
+    ['2026-09-15T15:00:00.000Z', '12:00 15 SEP 2026'],
+    ['2026-12-15T15:00:00.000Z', '12:00 15 DIC 2026'],
   ];
   for (const [iso, esperado] of meses) {
     assert.equal(formatearHoraCompleta(new Date(iso)), esperado);
@@ -43,7 +43,7 @@ test('formatearHoraCompleta abrevia el mes a 3 letras sin punto en todos los mes
 
 test('formatearHoraCompleta usa el huso de Buenos Aires, no el del sistema', () => {
   const d = new Date('2026-09-09T02:30:00.000Z'); // 23:30 del 8 AR
-  assert.equal(formatearHoraCompleta(d), '23:30 AR 08 SEP 2026');
+  assert.equal(formatearHoraCompleta(d), '23:30 08 SEP 2026');
 });
 
 test('estacionActualTema devuelve la estación por mes calendario (hemisferio sur)', () => {

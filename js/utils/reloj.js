@@ -63,8 +63,8 @@ export function formatearEstacion(date = new Date()) {
 }
 
 /**
- * Devuelve hora, huso (literal "AR") y fecha con el mes abreviado en mayúscula:
- * "19:18 AR 08 SEP 2026". El huso es literal porque la zona es fija.
+ * Devuelve hora y fecha con el mes abreviado en mayúscula:
+ * "19:18 08 SEP 2026".
  */
 export function formatearHoraCompleta(date = new Date()) {
   const { hour, minute } = partesPor(date, formatoHora);
@@ -72,7 +72,7 @@ export function formatearHoraCompleta(date = new Date()) {
   // es-AR abrevia los meses a 3 letras salvo septiembre ("sept."). Sacamos
   // cualquier punto, recortamos a 3 y pasamos a mayúscula -> "SEP", "AGO".
   const mes = month.replace('.', '').slice(0, 3).toUpperCase();
-  return `${hour}:${minute} AR ${day} ${mes} ${year}`;
+  return `${hour}:${minute} ${day} ${mes} ${year}`;
 }
 
 /**
